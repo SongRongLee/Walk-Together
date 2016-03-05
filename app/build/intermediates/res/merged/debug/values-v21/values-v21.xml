@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/D:/Hubert/Android/WalkTogether/app/src/main/res/values-v21/styles.xml -->
+    <eat-comment/>
+    <style name="AppThemeLogin" parent="android:Theme.Holo.Light.NoActionBar"> </style>
+    <style name="AppThemeUserStatus" parent="android:Theme.Holo.Light"> </style>
+</resources>
