@@ -58,8 +58,10 @@ public class UserAdapter extends BaseAdapter {
         rowView = inflater.inflate(R.layout.user_item, null);
         holder.tv=(TextView) rowView.findViewById(R.id.text_user);
         holder.img=(ImageView) rowView.findViewById(R.id.image_user);
+
         holder.tv.setText(result[position]);
         holder.img.setImageResource(imageId[position]);
+
         rowView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
