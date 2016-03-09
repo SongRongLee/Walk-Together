@@ -1,8 +1,10 @@
 package tw.com.chiaotung.walktogether;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -28,12 +30,17 @@ public class TabOne extends Fragment {
     private LinearLayout Userdata;
     private LinearLayout Addnote;
     private TextView text;
+    private TextView username;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootview =  inflater.inflate(R.layout.fragment_tab_one, container, false);
 
         //get view block 1
         View UserdataView  = LayoutInflater.from(getActivity()).inflate(R.layout.userdata, null);
+        String useraccount = UserStatus.prefs.getString("account", "");
+        username = (TextView)UserdataView.findViewById(R.id.UserName);
+        username.setText(useraccount);
 
         //get view block 3
         View  AddingnoteView = LayoutInflater.from(getActivity()).inflate(R.layout.note, null);
