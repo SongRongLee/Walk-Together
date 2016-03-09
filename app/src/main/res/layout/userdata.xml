@@ -19,6 +19,7 @@
             android:textSize="20sp"
             android:text="UserName"
             android:layout_marginTop="40dp"
+            android:id="@+id/UserName"
             />
     </LinearLayout>
 </LinearLayout>
