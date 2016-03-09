@@ -5,8 +5,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -17,38 +15,37 @@ import java.io.File;
 
 public class Login extends Activity implements View.OnClickListener,TextWatcher{
 
-    EditText edtAccount,edtPassword;
-    Button btLogin,btSignup;
     static SharedPreferences prefs;
     String account;
+    EditText edtAccount,edtPassword;
+    Button btLogin,btSignup;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        prefs = getSharedPreferences("LoginInfo",0);
-        //initialize
-        edtAccount=(EditText)findViewById(R.id.edt_account);
-        edtPassword=(EditText)findViewById(R.id.edt_password);
-        btLogin=(Button)findViewById(R.id.bt_logIn);
-        btSignup=(Button)findViewById(R.id.bt_signUp);
 
+        //initialize
+        edtAccount = (EditText) findViewById(R.id.edt_account);
+        edtPassword = (EditText) findViewById(R.id.edt_password);
+        btLogin = (Button) findViewById(R.id.bt_logIn);
+        btSignup = (Button) findViewById(R.id.bt_signUp);
+
+        //check account logged in
+        prefs = getSharedPreferences("LoginInfo", 0);
+        File file = new File("/data/data/tw.com.chiaotung.walktogether/shared_prefs", "LoginInfo.xml");
+        if (file.exists()) {
+            ReadValue();
+            if (!account.equals("")) {
+                Intent it = new Intent(this, UserStatus.class);
+                startActivity(it);
+            }
+        }
         //set Listeners
         edtAccount.addTextChangedListener(this);
         edtPassword.addTextChangedListener(this);
         btLogin.setOnClickListener(this);
         btSignup.setOnClickListener(this);
-
-        File file = new File("/data/data/tw.com.chiaotung.walktogether/shared_prefs","LoginInfo.xml");
-        if(file.exists()){
-            ReadValue();
-            if(!account.equals("")){
-                Intent it=new Intent(this,UserStatus.class);
-                startActivity(it);
-            }
-        }
-
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -91,8 +88,7 @@ public class Login extends Activity implements View.OnClickListener,TextWatcher{
             prefEdit.putString("account",user.account);
             prefEdit.commit();
             logInUser(user);
-        }
-        else{
+        } else{
             showErrorMeassge();
         }
     }
@@ -112,9 +108,8 @@ public class Login extends Activity implements View.OnClickListener,TextWatcher{
         dialog.setPositiveButton("Ok",null);
         dialog.show();
     }
-
-    public void ReadValue(){
+    public void ReadValue() {
         prefs = getSharedPreferences("LoginInfo",0);
-        account = prefs.getString("account","");
-    }
+         account = prefs.getString("account","");
+     }
 }

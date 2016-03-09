@@ -6,7 +6,7 @@
     android:paddingBottom="25dp" tools:context=".Login"
     android:orientation="vertical"
     android:baselineAligned="false"
-    android:background="#ddfeff"
+    android:background="@color/colorPrimary"
     android:weightSum="1">
 
     <ImageView
@@ -16,6 +16,17 @@
         android:layout_gravity="center_horizontal"
         android:src="@drawable/foot_print"
         android:layout_weight="0.09" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Walk Together"
+        android:id="@+id/textView"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.09"
+        android:textColor="@color/abc_primary_text_material_dark"
+        android:textStyle="bold|italic" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -32,7 +43,11 @@
             android:layout_weight="3"
             android:hint="User name"
             android:inputType="textEmailAddress"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:autoText="false"
+            android:nestedScrollingEnabled="false"
+            android:textColor="@color/primary_text_default_material_dark"
+            android:textColorHint="@color/hint_foreground_material_dark" />
     </LinearLayout>
 
     <LinearLayout
@@ -49,7 +64,9 @@
             android:layout_weight="3"
             android:hint="Password"
             android:inputType="textPassword"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:textColorHint="@color/hint_foreground_material_dark"
+            android:textColor="@color/primary_text_default_material_dark" />
     </LinearLayout>
 
     <Button
@@ -59,7 +76,8 @@
         android:id="@+id/bt_logIn"
         android:layout_marginTop="10dp"
         android:textSize="15sp"
-        android:enabled="false" />
+        android:enabled="false"
+        android:textColor="@color/abc_primary_text_material_dark" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -71,6 +89,7 @@
         android:layout_marginTop="15dp"
         android:enabled="false"
         android:visibility="visible"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:textColor="@color/abc_primary_text_material_dark" />
 
 </LinearLayout>
