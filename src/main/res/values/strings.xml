@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">Walk Together</string>
-
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_user_status">UserStatus</string>
-</resources>
