@@ -17,9 +17,9 @@ import android.view.MenuItem;
 
 public class UserStatus extends AppCompatActivity {
 
-    public static Toolbar toolbar;
-    public static TabLayout tabLayout;
-    public static ViewPager viewPager;
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
     static SharedPreferences prefs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +27,9 @@ public class UserStatus extends AppCompatActivity {
         setContentView(R.layout.activity_user_status);
         prefs = getSharedPreferences("LoginInfo",0);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setSelectedTab();
-/*
+
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Me"));
         tabLayout.addTab(tabLayout.newTab().setText("Everyone"));
@@ -42,7 +41,6 @@ public class UserStatus extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
-
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -59,38 +57,8 @@ public class UserStatus extends AppCompatActivity {
 
             }
         });
-        */
-    }
-    public void setSelectedTab() {
-
-        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("Me"));
-        tabLayout.addTab(tabLayout.newTab().setText("Everyone"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
-        viewPager = (ViewPager) findViewById(R.id.pager);
-        final PagerAdapter adapter = new PagerAdapter
-                (getSupportFragmentManager(), tabLayout.getTabCount());
-        viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
 
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
     }
 
 

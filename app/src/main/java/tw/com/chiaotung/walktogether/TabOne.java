@@ -2,13 +2,11 @@ package tw.com.chiaotung.walktogether;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -25,9 +23,6 @@ public class TabOne extends Fragment {
     private LinearLayout Addnote;
     private TextView text;
     private TextView username;
-    private Button btn_connect;
-    private int connection_status;
-    private View ConnectionView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,27 +33,6 @@ public class TabOne extends Fragment {
         String useraccount = UserStatus.prefs.getString("account", "");
         username = (TextView)UserdataView.findViewById(R.id.UserName);
         username.setText(useraccount);
-
-        //get view block 2
-        Intent intent_receive = getActivity().getIntent();
-        connection_status = intent_receive.getIntExtra(ScanDevice.CONNECTION,0);
-
-        if(connection_status == 0) {
-            ConnectionView = LayoutInflater.from(getActivity()).inflate(R.layout.blue_tooth_before, null);
-            btn_connect = (Button) ConnectionView.findViewById(R.id.btn_connect);
-            btn_connect.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent_scan = new Intent();
-                    intent_scan.setClass(getActivity(), ScanDevice.class);
-                    startActivity(intent_scan);
-                }
-            });
-        }
-        else
-        {
-            ConnectionView = LayoutInflater.from(getActivity()).inflate(R.layout.blue_tooth_after, null);
-        }
 
         //get view block 3
         View  AddingnoteView = LayoutInflater.from(getActivity()).inflate(R.layout.note, null);
@@ -100,7 +74,6 @@ public class TabOne extends Fragment {
         listView = (ListView)rootview.findViewById(R.id.list_view);
         listView.setDivider(null);
         listView.addHeaderView(UserdataView);
-        listView.addHeaderView(ConnectionView);
         listView.addHeaderView(AddingnoteView);
         listView.addHeaderView(TestView);
         listAdapter = new UserAdapter(getActivity(),userNameList,userImages);
