@@ -61,7 +61,7 @@ public class UserAdapter extends BaseAdapter {
 
         holder.tv.setText(result[position]);
         holder.img.setImageResource(imageId[position]);
-
+/*
         rowView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +69,7 @@ public class UserAdapter extends BaseAdapter {
                 Toast.makeText(context, "You Clicked "+result[position], Toast.LENGTH_LONG).show();
             }
         });
+        */
         return rowView;
     }
 
