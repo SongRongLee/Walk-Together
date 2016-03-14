@@ -25,5 +25,6 @@
             android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
             android:id="@+id/UserName"/>
+
     </LinearLayout>
 </LinearLayout>

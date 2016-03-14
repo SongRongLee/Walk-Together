@@ -10,13 +10,12 @@
     android:weightSum="1">
 
     <ImageView
-        android:layout_width="130sp"
-        android:layout_height="120sp"
+        android:layout_width="127dp"
+        android:layout_height="176dp"
         android:id="@+id/imageView"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/foot_print"
-        android:layout_weight="0.09"
-        android:scaleType="fitXY" />
+        android:layout_weight="0.09" />
 
     <TextView
         android:layout_width="wrap_content"

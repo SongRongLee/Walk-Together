@@ -81,25 +81,21 @@ public class Login extends Activity implements View.OnClickListener,TextWatcher{
             btLogin.setEnabled(false);
         }
     }
-    public void verifyUser(User user) {
+    public void verifyUser(User user){
         ServerRequest request = new ServerRequest(this);
-
-        request.logInCheck(user, new CallBack() {
-            @Override
-            public void done(User returnedUser) {
-                if (returnedUser!=null) {
-                    logInUser(returnedUser);
-                } else {
-                    showErrorMeassge();
-                }
-            }
-        });
+        if(request.fetchUserData(user)==true){
+            SharedPreferences.Editor prefEdit = prefs.edit();
+            prefEdit.putString("account",user.account);
+            prefEdit.commit();
+            logInUser(user);
+        } else{
+            showErrorMeassge();
+        }
     }
     public void logInUser(User user){
+        //
         //set logged in
-        SharedPreferences.Editor prefEdit = prefs.edit();
-        prefEdit.putString("account", user.account);
-        prefEdit.commit();
+        //
 
         //Go to UserStatus page
         Intent it=new Intent(this,UserStatus.class);
@@ -114,6 +110,6 @@ public class Login extends Activity implements View.OnClickListener,TextWatcher{
     }
     public void ReadValue() {
         prefs = getSharedPreferences("LoginInfo",0);
-        account = prefs.getString("account","");
+         account = prefs.getString("account","");
      }
 }

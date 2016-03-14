@@ -23,15 +23,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
-                android:text="    Steps"
+                android:text="Steps"
                 android:id="@+id/steps"
                 android:layout_marginTop="10dp"
+                android:layout_marginLeft="40dp"
                 />
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_thumb_up"
-                android:id="@+id/highfive"
+                android:id="@+id/stepshighfive"
                 android:layout_marginLeft="100dp"/>
         </LinearLayout>
 
