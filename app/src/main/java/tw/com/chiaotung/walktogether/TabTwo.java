@@ -48,9 +48,14 @@ public class TabTwo extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                /*
                 UserStatus.tabLayout = (TabLayout) getActivity().findViewById(R.id.tab_layout);
                 UserStatus.viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
                 UserStatus.viewPager.setCurrentItem(0);
+                */
+                Intent intent = new Intent();
+                intent.setClass(getActivity(),OthersProfile.class);
+                startActivity(intent);
             }
         });
 /*
