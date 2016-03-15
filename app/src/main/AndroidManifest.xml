@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tw.com.chiaotung.walktogether">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -23,7 +24,7 @@
         <activity
             android:name=".UserStatus"
             android:label="@string/title_activity_user_status"
-            android:theme="@style/AppThemeUserStatus" />
+            android:theme="@style/AppThemeUserStatus"></activity>
         <activity
             android:name=".ScanDevice"
             android:label="@string/title_activity_scan_device"
