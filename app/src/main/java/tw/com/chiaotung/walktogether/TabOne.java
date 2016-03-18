@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import cc.nctu1210.api.koala3x.SensorEvent;
 
 public class TabOne extends Fragment {
 
@@ -38,7 +35,7 @@ public class TabOne extends Fragment {
 
         //get view block 1
         View UserdataView  = LayoutInflater.from(getActivity()).inflate(R.layout.userdata, null);
-        String useraccount = UserStatus.prefs.getString("account", "");
+        String useraccount = LocalStoreController.userLocalStore.getString("account", "");
         username = (TextView)UserdataView.findViewById(R.id.UserName);
         username.setText(useraccount);
 
