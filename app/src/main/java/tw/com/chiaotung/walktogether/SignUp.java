@@ -1,9 +1,9 @@
 package tw.com.chiaotung.walktogether;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
-public class SignUp extends AppCompatActivity {
+public class SignUp extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
