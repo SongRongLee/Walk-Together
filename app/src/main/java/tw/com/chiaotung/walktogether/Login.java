@@ -3,7 +3,6 @@ package tw.com.chiaotung.walktogether;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,14 +10,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.io.File;
-
 public class Login extends Activity implements View.OnClickListener,TextWatcher{
 
-    static SharedPreferences prefs;
-    String account;
     EditText edtAccount,edtPassword;
     Button btLogin,btSignup;
+    LocalStoreController storeController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,17 +25,15 @@ public class Login extends Activity implements View.OnClickListener,TextWatcher{
         edtPassword = (EditText) findViewById(R.id.edt_password);
         btLogin = (Button) findViewById(R.id.bt_logIn);
         btSignup = (Button) findViewById(R.id.bt_signUp);
+        storeController=new LocalStoreController(this);
 
         //check account logged in
-        prefs = getSharedPreferences("LoginInfo", 0);
-        File file = new File("/data/data/tw.com.chiaotung.walktogether/shared_prefs", "LoginInfo.xml");
-        if (file.exists()) {
-            ReadValue();
-            if (!account.equals("")) {
-                Intent it = new Intent(this, UserStatus.class);
-                startActivity(it);
-            }
+        //File file = new File("/data/data/tw.com.chiaotung.walktogether/shared_prefs", "LoginInfo.xml");
+        User returnedUser = storeController.getLogInPreference();
+        if (returnedUser!=null) {
+                verifyUser(returnedUser);
         }
+
         //set Listeners
         edtAccount.addTextChangedListener(this);
         edtPassword.addTextChangedListener(this);
@@ -59,9 +53,10 @@ public class Login extends Activity implements View.OnClickListener,TextWatcher{
 
                 break;
             case R.id.bt_signUp:
-                //
-                //not yet implemented
-                //
+
+                //Sign up
+                Intent it=new Intent(this,SignUp.class);
+                startActivity(it);
                 break;
         }
 
@@ -86,20 +81,22 @@ public class Login extends Activity implements View.OnClickListener,TextWatcher{
 
         request.logInCheck(user, new CallBack() {
             @Override
-            public void done(User returnedUser) {
-                if (returnedUser!=null) {
+            public void loginDone(User returnedUser) {
+                if (returnedUser != null) {
                     logInUser(returnedUser);
                 } else {
                     showErrorMeassge();
                 }
             }
+            @Override
+            public void signUpDone(User returnedUser) {
+
+            }
         });
     }
     public void logInUser(User user){
         //set logged in
-        SharedPreferences.Editor prefEdit = prefs.edit();
-        prefEdit.putString("account", user.account);
-        prefEdit.commit();
+        storeController.setUserLoggedIn(true,user);
 
         //Go to UserStatus page
         Intent it=new Intent(this,UserStatus.class);
@@ -111,9 +108,5 @@ public class Login extends Activity implements View.OnClickListener,TextWatcher{
         dialog.setMessage("Wrong user name or password!");
         dialog.setPositiveButton("Ok",null);
         dialog.show();
-    }
-    public void ReadValue() {
-        prefs = getSharedPreferences("LoginInfo",0);
-        account = prefs.getString("account","");
     }
 }
