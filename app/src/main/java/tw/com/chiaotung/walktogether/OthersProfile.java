@@ -2,12 +2,10 @@ package tw.com.chiaotung.walktogether;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -40,7 +38,7 @@ public class OthersProfile extends AppCompatActivity {
     {
         //get view block 1
         View UserdataView  = LayoutInflater.from(OthersProfile.this).inflate(R.layout.userdata, null);
-        String useraccount = UserStatus.prefs.getString("account", "");
+        String useraccount = LocalStoreController.userLocalStore.getString("account", "");
         username = (TextView)UserdataView.findViewById(R.id.UserName);
         username.setText(useraccount);
 
