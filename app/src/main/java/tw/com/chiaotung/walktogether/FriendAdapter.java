@@ -12,18 +12,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * Created by User on 2016/3/6.
+ * Created by User on 2016/3/16.
  */
-public class UserAdapter extends BaseAdapter {
+public class FriendAdapter extends BaseAdapter {
     String [] result;
     Context context;
     int [] imageId;
+    int [] steps;
     private static LayoutInflater inflater=null;
-    public UserAdapter(Activity a, String[] userNameList, int[] userImages) {
+    public FriendAdapter(Activity a, String[] userNameList, int[] userImages, int[] userStepList) {
         // TODO Auto-generated constructor stub
         result=userNameList;
         context=a;
         imageId=userImages;
+        steps = userStepList;
         inflater = ( LayoutInflater )context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -47,7 +49,8 @@ public class UserAdapter extends BaseAdapter {
 
     public class Holder
     {
-        TextView tv;
+        TextView t_name;
+        TextView t_steps;
         ImageView img;
     }
     @Override
@@ -55,11 +58,14 @@ public class UserAdapter extends BaseAdapter {
         // TODO Auto-generated method stub
         Holder holder=new Holder();
         View rowView;
-        rowView = inflater.inflate(R.layout.user_item, null);
-        holder.tv=(TextView) rowView.findViewById(R.id.text_message);
-        holder.img=(ImageView) rowView.findViewById(R.id.image_user);
+        rowView = inflater.inflate(R.layout.friend_item, null);
+        holder.t_name=(TextView) rowView.findViewById(R.id.text_friend_name);
+        holder.t_steps=(TextView) rowView.findViewById(R.id.text_friend_steps);
+        holder.img=(ImageView) rowView.findViewById(R.id.image_friend);
 
-        holder.tv.setText(result[position]);
+        holder.t_name.setText(result[position]);
+        String S = String.valueOf(steps[position]) + " steps";
+        holder.t_steps.setText(S);
         holder.img.setImageResource(imageId[position]);
 /*
         rowView.setOnClickListener(new OnClickListener() {

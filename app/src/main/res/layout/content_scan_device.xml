@@ -11,13 +11,45 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.eeccs.jimmy.walktogether.ScanDevice"
     tools:showIn="@layout/activity_scan_device">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Used Device"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:typeface="serif"
+        android:id="@+id/text_used">
+    </TextView>
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/used_device_list"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/text_used"
+        android:layout_marginTop="20dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="New Device"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:typeface="serif"
+        android:id="@+id/text_new"
+        android:layout_marginTop="200dp"
+        >
+    </TextView>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/device_list"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
+        android:layout_marginTop="220dp"
+        android:layout_below="@id/text_new"
         />
 
     <Button

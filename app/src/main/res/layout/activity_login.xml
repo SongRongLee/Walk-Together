@@ -10,12 +10,12 @@
     android:weightSum="1">
 
     <ImageView
-        android:layout_width="127dp"
-        android:layout_height="176dp"
+        android:layout_width="match_parent"
+        android:layout_height="160sp"
         android:id="@+id/imageView"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/foot_print"
-        android:layout_weight="0.09" />
+        android:src="@drawable/bamboo"
+        android:scaleType="fitXY" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -41,8 +41,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/edt_account"
             android:layout_weight="3"
-            android:hint="User name"
+            android:hint="Email"
             android:inputType="textEmailAddress"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@."
             android:textSize="15sp"
             android:autoText="false"
             android:nestedScrollingEnabled="false"
@@ -64,6 +65,7 @@
             android:layout_weight="3"
             android:hint="Password"
             android:inputType="textPassword"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:textSize="15sp"
             android:textColorHint="@color/hint_foreground_material_dark"
             android:textColor="@color/primary_text_default_material_dark" />
@@ -87,7 +89,7 @@
         android:id="@+id/bt_signUp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp"
-        android:enabled="false"
+        android:enabled="true"
         android:visibility="visible"
         android:textSize="12sp"
         android:textColor="@color/abc_primary_text_material_dark" />

@@ -36,9 +36,18 @@
 
         <activity
             android:name=".OthersProfile"
+            android:label="@string/title_activity_others_profile"
+            android:parentActivityName=".UserStatus"
             android:theme="@style/AppThemeUserStatus">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".UserStatus" />
         </activity>
-
+        <activity
+            android:name=".SignUp"
+            android:label="@string/title_activity_sign_up"
+            android:theme="@style/AppSignUp" >
+        </activity>
     </application>
 
 </manifest>
