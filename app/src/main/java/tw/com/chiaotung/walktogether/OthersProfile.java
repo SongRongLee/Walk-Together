@@ -2,11 +2,15 @@ package tw.com.chiaotung.walktogether;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.os.Bundle;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,28 +27,33 @@ public class OthersProfile extends AppCompatActivity {
     private TextView text;
     private TextView username;
     public static View ConnectionView;
-
+    public static Toolbar toolbar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_others_profile);
-
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         showpage();
     }
 
     public void showpage()
     {
+        Intent intent_receive = this.getIntent();
+        String useraccount = intent_receive.getStringExtra("uid");
         //get view block 1
         View UserdataView  = LayoutInflater.from(OthersProfile.this).inflate(R.layout.userdata, null);
-        String useraccount = LocalStoreController.userLocalStore.getString("account", "");
+        //String useraccount = LocalStoreController.userLocalStore.getString("account", "");
         username = (TextView)UserdataView.findViewById(R.id.UserName);
         username.setText(useraccount);
 
         //get view block 2
-        ConnectionView = LayoutInflater.from(OthersProfile.this).inflate(R.layout.blue_tooth_after, null);
-
+        ConnectionView = LayoutInflater.from(OthersProfile.this).inflate(R.layout.blue_tooth_others, null);
+        ImageView highfive = (ImageView)ConnectionView.findViewById(R.id.stepshighfive);
+        highfive.setImageResource(R.drawable.ic_thumb_up);
 
         //get view block 3
         View  AddingnoteView = LayoutInflater.from(OthersProfile.this).inflate(R.layout.note, null);

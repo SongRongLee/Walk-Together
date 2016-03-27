@@ -80,10 +80,10 @@ public class ServerRequest {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                            Log.d("TAG", response.toString());
-                            CallBackContent content=new CallBackContent();
-                            content.user=user;
-                            callBack.done(content);
+                        Log.d("TAG", response.toString());
+                        CallBackContent content=new CallBackContent();
+                        content.user=user;
+                        callBack.done(content);
                     }
                 },
                 new Response.ErrorListener() {
@@ -249,7 +249,7 @@ public class ServerRequest {
                                 content.message_list[i].from=Integer.parseInt(((JSONObject) data.get(i)).getString("from"));
                                 content.message_list[i].message_content=((JSONObject)data.get(i)).getString("message");
                                 content.message_list[i].time=Integer.parseInt(((JSONObject) data.get(i)).getString("time"));
-                                 content.message_list[i].like_list=((JSONObject)data.get(i)).getString("like_list");
+                                content.message_list[i].like_list=((JSONObject)data.get(i)).getString("like_list");
                             }
                             callBack.done(content);
                         }catch (JSONException e){
@@ -315,7 +315,7 @@ public class ServerRequest {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse (JSONObject response) {
-                            Log.d("TAG", response.toString());
+                        Log.d("TAG", response.toString());
                     }
                 },
                 new Response.ErrorListener() {
@@ -339,7 +339,7 @@ public class ServerRequest {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                            Log.d("TAG", response.toString());
+                        Log.d("TAG", response.toString());
                     }
                 },
                 new Response.ErrorListener() {

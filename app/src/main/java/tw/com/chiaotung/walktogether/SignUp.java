@@ -56,12 +56,12 @@ public class SignUp extends Activity implements View.OnClickListener,TextWatcher
     public void afterTextChanged(Editable s) {
         if(!edtName.getText().toString().trim().isEmpty()&&!edtAccount.getText().toString().trim().isEmpty()
                 &&!edtPassword.getText().toString().trim().isEmpty()&&!edtEdtPasswordRep.getText().toString().trim().isEmpty()){
-                if(edtPassword.getText().toString().equals(edtEdtPasswordRep.getText().toString())){
-                    txvError.setVisibility(View.INVISIBLE);
-                    imgError.setVisibility(View.INVISIBLE);
-                    btConfirm.setEnabled(true);
-                }
-                else{
+            if(edtPassword.getText().toString().equals(edtEdtPasswordRep.getText().toString())){
+                txvError.setVisibility(View.INVISIBLE);
+                imgError.setVisibility(View.INVISIBLE);
+                btConfirm.setEnabled(true);
+            }
+            else{
                 txvError.setVisibility(View.VISIBLE);
                 imgError.setVisibility(View.VISIBLE);
                 btConfirm.setEnabled(false);

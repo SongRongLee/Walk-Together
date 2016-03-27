@@ -31,7 +31,7 @@ public class Login extends Activity implements View.OnClickListener,TextWatcher{
         //File file = new File("/data/data/tw.com.chiaotung.walktogether/shared_prefs", "LoginInfo.xml");
         User returnedUser = storeController.getLogInPreference();
         if (returnedUser!=null) {
-                verifyUser(returnedUser);
+            verifyUser(returnedUser);
         }
 
         //set Listeners
@@ -93,10 +93,24 @@ public class Login extends Activity implements View.OnClickListener,TextWatcher{
     public void logInUser(User user){
         //set logged in
         storeController.setUserLoggedIn(true,user);
-
+        getUserInfo();
         //Go to UserStatus page
         Intent it=new Intent(this,UserStatus.class);
         startActivity(it);
+    }
+
+    public void getUserInfo()
+    {
+        ServerRequest request = new ServerRequest(this);
+
+        request.getMid(new CallBack() {
+            @Override
+            public void done(CallBackContent content) {
+                if (content != null) {
+                    storeController.storeAllNameID(content.user);
+                }
+            }
+        });
     }
     public void showErrorMeassge()
     {

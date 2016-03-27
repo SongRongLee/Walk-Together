@@ -41,6 +41,7 @@ import tw.com.chiaotung.walktogether.view.ModelObject;
 
 public class ScanDevice extends Activity implements AdapterView.OnItemClickListener, SensorEventListener {
 
+    LocalStoreController storeController;
     public static final String CONNECTION = "Connectioin_status";
     public static final String STEPS = "steps";
     private static final long SCAN_PERIOD = 2000;
@@ -58,6 +59,7 @@ public class ScanDevice extends Activity implements AdapterView.OnItemClickListe
 
     private Button btn_scan;
     private ListView device_list;
+    private ListView used_device_list;
     private String[] list = {"Device1","Device2","Device3"};
     private ArrayAdapter<String> listAdapter;
 
@@ -70,7 +72,9 @@ public class ScanDevice extends Activity implements AdapterView.OnItemClickListe
     private String DEVICE_GZ = "gZ";
     private ListView listView;
     private List<ModelObject> mObjects = new ArrayList<ModelObject>();
+    private List<ModelObject> used_mObjects = new ArrayList<ModelObject>();
     private CustomAdapter mAdapter;
+    private CustomAdapter used_mAdapter;
 
 /*
     private void displayRSSI(final int position, final float rssi) {
@@ -93,13 +97,14 @@ public class ScanDevice extends Activity implements AdapterView.OnItemClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_device);
-
+        storeController=new LocalStoreController(this);
         btn_scan = (Button)findViewById(R.id.btn_scan);
 
         device_list = (ListView)findViewById(R.id.device_list);
         mAdapter = new CustomAdapter(this, mObjects);
         device_list.setAdapter(mAdapter);
         device_list.setOnItemClickListener(this);
+
         btn_scan.setOnClickListener(scanListener);
 
 
@@ -112,9 +117,40 @@ public class ScanDevice extends Activity implements AdapterView.OnItemClickListe
             return;
         }
 
+        ModelObject returnedUsedDevice = storeController.getUsedDevice();
+        //final KoalaDevice returnedKoala = storeController.getUsedDevice_Koala();
+        //final AtomicBoolean returnFlag = storeController.getUsedFlag();
+        if (returnedUsedDevice!=null) {
+            used_device_list = (ListView)findViewById(R.id.used_device_list);
+            used_mAdapter = new CustomAdapter(this, used_mObjects);
+            used_device_list.setAdapter(used_mAdapter);
+            used_mAdapter.getData().clear();
+            used_mObjects.add(returnedUsedDevice);
+            used_mAdapter.notifyDataSetChanged();
+            final String used_address = returnedUsedDevice.getAddress();
+            used_device_list.setOnItemClickListener(this);
+            used_device_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                    //returnedKoala.setConnectedTime();
+                    //mFlags.clear();
+                    //mFlags.add(returnFlag);
+                    //UserStatus.mServiceManager.disconnect();
+                    Log.d(TAG, "Connecting to device:" + used_address);
+                    UserStatus.mServiceManager.connect(used_address);
+                    Intent intent_connected = new Intent();
+                    intent_connected.setClass(ScanDevice.this, UserStatus.class);
+                    intent_connected.putExtra(CONNECTION, 1);
+                    startActivity(intent_connected);
+                }
+            });
+        }
         //UserStatus.mServiceManager = new KoalaServiceManager(this);
        // UserStatus.mServiceManager.registerSensorEventListener(this, SensorEvent.TYPE_PEDOMETER);
     }
+
+
+
 
     private Button.OnClickListener scanListener = new Button.OnClickListener() {
         public void onClick(View v) {
@@ -286,12 +322,13 @@ public class ScanDevice extends Activity implements AdapterView.OnItemClickListe
         // TODO Auto-generated method stub
 
         String macAddress = mAdapter.getData().get(position).getAddress();
+        storeController.clearDevice();
         KoalaDevice d = mDevices.get(position);
+        storeController.storeDevice(mAdapter.getData().get(position));
         Log.d(TAG, "Connecting to device:" + macAddress);
         d.setConnectedTime();
 
         UserStatus.mServiceManager.connect(macAddress);
-
         Intent intent_connected = new Intent();
         intent_connected.setClass(this, UserStatus.class);
     //    intent_connected.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -308,26 +345,13 @@ public class ScanDevice extends Activity implements AdapterView.OnItemClickListe
         final int position2 = findKoalaDevice(e.device.getAddress());
         if (position2 != -1) {
             Log.d(TAG, "time=" + System.currentTimeMillis() + "step counts:" + e.values[0] + "\n");
-
-
-            displayPDRData(position2, e.values[0]);
-
-            TextView t = (TextView)findViewById(R.id.test_steps);
-            t.setText(String.valueOf(e.values[0]));
-
-
-            Intent intent_step = new Intent();
-            intent_step.putExtra(STEPS,e.values[0]);
-            sendBroadcast(intent_step);
-
         }
-    */
+*/
 
     }
 
     @Override
     public void onConnectionStatusChange(boolean status) {
-
     }
 
     @Override

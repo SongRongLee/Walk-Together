@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,39 +15,39 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class TabOne extends Fragment {
+import cc.nctu1210.api.koala3x.SensorEvent;
 
+public class TabOne extends Fragment {
     private int [] userImages={R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user};
     private String [] userNameList={"Let Us C","c++","JAVA","Jsp","Microsoft .Net","Android","PHP","Jquery","JavaScript"};
     private ListView listView;
     private UserAdapter listAdapter;
+    private User user;
  //   private ScrollView scrollView;
-    private LinearLayout Userdata;
-    private LinearLayout Addnote;
     private TextView text;
     private TextView username;
-    private Button btn_connect;
+    public static Button btn_connect;
     public static int connection_status;
     public static View ConnectionView;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootview =  inflater.inflate(R.layout.fragment_tab_one, container, false);
-
-
         //get view block 1
         View UserdataView  = LayoutInflater.from(getActivity()).inflate(R.layout.userdata, null);
-        String useraccount = Integer.toString(LocalStoreController.userLocalStore.getInt("mid", 1));
+        String name = LocalStoreController.userLocalStore.getString("name", "");
         username = (TextView)UserdataView.findViewById(R.id.UserName);
-        username.setText(useraccount);
-
+        username.setText(name);
         //get view block 2
         Intent intent_receive = getActivity().getIntent();
-        connection_status = intent_receive.getIntExtra(ScanDevice.CONNECTION,0);
+        connection_status = intent_receive.getIntExtra(ScanDevice.CONNECTION, 0);
+
+        ConnectionView = LayoutInflater.from(getActivity()).inflate(R.layout.blue_tooth, null);
+        btn_connect = (Button) ConnectionView.findViewById(R.id.btn_connect);
 
         if(connection_status == 0) {
-            ConnectionView = LayoutInflater.from(getActivity()).inflate(R.layout.blue_tooth_before, null);
-            btn_connect = (Button) ConnectionView.findViewById(R.id.btn_connect);
+            btn_connect.setText("CONNECT");
             btn_connect.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -58,7 +59,7 @@ public class TabOne extends Fragment {
         }
         else
         {
-            ConnectionView = LayoutInflater.from(getActivity()).inflate(R.layout.blue_tooth_after, null);
+            btn_connect.setText("num    steps");
         }
 
         //get view block 3
@@ -88,7 +89,22 @@ public class TabOne extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 EditText editText = (EditText) note.findViewById(R.id.edittext);
-                                text.setText(editText.getText().toString());
+                                String message_content = editText.getText().toString();
+                                text.setText(message_content);
+                                int unixTime = (int) (System.currentTimeMillis());
+
+                                Message message = new Message(message_content,unixTime,UserStatus.getStep);
+                                ServerRequest request = new ServerRequest(getActivity());
+                                request.upSelfMessage(message, new CallBack() {
+                                    @Override
+                                    public void done(CallBackContent content) {
+                                        if (content != null)
+                                            Log.d("TAG", "UpSelfMessage successful" + "\n");
+                                        else
+                                            Log.e("TAG", "UpSelfMessage failed" + "\n");
+                                    }
+                                });
+
                             }
                         })
                         .show();

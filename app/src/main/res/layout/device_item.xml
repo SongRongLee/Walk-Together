@@ -21,7 +21,6 @@
                 android:layout_height="wrap_content"
                 android:layout_span="6"
                 android:gravity="center"
-                android:text="Device Status"
                 android:textSize="18dp"
                 android:textStyle="bold"
                 android:typeface="serif" >

@@ -6,10 +6,9 @@
         <item name="android:actionBarStyle">@style/ActionBar.Plum</item>
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
     </style>
-
     <style name="AppThemeUserStatus" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
+        <item name="windowActionBar">true</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>

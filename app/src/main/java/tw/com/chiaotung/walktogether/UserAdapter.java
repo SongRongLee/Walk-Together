@@ -56,7 +56,7 @@ public class UserAdapter extends BaseAdapter {
         Holder holder=new Holder();
         View rowView;
         rowView = inflater.inflate(R.layout.user_item, null);
-        holder.tv=(TextView) rowView.findViewById(R.id.text_user);
+        holder.tv=(TextView) rowView.findViewById(R.id.text_message);
         holder.img=(ImageView) rowView.findViewById(R.id.image_user);
 
         holder.tv.setText(result[position]);
