@@ -11,6 +11,8 @@ public class Message {
     int step;
     int time;
     String like_list;
+    public Message(){
+    }
 
     public Message(String message_content,int time,int step){
         this.message_content=message_content;

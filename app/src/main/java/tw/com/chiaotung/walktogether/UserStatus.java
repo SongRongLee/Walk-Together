@@ -54,11 +54,16 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
         setContentView(R.layout.activity_user_status);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        storeController=new LocalStoreController(this);
+        getStep = storeController.getStep();
         setSelectedTab();
         mServiceManager = new KoalaServiceManager(this);
         mServiceManager.registerSensorEventListener(this, SensorEvent.TYPE_ACCELEROMETER);
         mServiceManager.registerSensorEventListener(this, SensorEvent.TYPE_PEDOMETER);
-
+        Intent intent_service_start= new Intent(UserStatus.this, ScheduledService.class);
+        UserStatus.this.startService(intent_service_start);
+        Intent intent_upsStepservice_start= new Intent(UserStatus.this, UpStepService.class);
+        UserStatus.this.startService(intent_upsStepservice_start);
 /*
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Me"));
@@ -110,6 +115,10 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+                if(tab.getPosition() == 0)
+                    TabOne.updateInfo();
+                else if(tab.getPosition() == 1)
+                    TabTwo.updateInfo();
             }
 
             @Override
@@ -145,6 +154,7 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
         @Override
         protected void onDestroy() {
             super.onDestroy();
+            //PollingUtils.stopPollingService(this, PollingService.class, PollingService.ACTION);
             System.exit(0);
         }
 
@@ -165,6 +175,7 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
             final double values [] = new double[3];
             final int position2 = findKoalaDevice(e.device.getAddress());
             Log.d(TAG, "time=" + System.currentTimeMillis() + "step counts:" + e.values[0] + "\n");
+
             if(TabOne.connection_status != 0) {
                 getStep = (int)e.values[0];
                 showStep = String.valueOf(getStep);
@@ -178,6 +189,7 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
 
             if(status == false)
             {
+                storeController.storeStep(getStep);
                 Log.d(TAG, "Disconnected from device ." + "\n");
                 TabOne.btn_connect.setText("CONNECT");
                 TabOne.btn_connect.setOnClickListener(new View.OnClickListener() {
@@ -228,6 +240,11 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
             dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            //PollingUtils.stopPollingService(UserStatus.this, PollingService.class, PollingService.ACTION);
+                            Intent intent_service_stop = new Intent(UserStatus.this, ScheduledService.class);
+                            stopService(intent_service_stop);
+                            Intent intent_upStepservice_stop = new Intent(UserStatus.this, UpStepService.class);
+                            stopService(intent_upStepservice_stop);
                             storeController.clearUserData();
                             Intent intent = new Intent();
                             intent.setClass(UserStatus.this, Login.class);
@@ -250,9 +267,16 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
         dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        //PollingUtils.stopPollingService(UserStatus.this, PollingService.class, PollingService.ACTION);
+                        Intent intent_service_stop = new Intent(UserStatus.this, ScheduledService.class);
+                        stopService(intent_service_stop);
+                        Intent intent_upStepservice_stop = new Intent(UserStatus.this, UpStepService.class);
+                        stopService(intent_upStepservice_stop);
+
                         Intent startMain = new Intent(Intent.ACTION_MAIN);
                         startMain.addCategory(Intent.CATEGORY_HOME);
                         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(startMain);
                         System.exit(0);
                         //finish();

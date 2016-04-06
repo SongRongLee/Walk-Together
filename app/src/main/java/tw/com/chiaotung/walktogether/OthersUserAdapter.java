@@ -15,18 +15,17 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Locale;
-
 /**
- * Created by User on 2016/3/6.
+ * Created by User on 2016/3/28.
  */
-public class UserAdapter extends BaseAdapter {
+public class OthersUserAdapter extends BaseAdapter {
     Context context;
     Message[] message;
     int [] imageId;
     private Boolean isLiked;
     private Boolean like_clicked;
     private static LayoutInflater inflater=null;
-    public UserAdapter(Activity a, int[] userImages, Message[] messageList) {
+    public OthersUserAdapter(Activity a, int[] userImages, Message[] messageList) {
         // TODO Auto-generated constructor stub
         context=a;
         imageId=userImages;
@@ -75,14 +74,16 @@ public class UserAdapter extends BaseAdapter {
         if(message.length > 0) {
             int from = message[position].from;
             final int mid = LocalStoreController.userLocalStore.getInt("mid", 1);
+            String userName = LocalStoreController.userLocalStore.getString("name", "");
             if (from == mid) {
-                String name = LocalStoreController.userLocalStore.getString("name", "");
-                String[] content = message[position].message_content.split(";");
-                String m = name + " said '" + content[0] + "'";
+                String[] content= message[position].message_content.split(";");
+                String m = userName + " said '" + content[0] + "'";
                 holder.t_message.setText(m);
                 holder.t_step_status.setText(content[1]);
-            } else {
+            }
+            else {
                 isLiked = false;
+               // Log.i("TAG", "Likelist "+ message[position].like_list  + "\n");
                 if(!message[position].like_list.equals("null") && !message[position].like_list.equals("")) {
                     String[] like_list = message[position].like_list.split(",");
                     for (int i = 0; i < like_list.length; i++) {
@@ -115,15 +116,54 @@ public class UserAdapter extends BaseAdapter {
                 }
                 String[] fid_list;
                 String[] fname_list;
-                fid_list = LocalStoreController.userLocalStore.getString("fid_list", "").split(",");
-                fname_list = LocalStoreController.userLocalStore.getString("fname_list", "").split(",");
-                int pos = 0;
-                for (int i = 0; i < fid_list.length; i++) {
-                    if (from == Integer.valueOf(fid_list[i]))
-                        pos = i;
+                String[] oid_list;
+                String[] oname_list;
+                if(!LocalStoreController.userLocalStore.getString("fid_list", "").equals("null") && !LocalStoreController.userLocalStore.getString("fid_list", "").equals(""))
+                {
+                    if(LocalStoreController.userLocalStore.getString("oid_list", "") !=  "" && !LocalStoreController.userLocalStore.getString("oid_list", "").equals(""))
+                    {
+                        fid_list = LocalStoreController.userLocalStore.getString("fid_list", "").split(",");
+                        fname_list = LocalStoreController.userLocalStore.getString("fname_list", "").split(",");
+                        oid_list = LocalStoreController.userLocalStore.getString("oid_list", "").split(",");
+                        oname_list = LocalStoreController.userLocalStore.getString("oname_list", "").split(",");
+                    }
+                    else
+                    {
+                        fid_list = LocalStoreController.userLocalStore.getString("fid_list", "").split(",");
+                        fname_list = LocalStoreController.userLocalStore.getString("fname_list", "").split(",");
+                        oid_list = new String[0];
+                        oname_list = new String[0];
+                    }
                 }
-                String name = fname_list[pos];
-                String[] content = message[position].message_content.split(";");
+                else
+                {
+                    fid_list = new String[0];
+                    fname_list =  new String[0];
+                    oid_list = LocalStoreController.userLocalStore.getString("oid_list", "").split(",");
+                    oname_list = LocalStoreController.userLocalStore.getString("oname_list", "").split(",");
+                }
+                int pos = 0;
+                int check=-1;
+                String name = new String();
+                for (int i = 0; i < fid_list.length; i++) {
+                    if (from == Integer.valueOf(fid_list[i])) {
+                        pos = i;
+                        check = 0;
+                    }
+                }
+                if(check == -1)
+                {
+                    int iter= 0;
+                    for (int i = 0; i < oid_list.length; i++) {
+                        if (from == Integer.valueOf(oid_list[i]))
+                            iter = i;
+                    }
+                    name = oname_list[iter];
+
+                }
+                else
+                    name = fname_list[pos];
+                String []content = message[position].message_content.split(";");
                 String m = name + " said '" + content[0] + "'";
                 holder.t_message.setText(m);
                 holder.t_step_status.setText(content[1]);
@@ -131,7 +171,7 @@ public class UserAdapter extends BaseAdapter {
         }
         String time = getDate((long)message[position].time*1000L);
         holder.t_time.setText(time);
-        holder.img.setImageResource(imageId[0]);
+        holder.img.setImageResource(imageId[position]);
 /*
         rowView.setOnClickListener(new OnClickListener() {
             @Override
@@ -154,6 +194,7 @@ public class UserAdapter extends BaseAdapter {
     private void uploadLike(int msg_id,int from) {
         ServerRequest request = new ServerRequest(context);
         request.upLikeMessage(msg_id, from);
-    }
 
+    }
 }
+

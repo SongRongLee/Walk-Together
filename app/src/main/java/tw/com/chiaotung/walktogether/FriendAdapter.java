@@ -19,13 +19,18 @@ public class FriendAdapter extends BaseAdapter {
     Context context;
     int [] imageId;
     int [] steps;
+    int text_friend_pos;
+    int text_other_pos;
+    View rowView;
     private static LayoutInflater inflater=null;
-    public FriendAdapter(Activity a, String[] userNameList, int[] userImages, int[] userStepList) {
+    public FriendAdapter(Activity a, String[] userNameList, int[] userImages, int[] userStepList, int text_pos_1, int text_pos_2) {
         // TODO Auto-generated constructor stub
         result=userNameList;
         context=a;
         imageId=userImages;
         steps = userStepList;
+        text_friend_pos = text_pos_1;
+        text_other_pos = text_pos_2;
         inflater = ( LayoutInflater )context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -57,7 +62,19 @@ public class FriendAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
         Holder holder=new Holder();
-        View rowView;
+
+        if(position ==  text_friend_pos && text_friend_pos!= -1) {
+            rowView = inflater.inflate(R.layout.testing_note, null);
+            holder.t_name=(TextView) rowView.findViewById(R.id.text);
+            holder.t_name.setText(" Friends");
+            return rowView;
+        }
+        if(position ==  text_other_pos && text_other_pos!= -1) {
+            rowView = inflater.inflate(R.layout.testing_note, null);
+            holder.t_name=(TextView) rowView.findViewById(R.id.text);
+            holder.t_name.setText(" Others");
+            return rowView;
+        }
         rowView = inflater.inflate(R.layout.friend_item, null);
         holder.t_name=(TextView) rowView.findViewById(R.id.text_friend_name);
         holder.t_steps=(TextView) rowView.findViewById(R.id.text_friend_steps);
@@ -66,7 +83,7 @@ public class FriendAdapter extends BaseAdapter {
         holder.t_name.setText(result[position]);
         String S = String.valueOf(steps[position]) + " steps";
         holder.t_steps.setText(S);
-        holder.img.setImageResource(imageId[position]);
+        holder.img.setImageResource(imageId[0]);
 /*
         rowView.setOnClickListener(new OnClickListener() {
             @Override
