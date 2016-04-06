@@ -11,10 +11,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SignUp extends Activity implements View.OnClickListener,TextWatcher {
-    TextView txvError;
-    ImageView imgError;
+    TextView txvError,txvEmailError;
+    ImageView imgError,imgEmailError;
     EditText  edtName,edtAccount,edtPassword,edtEdtPasswordRep;
     Button btConfirm;
     @Override
@@ -25,8 +26,12 @@ public class SignUp extends Activity implements View.OnClickListener,TextWatcher
         //initialize
         txvError = (TextView) findViewById(R.id.txv_error);
         imgError = (ImageView) findViewById(R.id.img_error);
+        txvEmailError = (TextView) findViewById(R.id.txv_email_error);
+        imgEmailError = (ImageView) findViewById(R.id.img_email_error);
         txvError.setVisibility(View.INVISIBLE);
         imgError.setVisibility(View.INVISIBLE);
+        txvEmailError.setVisibility(View.INVISIBLE);
+        imgEmailError.setVisibility(View.INVISIBLE);
         edtName = (EditText) findViewById(R.id.edt_name);
         edtAccount = (EditText) findViewById(R.id.edt_account);
         edtPassword = (EditText) findViewById(R.id.edt_password);
@@ -54,22 +59,34 @@ public class SignUp extends Activity implements View.OnClickListener,TextWatcher
 
     @Override
     public void afterTextChanged(Editable s) {
+        boolean ok=false;
+        if(!edtAccount.getText().toString().trim().isEmpty()&&!isEmailValid(edtAccount.getText().toString().trim())){
+            txvEmailError.setVisibility(View.VISIBLE);
+            imgEmailError.setVisibility(View.VISIBLE);
+            ok=false;
+        }
+        else{
+            txvEmailError.setVisibility(View.INVISIBLE);
+            imgEmailError.setVisibility(View.INVISIBLE);
+            ok=true;
+        }
         if(!edtName.getText().toString().trim().isEmpty()&&!edtAccount.getText().toString().trim().isEmpty()
                 &&!edtPassword.getText().toString().trim().isEmpty()&&!edtEdtPasswordRep.getText().toString().trim().isEmpty()){
+
             if(edtPassword.getText().toString().equals(edtEdtPasswordRep.getText().toString())){
                 txvError.setVisibility(View.INVISIBLE);
                 imgError.setVisibility(View.INVISIBLE);
-                btConfirm.setEnabled(true);
             }
             else{
                 txvError.setVisibility(View.VISIBLE);
                 imgError.setVisibility(View.VISIBLE);
-                btConfirm.setEnabled(false);
+                ok=false;
             }
         }
         else{
-            btConfirm.setEnabled(false);
+            ok=false;
         }
+        btConfirm.setEnabled(ok);
     }
     @Override
     public void onClick(View v) {
@@ -87,18 +104,22 @@ public class SignUp extends Activity implements View.OnClickListener,TextWatcher
             public void done(CallBackContent content) {
                 if (content != null) {
                     Intent it = new Intent(SignUp.this, Login.class);
+                    Toast.makeText(SignUp.this, "Sign Up success!", Toast.LENGTH_LONG).show();
                     startActivity(it);
                 } else {
-                    showErrorMeassge();
+                    showErrorMessage();
                 }
             }
         });
     }
-    public void showErrorMeassge()
+    public void showErrorMessage()
     {
         AlertDialog.Builder dialog=new AlertDialog.Builder(this);
         dialog.setMessage("The account has been used!");
         dialog.setPositiveButton("Ok",null);
         dialog.show();
+    }
+    public boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 }
