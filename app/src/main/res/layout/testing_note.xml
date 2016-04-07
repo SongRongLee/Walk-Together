@@ -7,6 +7,5 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:id="@+id/text"
-        android:text="Test"
         />
 </LinearLayout>

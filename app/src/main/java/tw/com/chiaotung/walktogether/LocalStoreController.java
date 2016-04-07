@@ -57,6 +57,42 @@ public class LocalStoreController extends Application {
         userLocalEditor.commit();
     }
 
+    public void storeMessageAmount(int amount)
+    {
+        SharedPreferences.Editor userLocalEditor = userLocalStore.edit();
+        userLocalEditor.putInt("MessageAmount", amount);
+        userLocalEditor.commit();
+    }
+
+    public void storeStep(int step) {
+        SharedPreferences.Editor userLocalEditor = userLocalStore.edit();
+        userLocalEditor.putInt("step", step);
+        userLocalEditor.commit();
+    }
+
+    public void storeSelfLikelist(String likelist)
+    {
+        SharedPreferences.Editor userLocalEditor = userLocalStore.edit();
+        userLocalEditor.putString("Likelist", likelist);
+        userLocalEditor.commit();
+    }
+    public void updateFriendInfo(String fid_list,String fname_list)
+    {
+        SharedPreferences.Editor userLocalEditor = userLocalStore.edit();
+        userLocalEditor.putString("fid_list", fid_list);
+        userLocalEditor.putString("fname_list", fname_list);
+        userLocalEditor.commit();
+    }
+
+    public void updateEveryoneInfo(String fid_list,String fname_list, String oid_list, String oname_list)
+    {
+        SharedPreferences.Editor userLocalEditor = userLocalStore.edit();
+        userLocalEditor.putString("fid_list", fid_list);
+        userLocalEditor.putString("fname_list", fname_list);
+        userLocalEditor.putString("oid_list", oid_list);
+        userLocalEditor.putString("oname_list", oname_list);
+        userLocalEditor.commit();
+    }
     public void setUserLoggedIn(boolean loggedIn,User user) {
         SharedPreferences.Editor userLocalEditor = userLocalStore.edit();
         userLocalEditor.putBoolean("loggedIn", loggedIn);
@@ -97,6 +133,22 @@ public class LocalStoreController extends Application {
         if(DeviceAddress.equals(""))return null;
         ModelObject device = new ModelObject(DeviceName, DeviceAddress, DeviceRssi);
         return device;
+    }
+
+    public int getMessageAmount() {
+        int amount = userLocalStore.getInt("MessageAmount", 0);
+        return amount;
+    }
+
+    public int getStep() {
+        int step = userLocalStore.getInt("step", 0);
+        return step;
+    }
+
+    public String getSelfLikelist()
+    {
+        String likelist = userLocalStore.getString("Likelist", "");
+        return likelist;
     }
 /*
     public KoalaDevice getUsedDevice_Koala()

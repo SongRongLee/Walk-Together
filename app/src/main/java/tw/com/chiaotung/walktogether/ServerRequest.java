@@ -137,6 +137,8 @@ public class ServerRequest {
                             Log.d("TAG", response.toString());
                             JSONArray data = response.getJSONArray("data");
                             CallBackContent content=new CallBackContent();
+                            content.user = new User();
+                            content.user.mid = Integer.parseInt(((JSONObject)data.get(0)).getString("mid"));
                             content.step=Integer.parseInt(((JSONObject)data.get(0)).getString("step"));
                             callBack.done(content);
                         }catch (JSONException e){
@@ -235,38 +237,38 @@ public class ServerRequest {
             param.put("mid", Integer.toString(ID));
             param.put("time",Integer.toString(time));
         }catch (JSONException e){}
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,serverURL+"down_message.php",param,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try{
-                            Log.d("TAG", response.toString());
-                            JSONArray data = response.getJSONArray("data");
-                            CallBackContent content=new CallBackContent();
-                            content.message_list=new Message[data.length()];
-                            for(int i=0;i<data.length();i++){
-                                content.message_list[i].msg_id=Integer.parseInt(((JSONObject)data.get(i)).getString("msg_id"));
-                                content.message_list[i].from=Integer.parseInt(((JSONObject) data.get(i)).getString("from"));
-                                content.message_list[i].message_content=((JSONObject)data.get(i)).getString("message");
-                                content.message_list[i].time=Integer.parseInt(((JSONObject) data.get(i)).getString("time"));
-                                content.message_list[i].like_list=((JSONObject)data.get(i)).getString("like_list");
-                            }
-                            callBack.done(content);
-                        }catch (JSONException e){
-                            e.printStackTrace();
-                        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, serverURL + "down_message.php", param, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("TAG", response.toString());
+                CallBackContent content=new CallBackContent();
+                try{
+                    JSONArray data = response.getJSONArray("data");
+                    content.message_list=new Message[data.length()];
+                    for(int i=0;i<data.length();i++){
+                        content.message_list[i]=new Message();
+                        content.message_list[i].msg_id=Integer.parseInt(((JSONObject)data.get(i)).getString("msg_id"));
+                        content.message_list[i].from=Integer.parseInt(((JSONObject) data.get(i)).getString("from"));
+                        content.message_list[i].message_content=((JSONObject)data.get(i)).getString("message");
+                        content.message_list[i].time=((JSONObject) data.get(i)).getInt("time");
+                        content.message_list[i].like_list=((JSONObject)data.get(i)).getString("like_list");
                     }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("TAG", error.getMessage(), error);
-                        callBack.done(null);
-                    }
-                });
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+                callBack.done(content);
+            }
+        },new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("TAG", error.getMessage(), error);
+                callBack.done(null);
+            }
+        });
         requestQueue.add(jsonObjectRequest);
         pdialog.dismiss();
     }
+
 
     //input message must includes blank_message_content,time,step,from,to.
     public void upLikeStep(Message message,final CallBack callBack)  {
