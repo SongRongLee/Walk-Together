@@ -1,5 +1,6 @@
 package tw.com.chiaotung.walktogether;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,21 +19,25 @@ import android.widget.TextView;
 import cc.nctu1210.api.koala3x.SensorEvent;
 
 public class TabOne extends Fragment {
-    private int [] userImages={R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user};
-    private String [] userNameList={"Let Us C","c++","JAVA","Jsp","Microsoft .Net","Android","PHP","Jquery","JavaScript"};
-    private ListView listView;
-    private UserAdapter listAdapter;
+    public static LocalStoreController storeController;
+    public static int [] userImages={R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user};
+    public static ListView listView;
+    public static UserAdapter listAdapter;
     private User user;
+    public static Message [] messageList;
+    public static Activity activity;
  //   private ScrollView scrollView;
-    private TextView text;
-    private TextView username;
+    public static TextView username;
     public static Button btn_connect;
+    public static Button btn_disconnect;
     public static int connection_status;
     public static View ConnectionView;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        activity = getActivity();
+        storeController=new LocalStoreController(activity);
         View rootview =  inflater.inflate(R.layout.fragment_tab_one, container, false);
         //get view block 1
         View UserdataView  = LayoutInflater.from(getActivity()).inflate(R.layout.userdata, null);
@@ -45,6 +50,7 @@ public class TabOne extends Fragment {
 
         ConnectionView = LayoutInflater.from(getActivity()).inflate(R.layout.blue_tooth, null);
         btn_connect = (Button) ConnectionView.findViewById(R.id.btn_connect);
+        btn_disconnect = (Button) ConnectionView.findViewById(R.id.btn_disconnect);
 
         if(connection_status == 0) {
             btn_connect.setText("CONNECT");
@@ -62,11 +68,16 @@ public class TabOne extends Fragment {
             btn_connect.setText("num    steps");
         }
 
+        btn_disconnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              UserStatus.mServiceManager.disconnect();
+            }
+        });
         //get view block 3
         View  AddingnoteView = LayoutInflater.from(getActivity()).inflate(R.layout.note, null);
 
-        //get testing view  for block 3
-        View TestView = LayoutInflater.from(getActivity()).inflate(R.layout.testing_note, null);
+
 
        /*
         scrollView = (ScrollView)rootview.findViewById(R.id.scroll_view);
@@ -77,7 +88,6 @@ public class TabOne extends Fragment {
         //Add a note(block 3)
         LinearLayout Addnote = (LinearLayout)AddingnoteView.findViewById(R.id.Addnote);
         View note = LayoutInflater.from(getActivity()).inflate(R.layout.addnote, null);
-        text = (TextView)TestView.findViewById(R.id.text);
         Addnote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,16 +100,19 @@ public class TabOne extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 EditText editText = (EditText) note.findViewById(R.id.edittext);
                                 String message_content = editText.getText().toString();
-                                text.setText(message_content);
-                                int unixTime = (int) (System.currentTimeMillis());
+                                int unixTime = (int) (System.currentTimeMillis() / 1000L);
 
                                 Message message = new Message(message_content,unixTime,UserStatus.getStep);
                                 ServerRequest request = new ServerRequest(getActivity());
                                 request.upSelfMessage(message, new CallBack() {
                                     @Override
                                     public void done(CallBackContent content) {
-                                        if (content != null)
+                                        if (content != null) {
                                             Log.d("TAG", "UpSelfMessage successful" + "\n");
+                                            int amount = storeController.getMessageAmount();
+                                            storeController.storeMessageAmount(amount+1);
+                                            getMessageInfo();
+                                        }
                                         else
                                             Log.e("TAG", "UpSelfMessage failed" + "\n");
                                     }
@@ -112,6 +125,9 @@ public class TabOne extends Fragment {
             }
         });
 
+        //do getMid
+        messageList = new Message[0];
+        updateInfo();
 
         //listitem( block 4)
         listView = (ListView)rootview.findViewById(R.id.list_view);
@@ -119,12 +135,53 @@ public class TabOne extends Fragment {
         listView.addHeaderView(UserdataView);
         listView.addHeaderView(ConnectionView);
         listView.addHeaderView(AddingnoteView);
-        listView.addHeaderView(TestView);
-        listAdapter = new UserAdapter(getActivity(),userNameList,userImages);
+        listAdapter = new UserAdapter(getActivity(),userImages,messageList);
         listView.setAdapter(listAdapter);
 
 
         return rootview;
+    }
+
+    public static void updateInfo() {
+        ServerRequest request = new ServerRequest(activity);
+
+        request.getMid(new CallBack() {
+            @Override
+            public void done(CallBackContent content) {
+                if (content != null) {
+                    storeController.storeAllNameID(content.user);
+                    username.setText(content.user.name);
+                    getMessageInfo();
+                } else
+                    Log.e("TAG", "getMid failed" + "\n");
+            }
+        });
+
+    }
+
+    public static void  getMessageInfo() {
+        int mid = LocalStoreController.userLocalStore.getInt("mid", 1);
+        int unixTime = (int) (System.currentTimeMillis() / 1000L);
+        Log.d("TAG", "Time " + unixTime + "\n");
+        ServerRequest request = new ServerRequest(activity);
+        request.downMessage(mid, unixTime, new CallBack() {
+            @Override
+            public void done(CallBackContent content) {
+                if (content != null) {
+                    messageList = new Message[content.message_list.length];
+                    messageList = content.message_list;
+                    storeController.storeMessageAmount(messageList.length);
+                    getMessageFinished();
+                } else
+                    Log.e("TAG", "getMessage failed" + "\n");
+            }
+        });
+    }
+
+    public static void getMessageFinished() {
+        listAdapter = new UserAdapter(activity, userImages, messageList);
+        listView.setAdapter(listAdapter);
+        //listAdapter.notifyDataSetChanged();
     }
 
 

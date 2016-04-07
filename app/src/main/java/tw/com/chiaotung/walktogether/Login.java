@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,7 +20,7 @@ public class Login extends Activity implements View.OnClickListener,TextWatcher{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        Log.d("Tag", "logout test");
         //initialize
         edtAccount = (EditText) findViewById(R.id.edt_account);
         edtPassword = (EditText) findViewById(R.id.edt_password);
@@ -57,6 +58,7 @@ public class Login extends Activity implements View.OnClickListener,TextWatcher{
                 //Sign up
                 Intent it=new Intent(this,SignUp.class);
                 startActivity(it);
+                //finish();
                 break;
         }
 
@@ -97,6 +99,7 @@ public class Login extends Activity implements View.OnClickListener,TextWatcher{
         //Go to UserStatus page
         Intent it=new Intent(this,UserStatus.class);
         startActivity(it);
+        //finish();
     }
 
     public void getUserInfo()

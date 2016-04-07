@@ -142,6 +142,7 @@ public class ScanDevice extends Activity implements AdapterView.OnItemClickListe
                     intent_connected.setClass(ScanDevice.this, UserStatus.class);
                     intent_connected.putExtra(CONNECTION, 1);
                     startActivity(intent_connected);
+                    finish();
                 }
             });
         }
@@ -219,18 +220,66 @@ public class ScanDevice extends Activity implements AdapterView.OnItemClickListe
         new Thread(){
             @Override
             public void run(){
-                mBLEScanner.startScan(mScanCallback);
+                if (Build.VERSION.SDK_INT < 21) {
+                    mBluetoothAdapter.startLeScan(mLeScanCallback);
 
-                try {
-                    Thread.sleep(SCAN_PERIOD);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    try {
+                        Thread.sleep(SCAN_PERIOD);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    mBluetoothAdapter.stopLeScan(mLeScanCallback);
                 }
-                mBLEScanner.stopScan(mScanCallback);
+                else {
+                    mBLEScanner.startScan(mScanCallback);
+
+                    try {
+                        Thread.sleep(SCAN_PERIOD);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    mBLEScanner.stopScan(mScanCallback);
+                }
             }
         }.start();
     }
 
+    /**
+     * The event callback to handle the found of near le devices
+     * For SDK version < 21.
+     *
+     */
+    private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
+
+        @Override
+        public void onLeScan(final BluetoothDevice device, final int rssi,
+                             final byte[] scanRecord) {
+
+            new Thread() {
+                @Override
+                public void run() {
+                    if (device != null) {
+                        KoalaDevice p = new KoalaDevice(device, rssi, scanRecord);
+                        int position = findKoalaDevice(device.getAddress());
+                        if (position == -1) {
+                            AtomicBoolean flag = new AtomicBoolean(false);
+                            mDevices.add(p);
+                            mFlags.add(flag);
+                            Log.i(TAG, "Find device:"+p.getDevice().getAddress());
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // This code will always run on the UI thread, therefore is safe to modify UI elements.
+                                    setupListView();
+                                }
+                            });
+                        }
+                    }
+                }
+            }.start();
+        }
+    };
 
     private ScanCallback mScanCallback = new ScanCallback() {
         @Override
@@ -312,9 +361,7 @@ public class ScanDevice extends Activity implements AdapterView.OnItemClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-
-        System.exit(0);
+        //System.exit(0);
     }
 
     @Override
@@ -334,7 +381,7 @@ public class ScanDevice extends Activity implements AdapterView.OnItemClickListe
     //    intent_connected.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent_connected.putExtra(CONNECTION, 1);
         startActivity(intent_connected);
-
+        finish();
     }
 
     @Override
@@ -364,10 +411,12 @@ public class ScanDevice extends Activity implements AdapterView.OnItemClickListe
         }*/
     }
 
+
     @Override
     public void onBackPressed()
     {
-        System.exit(0);
+        super.onBackPressed();
+        //System.exit(0);
     }
 
 }
