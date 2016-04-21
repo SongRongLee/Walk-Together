@@ -16,7 +16,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.lang.reflect.Method;
+
+import cc.nctu1210.api.koala3x.KoalaServiceManager;
 import cc.nctu1210.api.koala3x.SensorEvent;
+import tw.com.chiaotung.walktogether.view.ModelObject;
 
 public class TabOne extends Fragment {
     public static LocalStoreController storeController;
@@ -71,7 +75,23 @@ public class TabOne extends Fragment {
         btn_disconnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              UserStatus.mServiceManager.disconnect();
+             ModelObject returnedUsedDevice = storeController.getUsedDevice();
+             if(returnedUsedDevice!=null) {
+                 final String used_address = returnedUsedDevice.getAddress();
+                 UserStatus.mServiceManager.stopReadingPDRData(used_address);
+             }
+             UserStatus.mServiceManager.disconnect();
+             connection_status = 0;
+             btn_connect.setText("CONNECT");
+             btn_connect.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                     Intent intent_scan = new Intent();
+                     intent_scan.setClass(getActivity(), ScanDevice.class);
+                     startActivity(intent_scan);
+                 }
+            });
+
             }
         });
         //get view block 3
