@@ -5,8 +5,13 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="23"
+        android:minSdkVersion="21"
         android:targetSdkVersion="23" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -25,7 +30,29 @@
         <activity
             android:name="tw.com.chiaotung.walktogether.UserStatus"
             android:label="@string/title_activity_user_status"
+            android:theme="@style/AppThemeUserStatus" />
+        <activity
+            android:name="tw.com.chiaotung.walktogether.ScanDevice"
+            android:label="@string/title_activity_scan_device"
+            android:theme="@style/AppThemeUserStatus" />
+
+        <service
+            android:name="cc.nctu1210.api.koala3x.KoalaService"
+            android:enabled="true" />
+
+        <activity
+            android:name="tw.com.chiaotung.walktogether.OthersProfile"
+            android:label="@string/title_activity_others_profile"
+            android:parentActivityName="tw.com.chiaotung.walktogether.UserStatus"
             android:theme="@style/AppThemeUserStatus" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".UserStatus" />
+        </activity>
+        <activity
+            android:name="tw.com.chiaotung.walktogether.SignUp"
+            android:label="@string/title_activity_sign_up"
+            android:theme="@style/AppSignUp" >
         </activity>
     </application>
 

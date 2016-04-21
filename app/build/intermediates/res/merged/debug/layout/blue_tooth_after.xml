@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="253dp"
+        android:layout_height="89dp"
+        android:background="#FF888888">
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:text=" Today"
+
+            />
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="horizontal" android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:weightSum="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:text="Steps"
+                android:id="@+id/steps"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="40dp"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/stepshighfive"
+                android:layout_marginLeft="100dp"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>
+<!-- From: file:/D:/Hubert/Android/Walk-Together/app/src/main/res/layout/blue_tooth_after.xml -->

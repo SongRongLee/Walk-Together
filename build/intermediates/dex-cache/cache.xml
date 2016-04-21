@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\admin\.gradle\caches\modules-2\files-2.1\com.mcxiaoke.volley\library\1.0.19\a8f23f65fc1e522ee4a1a697ee569901a46741fa\library-1.0.19.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="a8f23f65fc1e522ee4a1a697ee569901a46741fa">
+        <dex dex="D:\Hubert\Android\Walk-Together\app\build\intermediates\pre-dexed\debug\library-1.0.19-608acac004b2179fd6c07e85af57aa8736b3d1bf.jar" />
+    </item>
+    <item
+        jar="D:\Hubert\Android\Walk-Together\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="d4c936aa8c7d2522c82e3f1829c791d9e367f009">
+        <dex dex="D:\Hubert\Android\Walk-Together\app\build\intermediates\pre-dexed\debug\classes-e2b76d7971dc5c4e28eafe898732de00850b4482.jar" />
+    </item>
+    <item
+        jar="D:\Hubert\Android\Walk-Together\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="e5f32fa48a3eb2de0c987025c11b6e3864b634d9">
+        <dex dex="D:\Hubert\Android\Walk-Together\app\build\intermediates\pre-dexed\debug\classes-351ff4aa149f63ae2b36665308213f4544dd98b0.jar" />
+    </item>
+    <item
+        jar="E:\Android\Android SDK\extras\android\m2repository\com\android\support\support-annotations\23.2.0\support-annotations-23.2.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c5bf571bb10462bd90e5419ade67793f71acbc87">
+        <dex dex="D:\Hubert\Android\Walk-Together\app\build\intermediates\pre-dexed\debug\support-annotations-23.2.0-11e8eb93313d135c90282c4617c7f093882b42d5.jar" />
+    </item>
+    <item
+        jar="D:\Hubert\Android\Walk-Together\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.0\jars\libs\internal_impl-23.2.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="6e239441500605809818997dd63b62a947195f8c">
+        <dex dex="D:\Hubert\Android\Walk-Together\app\build\intermediates\pre-dexed\debug\internal_impl-23.2.0-aedb283365ddcbfbf84687d4bee08c9102bd2b85.jar" />
+    </item>
+    <item
+        jar="C:\Users\admin\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.5\686c608d1805b6d4d425ec4459e88164ffc85870\gson-2.5.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="686c608d1805b6d4d425ec4459e88164ffc85870">
+        <dex dex="D:\Hubert\Android\Walk-Together\app\build\intermediates\pre-dexed\debug\gson-2.5-7719e2335d60b72aef726f12c0629f4efd7020ac.jar" />
+    </item>
+    <item
+        jar="D:\Hubert\Android\Walk-Together\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="8c108c22c99e794eff255bb34d2a461200c4cbb0">
+        <dex dex="D:\Hubert\Android\Walk-Together\app\build\intermediates\pre-dexed\debug\classes-dcfd8be378c8999be77ab071284294ccf06efabf.jar" />
+    </item>
+    <item
+        jar="D:\Hubert\Android\Walk-Together\app\libs\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="11f6b168343755de1ae46ef93d45b1fdad5fa7d0">
+        <dex dex="D:\Hubert\Android\Walk-Together\app\build\intermediates\pre-dexed\debug\classes-54b0ebad092f9c89046d8aaa1508a67660435743.jar" />
+    </item>
+    <item
+        jar="D:\Hubert\Android\Walk-Together\app\build\intermediates\exploded-aar\com.android.support\design\23.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="1aa5b025efe97f5006f5be16d6ca67c6c3c0c0d8">
+        <dex dex="D:\Hubert\Android\Walk-Together\app\build\intermediates\pre-dexed\debug\classes-be9d944398d488851fa69397f87e70610fe6efce.jar" />
+    </item>
+    <item
+        jar="D:\Hubert\Android\Walk-Together\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="6e3578f92f7462d1a935a1d36173e3bdd1234976">
+        <dex dex="D:\Hubert\Android\Walk-Together\app\build\intermediates\pre-dexed\debug\classes-84341025a6e6be5dce91a925a1c2a31c94fb4505.jar" />
+    </item>
+    <item
+        jar="D:\Hubert\Android\Walk-Together\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="292a9fa091757208efa65e77eef63088247e51f3">
+        <dex dex="D:\Hubert\Android\Walk-Together\app\build\intermediates\pre-dexed\debug\classes-8822edd01fe34b4a9dcb6cad41c68e974b5a42dd.jar" />
+    </item>
+
+</items>

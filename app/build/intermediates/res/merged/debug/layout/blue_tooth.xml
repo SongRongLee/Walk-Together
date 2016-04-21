@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+    <Button
+        android:textSize="20sp"
+        android:id="@+id/btn_connect"
+        android:layout_width="253dp"
+        android:layout_height="89dp"
+        android:textAllCaps="false">
+    </Button>
+
+    <Button
+        android:textSize="20sp"
+        android:id="@+id/btn_disconnect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="Dis"
+        >
+    </Button>
+
+</LinearLayout><!-- From: file:/D:/Hubert/Android/Walk-Together/app/src/main/res/layout/blue_tooth.xml -->
