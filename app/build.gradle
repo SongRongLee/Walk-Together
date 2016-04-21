@@ -27,5 +27,7 @@ dependencies {
     compile 'com.android.support:support-v4:23.2.0'
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.google.code.gson:gson:2.5'
+    compile 'com.google.android.gms:play-services:7.5.0'
+    compile 'org.json:json:20141113'
     compile files('libs/classes.jar')
 }
