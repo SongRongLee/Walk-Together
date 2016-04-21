@@ -12,6 +12,30 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <permission
+        android:name="tw.com.chiaotung.walktogether.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="tw.com.chiaotung.walktogether.permission.C2D_MESSAGE" />
+
+    <!-- App receives GCM messages. -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <!-- GCM requires a Google account. -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <!-- Keeps the processor from sleeping when a message is received. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
 
     <application
         android:allowBackup="true"
@@ -20,6 +44,7 @@
         <activity
             android:name="tw.com.chiaotung.walktogether.Login"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeLogin" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,20 +55,33 @@
         <activity
             android:name="tw.com.chiaotung.walktogether.UserStatus"
             android:label="@string/title_activity_user_status"
-            android:theme="@style/AppThemeUserStatus" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeUserStatus" >
+        </activity>
         <activity
             android:name="tw.com.chiaotung.walktogether.ScanDevice"
             android:label="@string/title_activity_scan_device"
-            android:theme="@style/AppThemeUserStatus" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeUserStatus" >
+        </activity>
 
         <service
             android:name="cc.nctu1210.api.koala3x.KoalaService"
             android:enabled="true" />
+        <service
+            android:name="tw.com.chiaotung.walktogether.ScheduledService"
+            android:enabled="true"
+            android:label="@string/app_name" />
+        <service
+            android:name="tw.com.chiaotung.walktogether.UpStepService"
+            android:enabled="true"
+            android:label="@string/app_name" />
 
         <activity
             android:name="tw.com.chiaotung.walktogether.OthersProfile"
             android:label="@string/title_activity_others_profile"
             android:parentActivityName="tw.com.chiaotung.walktogether.UserStatus"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeUserStatus" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -52,8 +90,44 @@
         <activity
             android:name="tw.com.chiaotung.walktogether.SignUp"
             android:label="@string/title_activity_sign_up"
-            android:theme="@style/AppSignUp" >
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppSignUp" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <receiver
+            android:name="tw.com.chiaotung.walktogether.GcmBroadcastReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="com.eecs.buytogether" />
+            </intent-filter>
+        </receiver>
+        <!-- Include the AdActivity and InAppPurchaseActivity configChanges and themes. -->
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:theme="@android:style/Theme.Translucent" />
+        <activity
+            android:name="com.google.android.gms.ads.purchase.InAppPurchaseActivity"
+            android:theme="@style/Theme.IAPTheme" />
+
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
+
+        <receiver
+            android:name="com.google.android.gms.wallet.EnableWalletOptimizationReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.gms.wallet.ENABLE_WALLET_OPTIMIZATION" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
