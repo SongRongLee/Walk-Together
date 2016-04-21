@@ -114,15 +114,19 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Log.e("TAG","Tabselect");
                 viewPager.setCurrentItem(tab.getPosition());
+                if (tab.getPosition() == 1) {
+                    String stepinfo = String.valueOf(UserStatus.getStep) + " steps";
+                    TabTwo.userstep.setText(stepinfo);
+                }
+                /*
                 if (tab.getPosition() == 0)
                     TabOne.updateInfo();
                 else if (tab.getPosition() == 1) {
                     String stepinfo = String.valueOf(UserStatus.getStep) + " steps";
                     TabTwo.userstep.setText(stepinfo);
                     TabTwo.updateInfo();
-                }
+                }*/
             }
 
             @Override
@@ -159,6 +163,12 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
         protected void onDestroy() {
             super.onDestroy();
             //PollingUtils.stopPollingService(this, PollingService.class, PollingService.ACTION);
+            Intent intent_service_stop = new Intent(UserStatus.this, ScheduledService.class);
+            stopService(intent_service_stop);
+            Intent intent_upStepservice_stop = new Intent(UserStatus.this, UpStepService.class);
+            stopService(intent_upStepservice_stop);
+            Intent intent_koala_stop = new Intent(UserStatus.this, KoalaService.class);
+            stopService(intent_koala_stop);
             System.exit(0);
         }
 
@@ -193,6 +203,7 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
 
             if(status == false)
             {
+                TabOne.connection_status = 0;
                 storeController.storeStep(getStep);
                 Log.d(TAG, "Disconnected from device ." + "\n");
                 TabOne.btn_connect.setText("CONNECT");
@@ -280,6 +291,8 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
                         stopService(intent_service_stop);
                         Intent intent_upStepservice_stop = new Intent(UserStatus.this, UpStepService.class);
                         stopService(intent_upStepservice_stop);
+                        Intent intent_koala_stop = new Intent(UserStatus.this, KoalaService.class);
+                        stopService(intent_koala_stop);
 
                         Intent startMain = new Intent(Intent.ACTION_MAIN);
                         startMain.addCategory(Intent.CATEGORY_HOME);

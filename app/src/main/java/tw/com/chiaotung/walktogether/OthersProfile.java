@@ -267,9 +267,10 @@ public class OthersProfile extends AppCompatActivity {
             }
         });
     }
+    /*
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         NavUtils.navigateUpFromSameTask(this);
-    }
+    }*/
 }

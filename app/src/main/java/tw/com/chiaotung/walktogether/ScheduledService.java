@@ -58,7 +58,7 @@ public class ScheduledService extends Service
                     });
                 }
             }
-        }, 0, 1*15*1000);//15 sec
+        }, 0, 1*60*1000);//60 sec
         initNotifiManager();
         initNotifiManager_friend();
     }
@@ -301,6 +301,7 @@ public class ScheduledService extends Service
                 storeController.storeAllNameID(user);
             }*/
             storeController.storeAllNameID(user);
+            TabTwo.updateInfo();
             showNotification_friend(newfnameList);
         }
     }
