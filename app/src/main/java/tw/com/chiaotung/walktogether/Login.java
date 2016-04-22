@@ -93,9 +93,10 @@ public class Login extends Activity implements View.OnClickListener,TextWatcher{
         });
     }
     public void logInUser(User user){
-        //set logged in and store regID
+        //set logged in
         storeController.setUserLoggedIn(true, user);
         getUserInfo();
+        //get and store regID
         MagicLenGCM magicLenGCM=new MagicLenGCM(this, new MagicLenGCM.MagicLenGCMListener() {
             @Override
             public void gcmRegistered(boolean successfull, String regID) {
@@ -110,10 +111,7 @@ public class Login extends Activity implements View.OnClickListener,TextWatcher{
                 return true;
             }
         });
-
         magicLenGCM.openGCM();
-
-
 
         //Go to UserStatus page
         Intent it=new Intent(this,UserStatus.class);
