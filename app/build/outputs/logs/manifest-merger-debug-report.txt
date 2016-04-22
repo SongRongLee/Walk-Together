@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:2:1-96:12
+ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:2:1-98:12
 	package
 		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:3:5-44
 		INJECTED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml
@@ -70,7 +70,7 @@ ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:21:5
 	android:name
 		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:21:22-65
 application
-ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:23:5-94:19
+ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:23:5-96:19
 MERGED from [com.android.support:appcompat-v7:23.2.0] D:\Hubert\Android\Walk-Together\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.2.0\AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:support-v4:23.2.0] D:\Hubert\Android\Walk-Together\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.0\AndroidManifest.xml:22:5-20
 MERGED from [com.android.support:animated-vector-drawable:23.2.0] D:\Hubert\Android\Walk-Together\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.2.0\AndroidManifest.xml:7:5-20
@@ -230,52 +230,44 @@ ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:51:9
 		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:53:13-35
 	android:name
 		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:52:13-64
-service#tw.com.chiaotung.walktogether.ScheduledService
-ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:54:9-57:37
-	android:enabled
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:57:13-35
-	android:label
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:56:13-45
-	android:name
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:55:13-45
 service#tw.com.chiaotung.walktogether.UpStepService
-ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:59:9-62:37
+ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:61:9-64:37
 	android:enabled
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:62:13-35
+		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:64:13-35
 	android:label
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:61:13-45
+		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:63:13-45
 	android:name
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:60:13-42
+		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:62:13-42
 activity#tw.com.chiaotung.walktogether.OthersProfile
-ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:63:9-72:20
+ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:65:9-74:20
 	android:screenOrientation
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:68:13-49
+		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:70:13-49
 	android:label
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:65:13-66
+		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:67:13-66
 	android:parentActivityName
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:66:13-53
+		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:68:13-53
 	android:theme
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:67:13-54
+		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:69:13-54
 	android:name
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:64:13-42
+		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:66:13-42
 meta-data#android.support.PARENT_ACTIVITY
-ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:69:13-71:47
+ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:71:13-73:47
 	android:value
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:71:17-44
+		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:73:17-44
 	android:name
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:70:17-63
+		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:72:17-63
 activity#tw.com.chiaotung.walktogether.SignUp
-ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:73:9-77:61
+ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:75:9-79:61
 	android:screenOrientation
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:77:13-49
+		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:79:13-49
 	android:label
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:75:13-59
+		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:77:13-59
 	android:theme
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:76:13-45
+		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:78:13-45
 	android:name
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:74:13-35
+		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:76:13-35
 meta-data#com.google.android.gms.version
-ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:79:9-81:69
+ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:81:9-83:69
 MERGED from [com.google.android.gms:play-services-base:7.5.0] D:\Hubert\Android\Walk-Together\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\7.5.0\AndroidManifest.xml:21:9-23:69
 MERGED from [com.google.android.gms:play-services-base:7.5.0] D:\Hubert\Android\Walk-Together\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\7.5.0\AndroidManifest.xml:21:9-23:69
 MERGED from [com.google.android.gms:play-services-base:7.5.0] D:\Hubert\Android\Walk-Together\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\7.5.0\AndroidManifest.xml:21:9-23:69
@@ -304,31 +296,31 @@ MERGED from [com.google.android.gms:play-services-base:7.5.0] D:\Hubert\Android\
 MERGED from [com.google.android.gms:play-services-base:7.5.0] D:\Hubert\Android\Walk-Together\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\7.5.0\AndroidManifest.xml:21:9-23:69
 MERGED from [com.google.android.gms:play-services-base:7.5.0] D:\Hubert\Android\Walk-Together\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\7.5.0\AndroidManifest.xml:21:9-23:69
 	android:value
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:81:13-66
+		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:83:13-66
 	android:name
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:80:13-58
+		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:82:13-58
 receiver#tw.com.chiaotung.walktogether.GcmBroadcastReceiver
-ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:83:9-93:20
+ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:85:9-95:20
 	android:exported
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:85:13-36
+		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:87:13-36
 	android:permission
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:86:13-73
+		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:88:13-73
 	android:name
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:84:13-49
-intent-filter#com.eecs.buytogether+com.google.android.c2dm.intent.RECEIVE+com.google.android.c2dm.intent.REGISTRATION
-ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:87:13-92:29
+		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:86:13-49
+intent-filter#com.google.android.c2dm.intent.RECEIVE+com.google.android.c2dm.intent.REGISTRATION+tw.com.chiaotung.walktogether
+ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:89:13-94:29
 action#com.google.android.c2dm.intent.RECEIVE
-ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:88:17-81
+ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:90:17-81
 	android:name
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:88:25-78
+		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:90:25-78
 action#com.google.android.c2dm.intent.REGISTRATION
-ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:89:17-86
+ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:91:17-86
 	android:name
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:89:25-83
-category#com.eecs.buytogether
-ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:91:17-65
+		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:91:25-83
+category#tw.com.chiaotung.walktogether
+ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:93:17-74
 	android:name
-		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:91:27-62
+		ADDED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:93:27-71
 uses-sdk
 INJECTED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 MERGED from [com.android.support:appcompat-v7:23.2.0] D:\Hubert\Android\Walk-Together\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.2.0\AndroidManifest.xml:21:5-23:78
@@ -489,7 +481,7 @@ MERGED from [com.google.android.gms:play-services-maps:7.5.0] D:\Hubert\Android\
 	android:required
 		ADDED from [com.google.android.gms:play-services-maps:7.5.0] D:\Hubert\Android\Walk-Together\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\7.5.0\AndroidManifest.xml:26:8-31
 android:uses-permission#android.permission.READ_EXTERNAL_STORAGE
-IMPLIED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:2:1-96:12 reason: com.google.android.gms.maps requested WRITE_EXTERNAL_STORAGE
+IMPLIED from D:\Hubert\Android\Walk-Together\app\src\main\AndroidManifest.xml:2:1-98:12 reason: com.google.android.gms.maps requested WRITE_EXTERNAL_STORAGE
 uses-permission#android.permission.USE_CREDENTIALS
 ADDED from [com.google.android.gms:play-services-wallet:7.5.0] D:\Hubert\Android\Walk-Together\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-wallet\7.5.0\AndroidManifest.xml:22:5-73
 	android:name

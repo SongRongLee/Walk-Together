@@ -96,6 +96,31 @@ public class ServerRequest {
         requestQueue.add(jsonObjectRequest);
         pdialog.dismiss();
     }
+    public void upRegID(final String regID)  {
+        pdialog.show();
+        int mid = LocalStoreController.userLocalStore.getInt("mid", 1);
+        JSONObject param = new JSONObject();
+        try {
+            param.put("mid", Integer.toString(mid));
+            param.put("regID",regID);
+        }catch (JSONException e){}
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,serverURL+"up_regID.php",param,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("TAG", response.toString());
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("TAG", error.getMessage(), error);
+                        Toast.makeText(context,"Internet connection unstable.", Toast.LENGTH_LONG).show();
+                    }
+                });
+        requestQueue.add(jsonObjectRequest);
+        pdialog.dismiss();
+    }
     public void upStep(final int step, final int time)  {
         pdialog.show();
         int mid = LocalStoreController.userLocalStore.getInt("mid", 1);

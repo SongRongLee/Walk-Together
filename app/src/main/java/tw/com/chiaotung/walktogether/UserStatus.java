@@ -2,12 +2,6 @@ package tw.com.chiaotung.walktogether;
 
 
 import android.app.AlertDialog;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.le.BluetoothLeScanner;
-import android.bluetooth.le.ScanFilter;
-import android.bluetooth.le.ScanSettings;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,19 +11,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewDebug;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.EventListener;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import cc.nctu1210.api.koala3x.KoalaDevice;
 import cc.nctu1210.api.koala3x.KoalaService;
@@ -66,8 +51,8 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
         mServiceManager = new KoalaServiceManager(this);
         mServiceManager.registerSensorEventListener(this, SensorEvent.TYPE_ACCELEROMETER);
         mServiceManager.registerSensorEventListener(this, SensorEvent.TYPE_PEDOMETER);
-        Intent intent_service_start= new Intent(UserStatus.this, ScheduledService.class);
-        UserStatus.this.startService(intent_service_start);
+        //Intent intent_service_start= new Intent(UserStatus.this, ScheduledService.class);
+        //UserStatus.this.startService(intent_service_start);
         Intent intent_upsStepservice_start= new Intent(UserStatus.this, UpStepService.class);
         UserStatus.this.startService(intent_upsStepservice_start);
 /*
@@ -163,8 +148,8 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
         protected void onDestroy() {
             super.onDestroy();
             //PollingUtils.stopPollingService(this, PollingService.class, PollingService.ACTION);
-            Intent intent_service_stop = new Intent(UserStatus.this, ScheduledService.class);
-            stopService(intent_service_stop);
+            //Intent intent_service_stop = new Intent(UserStatus.this, ScheduledService.class);
+            //stopService(intent_service_stop);
             Intent intent_upStepservice_stop = new Intent(UserStatus.this, UpStepService.class);
             stopService(intent_upStepservice_stop);
             Intent intent_koala_stop = new Intent(UserStatus.this, KoalaService.class);
@@ -256,8 +241,8 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             //PollingUtils.stopPollingService(UserStatus.this, PollingService.class, PollingService.ACTION);
-                            Intent intent_service_stop = new Intent(UserStatus.this, ScheduledService.class);
-                            stopService(intent_service_stop);
+                            //Intent intent_service_stop = new Intent(UserStatus.this, ScheduledService.class);
+                            //stopService(intent_service_stop);
                             Intent intent_upStepservice_stop = new Intent(UserStatus.this, UpStepService.class);
                             stopService(intent_upStepservice_stop);
                             Intent intent_koala_stop = new Intent(UserStatus.this, KoalaService.class);
@@ -287,8 +272,8 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //PollingUtils.stopPollingService(UserStatus.this, PollingService.class, PollingService.ACTION);
-                        Intent intent_service_stop = new Intent(UserStatus.this, ScheduledService.class);
-                        stopService(intent_service_stop);
+                        //Intent intent_service_stop = new Intent(UserStatus.this, ScheduledService.class);
+                        //stopService(intent_service_stop);
                         Intent intent_upStepservice_stop = new Intent(UserStatus.this, UpStepService.class);
                         stopService(intent_upStepservice_stop);
                         Intent intent_koala_stop = new Intent(UserStatus.this, KoalaService.class);

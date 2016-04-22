@@ -87,15 +87,34 @@ public class Login extends Activity implements View.OnClickListener,TextWatcher{
                 if (content != null) {
                     logInUser(content.user);
                 } else {
-                    showErrorMeassge();
+                    showErrorMessage();
                 }
             }
         });
     }
     public void logInUser(User user){
-        //set logged in
-        storeController.setUserLoggedIn(true,user);
+        //set logged in and store regID
+        storeController.setUserLoggedIn(true, user);
         getUserInfo();
+        MagicLenGCM magicLenGCM=new MagicLenGCM(this, new MagicLenGCM.MagicLenGCMListener() {
+            @Override
+            public void gcmRegistered(boolean successfull, String regID) {
+                Log.d("regID","Get from Google server:"+regID);
+            }
+
+            @Override
+            public boolean gcmSendRegistrationIdToAppServer(String regID) {
+                //update regID to server
+                //ServerRequest serverRequest=new ServerRequest(this);
+                //serverRequest.upRegID(magicLenGCM.getRegistrationId());
+                return true;
+            }
+        });
+
+        magicLenGCM.openGCM();
+
+
+
         //Go to UserStatus page
         Intent it=new Intent(this,UserStatus.class);
         startActivity(it);
@@ -115,7 +134,7 @@ public class Login extends Activity implements View.OnClickListener,TextWatcher{
             }
         });
     }
-    public void showErrorMeassge()
+    public void showErrorMessage()
     {
         AlertDialog.Builder dialog=new AlertDialog.Builder(this);
         dialog.setMessage("Wrong user name or password!");

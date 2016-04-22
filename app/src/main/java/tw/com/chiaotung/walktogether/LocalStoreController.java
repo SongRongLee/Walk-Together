@@ -4,12 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.google.gson.Gson;
-
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import cc.nctu1210.api.koala3x.KoalaDevice;
-import cc.nctu1210.api.koala3x.KoalaService;
 import tw.com.chiaotung.walktogether.view.ModelObject;
 
 /**
