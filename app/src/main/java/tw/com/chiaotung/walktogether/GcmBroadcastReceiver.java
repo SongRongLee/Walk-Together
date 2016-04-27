@@ -1,7 +1,6 @@
 package tw.com.chiaotung.walktogether;
 
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,11 +37,13 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
                 Intent i = new Intent(context, UserStatus.class);
                 i.setAction("android.intent.action.MAIN");
                 i.addCategory("android.intent.category.LAUNCHER");
-                MagicLenGCM.sendLocalNotification(context, NOTIFICATION_ID,
+                /*MagicLenGCM.sendLocalNotification(context, NOTIFICATION_ID,
                         R.drawable.ic_launcher, "Walk Together", extras
                                 .getString("message"), "", true,
                         PendingIntent.getActivity(context, 0, i,
-                                PendingIntent.FLAG_CANCEL_CURRENT));
+                                PendingIntent.FLAG_CANCEL_CURRENT));*/
+                NotificationGenerator notificationGenerator=new NotificationGenerator(context);
+                notificationGenerator.generateNotification();
             }
         }
         setResultCode(Activity.RESULT_OK);

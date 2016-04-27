@@ -1,29 +1,16 @@
 package tw.com.chiaotung.walktogether;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.widget.Toast;
 
 
 public class TabTwo extends Fragment {
@@ -124,7 +111,6 @@ public class TabTwo extends Fragment {
 
     public static void updateInfo() {
         ServerRequest request = new ServerRequest(activity);
-
         request.getMid(new CallBack() {
             @Override
             public void done(CallBackContent content) {
@@ -142,11 +128,10 @@ public class TabTwo extends Fragment {
     public static void getEveryoneInfo() {
         String[] temp_fid_list,temp_oid_list;
         String[] temp_fname_list,temp_oname_list;
-
-        if(!LocalStoreController.userLocalStore.getString("fid_list", "").equals("null") && !LocalStoreController.userLocalStore.getString("fid_list", "").equals("")) {
+        if(!LocalStoreController.userLocalStore.getString("fid_list", "").equals("null") && !LocalStoreController.userLocalStore.getString("fname_list", "").equals("")) {
             temp_fid_list = LocalStoreController.userLocalStore.getString("fid_list", "").split(",");
             temp_fname_list = LocalStoreController.userLocalStore.getString("fname_list", "").split(",");
-            if(!LocalStoreController.userLocalStore.getString("oid_list", "").equals("null") && !LocalStoreController.userLocalStore.getString("oid_list", "").equals("")) {
+            if(!LocalStoreController.userLocalStore.getString("oid_list", "").equals("null") && !LocalStoreController.userLocalStore.getString("oname_list", "").equals("")) {
                 temp_oid_list = LocalStoreController.userLocalStore.getString("oid_list", "").split(",");
                 temp_oname_list = LocalStoreController.userLocalStore.getString("oname_list", "").split(",");
                 int length = temp_fid_list.length+temp_oid_list.length;
@@ -249,6 +234,10 @@ public class TabTwo extends Fragment {
         }
     }
     public static void getFriendsFinished() {
+        userImages=new int[fname_list.length];
+        for(int i=0;i<fname_list.length;i++){
+            userImages[i]=R.drawable.default_user;
+        }
         listAdapter = new FriendAdapter(activity, fname_list, userImages, fsteps_list,text_friend_pos,text_other_pos);
         listView.setAdapter(listAdapter);
         //listAdapter.notifyDataSetChanged();

@@ -16,10 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.lang.reflect.Method;
-
-import cc.nctu1210.api.koala3x.KoalaServiceManager;
-import cc.nctu1210.api.koala3x.SensorEvent;
 import tw.com.chiaotung.walktogether.view.ModelObject;
 
 public class TabOne extends Fragment {
@@ -158,13 +154,16 @@ public class TabOne extends Fragment {
         listAdapter = new UserAdapter(getActivity(),userImages,messageList);
         listView.setAdapter(listAdapter);
 
-
         return rootview;
     }
 
     public static void updateInfo() {
         ServerRequest request = new ServerRequest(activity);
-
+        //start up notification
+        if(LocalStoreController.userLocalStore.getInt("MessageAmount",-1)!=-1){
+            NotificationGenerator notificationGenerator=new NotificationGenerator(activity);
+            notificationGenerator.generateNotification();
+        }
         request.getMid(new CallBack() {
             @Override
             public void done(CallBackContent content) {

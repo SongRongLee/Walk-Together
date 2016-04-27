@@ -2,6 +2,8 @@ package tw.com.chiaotung.walktogether;
 
 
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -55,6 +57,8 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
         //UserStatus.this.startService(intent_service_start);
         Intent intent_upsStepservice_start= new Intent(UserStatus.this, UpStepService.class);
         UserStatus.this.startService(intent_upsStepservice_start);
+
+
 /*
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Me"));
@@ -132,6 +136,10 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
         protected void onResume() {
             super.onResume();
             setTab();
+            NotificationGenerator.messageNum=0;
+            NotificationGenerator.messageFriendNum=0;
+            NotificationGenerator.messageFriendList="";
+
         }
 
         @Override
@@ -154,6 +162,9 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
             stopService(intent_upStepservice_stop);
             Intent intent_koala_stop = new Intent(UserStatus.this, KoalaService.class);
             stopService(intent_koala_stop);
+            NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancel(0);
+            notificationManager.cancel(1);
             System.exit(0);
         }
 
@@ -252,6 +263,9 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
                             intent.setClass(UserStatus.this, Login.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+                            notificationManager.cancel(0);
+                            notificationManager.cancel(1);
                             finish();
                             startActivity(intent);
                         }
@@ -278,6 +292,10 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
                         stopService(intent_upStepservice_stop);
                         Intent intent_koala_stop = new Intent(UserStatus.this, KoalaService.class);
                         stopService(intent_koala_stop);
+
+                        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+                        notificationManager.cancel(0);
+                        notificationManager.cancel(1);
 
                         Intent startMain = new Intent(Intent.ACTION_MAIN);
                         startMain.addCategory(Intent.CATEGORY_HOME);

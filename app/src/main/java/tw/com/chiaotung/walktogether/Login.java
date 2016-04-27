@@ -106,8 +106,8 @@ public class Login extends Activity implements View.OnClickListener,TextWatcher{
             @Override
             public boolean gcmSendRegistrationIdToAppServer(String regID) {
                 //update regID to server
-                //ServerRequest serverRequest=new ServerRequest(this);
-                //serverRequest.upRegID(magicLenGCM.getRegistrationId());
+                ServerRequest serverRequest=new ServerRequest(Login.this);
+                serverRequest.upRegID(regID);
                 return true;
             }
         });

@@ -12,7 +12,7 @@ import tw.com.chiaotung.walktogether.view.ModelObject;
 public class LocalStoreController extends Application {
     public static final String SP_NAME = "userLocalStore";
 
-    static SharedPreferences userLocalStore;
+    public static SharedPreferences userLocalStore;
 
     public LocalStoreController(Context context) {
         userLocalStore = context.getSharedPreferences(SP_NAME, 0);

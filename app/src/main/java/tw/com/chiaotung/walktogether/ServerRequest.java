@@ -1,6 +1,5 @@
 package tw.com.chiaotung.walktogether;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
@@ -20,22 +19,22 @@ import org.json.JSONObject;
  * Created by admin on 2016/3/5.
  */
 public class ServerRequest {
-    static String serverURL="http://nol.cs.nctu.edu.tw/~backzero20/";
+    static String serverURL="http://140.113.169.174/walk_together/";
     LocalStoreController storeController;
     RequestQueue requestQueue;
-    ProgressDialog pdialog;
+    //ProgressDialog pdialog;
     Context context;
 
     public ServerRequest(Context context){
         this.context=context;
         requestQueue= Volley.newRequestQueue(context);
         storeController = new LocalStoreController(context);
-        pdialog = new ProgressDialog(context);
+        /*pdialog = new ProgressDialog(context);
         pdialog.setTitle("Processing...");
-        pdialog.setTitle("Please wait...");
+        pdialog.setTitle("Please wait...");*/
     }
     public void logInCheck(final User user, final CallBack callBack)  {
-        pdialog.show();
+        //pdialog.show();
         JSONObject param = new JSONObject();
         try {
             param.put("account", user.account);
@@ -66,10 +65,10 @@ public class ServerRequest {
                     }
                 });
         requestQueue.add(jsonObjectRequest);
-        pdialog.dismiss();
+        //pdialog.dismiss();
     }
     public void signUp(final User user, final CallBack callBack)  {
-        pdialog.show();
+        //pdialog.show();
         JSONObject param = new JSONObject();
         try {
             param.put("name", user.name);
@@ -94,10 +93,10 @@ public class ServerRequest {
                     }
                 });
         requestQueue.add(jsonObjectRequest);
-        pdialog.dismiss();
+        //pdialog.dismiss();
     }
     public void upRegID(final String regID)  {
-        pdialog.show();
+        //pdialog.show();
         int mid = LocalStoreController.userLocalStore.getInt("mid", 1);
         JSONObject param = new JSONObject();
         try {
@@ -119,10 +118,10 @@ public class ServerRequest {
                     }
                 });
         requestQueue.add(jsonObjectRequest);
-        pdialog.dismiss();
+        //pdialog.dismiss();
     }
     public void upStep(final int step, final int time)  {
-        pdialog.show();
+        //pdialog.show();
         int mid = LocalStoreController.userLocalStore.getInt("mid", 1);
         JSONObject param = new JSONObject();
         try {
@@ -145,10 +144,10 @@ public class ServerRequest {
                     }
                 });
         requestQueue.add(jsonObjectRequest);
-        pdialog.dismiss();
+        //pdialog.dismiss();
     }
     public void downStep(int id,int time ,final CallBack callBack)  {
-        pdialog.show();
+        //pdialog.show();
         JSONObject param = new JSONObject();
         try {
             param.put("mid", Integer.toString(id));
@@ -179,12 +178,12 @@ public class ServerRequest {
                     }
                 });
         requestQueue.add(jsonObjectRequest);
-        pdialog.dismiss();
+        //pdialog.dismiss();
     }
 
     //input message must includes message_content,time,step.
     public void upSelfMessage(Message message,final CallBack callBack)  {
-        pdialog.show();
+        //pdialog.show();
         int mid = LocalStoreController.userLocalStore.getInt("mid", 1);
         JSONObject param = new JSONObject();
         try {
@@ -216,12 +215,12 @@ public class ServerRequest {
                     }
                 });
         requestQueue.add(jsonObjectRequest);
-        pdialog.dismiss();
+        //pdialog.dismiss();
     }
 
     //input message must includes message_content,time,step,from,to.
     public void upOtherMessage(Message message,final CallBack callBack)  {
-        pdialog.show();
+        //pdialog.show();
         JSONObject param = new JSONObject();
         try {
             param.put("from", Integer.toString(message.from));
@@ -253,10 +252,10 @@ public class ServerRequest {
                     }
                 });
         requestQueue.add(jsonObjectRequest);
-        pdialog.dismiss();
+        //pdialog.dismiss();
     }
     public void downMessage(int ID,int time ,final CallBack callBack)  {
-        pdialog.show();
+        //pdialog.show();
         JSONObject param = new JSONObject();
         try {
             param.put("mid", Integer.toString(ID));
@@ -291,13 +290,13 @@ public class ServerRequest {
             }
         });
         requestQueue.add(jsonObjectRequest);
-        pdialog.dismiss();
+        //pdialog.dismiss();
     }
 
 
     //input message must includes blank_message_content,time,step,from,to.
     public void upLikeStep(Message message,final CallBack callBack)  {
-        pdialog.show();
+        //pdialog.show();
         JSONObject param = new JSONObject();
         try {
             param.put("from", Integer.toString(message.from));
@@ -328,11 +327,11 @@ public class ServerRequest {
                     }
                 });
         requestQueue.add(jsonObjectRequest);
-        pdialog.dismiss();
+        //pdialog.dismiss();
     }
 
     public void upLikeMessage(int msg_id,int from)  {
-        pdialog.show();
+        //pdialog.show();
         JSONObject param = new JSONObject();
         try {
             param.put("msg_id", Integer.toString(msg_id));
@@ -352,11 +351,11 @@ public class ServerRequest {
                     }
                 });
         requestQueue.add(jsonObjectRequest);
-        pdialog.dismiss();
+        //pdialog.dismiss();
     }
 
     public void addFriend(int from,int to)  {
-        pdialog.show();
+        //pdialog.show();
         JSONObject param = new JSONObject();
         try {
             param.put("from", Integer.toString(from));
@@ -376,10 +375,10 @@ public class ServerRequest {
                     }
                 });
         requestQueue.add(jsonObjectRequest);
-        pdialog.dismiss();
+        //pdialog.dismiss();
     }
     public void getMid(final CallBack callBack)  {
-        pdialog.show();
+        //pdialog.show();
         int mid = LocalStoreController.userLocalStore.getInt("mid", 1);
         JSONObject param = new JSONObject();
         try {
@@ -414,6 +413,6 @@ public class ServerRequest {
                     }
                 });
         requestQueue.add(jsonObjectRequest);
-        pdialog.dismiss();
+        //pdialog.dismiss();
     }
 }
