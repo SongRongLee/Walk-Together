@@ -4,9 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,7 +35,9 @@ public class OthersProfile extends AppCompatActivity {
     private Boolean isFriend;
     private Boolean addFriend_clicked;
     private Boolean isLiked;
+    private Boolean isDisliked;
     private Boolean like_clicked;
+    private Boolean dislike_clicked;
     public static Activity activity;
 
 
@@ -101,7 +102,9 @@ public class OthersProfile extends AppCompatActivity {
         //get view block 2
         ConnectionView = LayoutInflater.from(OthersProfile.this).inflate(R.layout.blue_tooth_others, null);
         final ImageView highfive = (ImageView) ConnectionView.findViewById(R.id.stepshighfive);
+        final ImageView steps_dislike = (ImageView) ConnectionView.findViewById(R.id.stepsdislike);
         isLiked =false;
+        isDisliked=false;
         String selflikelist = storeController.getSelfLikelist();
         String[] selflike_array;
         /*
@@ -145,6 +148,37 @@ public class OthersProfile extends AppCompatActivity {
         {
             highfive.setImageResource(R.drawable.ic_thumb_up_after);
             like_clicked = true;
+        }
+        if(!isDisliked) {
+            steps_dislike.setImageResource(R.drawable.ic_thumb_down_before);
+            dislike_clicked = false;
+            steps_dislike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!dislike_clicked) {
+                        int from = LocalStoreController.userLocalStore.getInt("mid", 1);
+                        int unixTime = (int) (System.currentTimeMillis() / 1000L);
+                        Message message = new Message();
+                        message.from = from;
+                        message.time = unixTime;
+                        message.to = mid;
+                        message.step = step;
+                        uploadDislikeStep(message);
+                        Toast.makeText(OthersProfile.this, "You disliked the Step !! ", Toast.LENGTH_LONG).show();
+                        dislike_clicked = true;
+                        steps_dislike.setImageResource(R.drawable.ic_thumb_down_after);
+                        /*String current_likelist = storeController.getSelfLikelist();
+                        String new_likelist = current_likelist + String.valueOf(mid) + ",";
+                        storeController.storeSelfLikelist(new_likelist);*/
+                        getMessageInfo();
+                    }
+                }
+            });
+        }
+        else
+        {
+            steps_dislike.setImageResource(R.drawable.ic_thumb_down_after);
+            dislike_clicked = true;
         }
         getStepInfo();
         //get view block 3
@@ -264,6 +298,18 @@ public class OthersProfile extends AppCompatActivity {
                     Log.d("TAG", "UpSelfMessage successful" + "\n");
                 } else
                     Log.e("TAG", "UpSelfMessage failed" + "\n");
+            }
+        });
+    }
+    private void uploadDislikeStep(Message message) {
+        ServerRequest request = new ServerRequest(this);
+        request.upDislikeStep(message, new CallBack() {
+            @Override
+            public void done(CallBackContent content) {
+                if (content != null) {
+                    Log.d("TAG", "uploadDislikeStep successful" + "\n");
+                } else
+                    Log.e("TAG", "uploadDislikeStep failed" + "\n");
             }
         });
     }

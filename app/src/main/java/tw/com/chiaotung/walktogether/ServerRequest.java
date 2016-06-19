@@ -329,7 +329,41 @@ public class ServerRequest {
         requestQueue.add(jsonObjectRequest);
         //pdialog.dismiss();
     }
-
+    //input message must includes blank_message_content,time,step,from,to.
+    public void upDislikeStep(Message message,final CallBack callBack)  {
+        //pdialog.show();
+        JSONObject param = new JSONObject();
+        try {
+            param.put("from", Integer.toString(message.from));
+            param.put("to",Integer.toString(message.to));
+            param.put("time",Integer.toString(message.time));
+            param.put("step",Integer.toString(message.step));
+        }catch (JSONException e){}
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,serverURL+"up_dislike_step.php",param,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try{
+                            Log.d("TAG", response.toString());
+                            JSONArray data = response.getJSONArray("data");
+                            CallBackContent content=new CallBackContent();
+                            content.msg_id=Integer.parseInt(((JSONObject)data.get(0)).getString("msg_id"));
+                            callBack.done(content);
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("TAG", error.getMessage(), error);
+                        callBack.done(null);
+                    }
+                });
+        requestQueue.add(jsonObjectRequest);
+        //pdialog.dismiss();
+    }
     public void upLikeMessage(int msg_id,int from)  {
         //pdialog.show();
         JSONObject param = new JSONObject();

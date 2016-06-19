@@ -9,7 +9,8 @@
         android:id="@+id/steps"
         android:layout_width="253dp"
         android:layout_height="89dp"
-        android:textAllCaps="false">
+        android:textAllCaps="false"
+        android:layout_weight="0.75">
     </Button>
 
 
@@ -18,6 +19,15 @@
     android:layout_height="40dp"
     android:id="@+id/stepshighfive"
     android:layout_gravity="center"
-     />
+        android:layout_weight="0.125"
+        android:layout_margin="5dp" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/stepsdislike"
+        android:layout_gravity="center"
+        android:layout_weight="0.125"
+        android:layout_margin="5dp" />
 
 </LinearLayout><!-- From: file:/D:/Hubert/Android/Walk-Together/app/src/main/res/layout/blue_tooth_others.xml -->
