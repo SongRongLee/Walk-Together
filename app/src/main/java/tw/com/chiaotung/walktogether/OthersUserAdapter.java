@@ -69,13 +69,13 @@ public class OthersUserAdapter extends BaseAdapter {
         final Holder holder=new Holder();
         View rowView;
         rowView = inflater.inflate(R.layout.user_item, null);
-        holder.t_message=(TextView) rowView.findViewById(R.id.text_message);
-        holder.t_time=(TextView) rowView.findViewById(R.id.text_time);
-        holder.t_step_status=(TextView) rowView.findViewById(R.id.text_step_status);
-        holder.img=(ImageView) rowView.findViewById(R.id.image_user);
+        //holder.t_message=(TextView) rowView.findViewById(R.id.text_message);
+        //holder.t_time=(TextView) rowView.findViewById(R.id.text_time);
+        //holder.t_step_status=(TextView) rowView.findViewById(R.id.text_step_status);
+        //holder.img=(ImageView) rowView.findViewById(R.id.image_user);
         holder.like=(ImageView) rowView.findViewById(R.id.image_like);
-        holder.like_amount=(TextView) rowView.findViewById(R.id.like_amount);
-
+        //holder.like_amount=(TextView) rowView.findViewById(R.id.like_amount);
+/*
         if(message.length > 0) {
             int from = message[position].from;
             final int mid = LocalStoreController.userLocalStore.getInt("mid", 1);
@@ -198,7 +198,7 @@ public class OthersUserAdapter extends BaseAdapter {
         }
         String time = getDate((long)message[position].time*1000L);
         holder.t_time.setText(time);
-        holder.img.setImageResource(imageId[0]);
+        holder.img.setImageResource(imageId[0]);*/
 /*
         rowView.setOnClickListener(new OnClickListener() {
             @Override

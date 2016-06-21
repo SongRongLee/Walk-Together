@@ -20,4 +20,4 @@
           android:layout_height="wrap_content"
           android:ellipsize="end"
           android:gravity="center"
-          android:maxLines="2"/><!-- From: file:/D:/Hubert/Android/Walk-Together/app/build/intermediates/exploded-aar/com.android.support/design/23.2.0/res/layout/design_layout_tab_text.xml -->
+          android:maxLines="2"/><!-- From: file:/C:/Users/User/Desktop/Walk-Together/app/build/intermediates/exploded-aar/com.android.support/design/23.2.0/res/layout/design_layout_tab_text.xml -->

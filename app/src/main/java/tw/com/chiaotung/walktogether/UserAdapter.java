@@ -2,7 +2,9 @@ package tw.com.chiaotung.walktogether;
 
 import android.app.Activity;
 import android.content.Context;
+import android.location.Location;
 import android.text.format.DateFormat;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +66,9 @@ public class UserAdapter extends BaseAdapter {
         ImageView img;
         ImageView like;
         TextView like_amount;
+        //new UI
+        ImageView circle;
+        TextView steps;
     }
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -69,15 +76,47 @@ public class UserAdapter extends BaseAdapter {
         final Holder holder=new Holder();
         View rowView;
         rowView = inflater.inflate(R.layout.user_item, null);
-        holder.t_message=(TextView) rowView.findViewById(R.id.text_message);
-        holder.t_time=(TextView) rowView.findViewById(R.id.text_time);
-        holder.t_step_status=(TextView) rowView.findViewById(R.id.text_step_status);
-        holder.img=(ImageView) rowView.findViewById(R.id.image_user);
+        //holder.t_message=(TextView) rowView.findViewById(R.id.text_message);
+        //holder.t_time=(TextView) rowView.findViewById(R.id.text_time);
+        //holder.t_step_status=(TextView) rowView.findViewById(R.id.text_step_status);
+        //holder.img=(ImageView) rowView.findViewById(R.id.image_user);
         holder.like=(ImageView) rowView.findViewById(R.id.image_like);
-        holder.like_amount=(TextView) rowView.findViewById(R.id.like_amount);
+        //holder.like_amount=(TextView) rowView.findViewById(R.id.like_amount);
 
+        //new UI
+        holder.circle=(ImageView) rowView.findViewById(R.id.image_circle);
+        holder.steps=(TextView) rowView.findViewById(R.id.steps);
+        if(position == 2) {
+            int scale_dp = 100;
+            int scale_px = (int)convertDpToPixel(scale_dp,context);
+            int margin_px = (int)convertDpToPixel(90-scale_dp/2,context);
+            RelativeLayout.LayoutParams resizeparameter = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            resizeparameter.setMargins(margin_px, 0, 0, 0);
+            resizeparameter.width = scale_px;
+            resizeparameter.height = scale_px;
+            holder.circle.setLayoutParams(resizeparameter);
 
+            RelativeLayout.LayoutParams relocparameter = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            relocparameter.setMargins((int)convertDpToPixel(65,context), (int)convertDpToPixel(scale_dp/3,context), 0, 0);
+            holder.steps.setLayoutParams(relocparameter);
+        }
+        else if(position == 1) {
+            int scale_dp = 50;
+            int scale_px = (int)convertDpToPixel(scale_dp,context);
+            int margin_px = (int)convertDpToPixel(90-scale_dp/2,context);
+            RelativeLayout.LayoutParams resizeparameter = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            resizeparameter.setMargins(margin_px, 0, 0, 0);
+            resizeparameter.width = scale_px;
+            resizeparameter.height = scale_px;
+            holder.circle.setLayoutParams(resizeparameter);
+
+            RelativeLayout.LayoutParams relocparameter = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            relocparameter.setMargins((int)convertDpToPixel(65,context), (int)convertDpToPixel(scale_dp/3,context), 0, 0);
+            holder.steps.setLayoutParams(relocparameter);
+        }
+/*
         if(message.length > 0) {
+
             int from = message[position].from;
             final int mid = LocalStoreController.userLocalStore.getInt("mid", 1);
             if (from == mid) {
@@ -198,7 +237,7 @@ public class UserAdapter extends BaseAdapter {
         }
         String time = getDate((long)message[position].time*1000L);
         holder.t_time.setText(time);
-        holder.img.setImageResource(imageId[0]);
+        holder.img.setImageResource(imageId[0]);*/
 
 /*
         rowView.setOnClickListener(new OnClickListener() {
@@ -224,4 +263,20 @@ public class UserAdapter extends BaseAdapter {
         request.upLikeMessage(msg_id, from);
     }
 
+
+    //convert dp to px
+    private float convertDpToPixel(float dp, Context context){
+        float px = dp * getDensity(context);
+        return px;
+    }
+
+    private float convertPixelToDp(float px, Context context){
+        float dp = px / getDensity(context);
+        return dp;
+    }
+
+    private float getDensity(Context context){
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        return metrics.density;
+    }
 }
