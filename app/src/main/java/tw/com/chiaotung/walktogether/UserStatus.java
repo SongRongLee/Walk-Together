@@ -44,6 +44,20 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
         setSupportActionBar(toolbar);
         storeController=new LocalStoreController(this);
         getStep = storeController.getStep();
+        if(getStep==0){
+            int mid=storeController.getUserID();
+            int unixTime = (int) (System.currentTimeMillis() / 1000L);
+            ServerRequest serverRequest=new ServerRequest(this);
+            serverRequest.downStep(mid, unixTime, new CallBack() {
+                @Override
+                public void done(CallBackContent content) {
+                    if (content != null) {
+                        getStep=content.step;
+                    } else
+                        Log.e("TAG", "downStep failed" + "\n");
+                }
+            });
+        }
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Me"));
@@ -294,8 +308,7 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
                         stopService(intent_koala_stop);
 
                         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-                        notificationManager.cancel(0);
-                        notificationManager.cancel(1);
+                        notificationManager.cancelAll();
 
                         Intent startMain = new Intent(Intent.ACTION_MAIN);
                         startMain.addCategory(Intent.CATEGORY_HOME);

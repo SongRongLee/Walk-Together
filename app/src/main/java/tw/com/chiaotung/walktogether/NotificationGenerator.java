@@ -78,7 +78,7 @@ public class NotificationGenerator
         builder.setContentTitle("Walk Together");
         builder.setContentText(m);
         builder.setDeleteIntent(dpendintIntent);
-        builder.setSmallIcon(R.drawable.ic_launcher);
+        builder.setSmallIcon(R.drawable.notification_icon);
         builder.setContentIntent(pendingIntent);
         builder.setOngoing(true);
         builder.build();
@@ -115,7 +115,7 @@ public class NotificationGenerator
         builder.setTicker("Walk Together");
         builder.setContentTitle("Walk Together");
         builder.setContentText(m);
-        builder.setSmallIcon(R.drawable.ic_launcher);
+        builder.setSmallIcon(R.drawable.notification_icon);
         builder.setContentIntent(pendingIntent);
         builder.setOngoing(true);
         builder.build();

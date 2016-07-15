@@ -10,11 +10,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 public class Login extends Activity implements View.OnClickListener,TextWatcher{
 
     EditText edtAccount,edtPassword;
-    Button btLogin,btSignup;
+    ImageButton btLogin;
+    Button btSignup;
     LocalStoreController storeController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +26,8 @@ public class Login extends Activity implements View.OnClickListener,TextWatcher{
         //initialize
         edtAccount = (EditText) findViewById(R.id.edt_account);
         edtPassword = (EditText) findViewById(R.id.edt_password);
-        btLogin = (Button) findViewById(R.id.bt_logIn);
+        btLogin = (ImageButton) findViewById(R.id.bt_logIn);
+        btLogin.setEnabled(false);
         btSignup = (Button) findViewById(R.id.bt_signUp);
         storeController=new LocalStoreController(this);
 

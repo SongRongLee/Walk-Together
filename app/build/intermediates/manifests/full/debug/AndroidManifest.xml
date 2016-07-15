@@ -45,7 +45,8 @@
             android:name="tw.com.chiaotung.walktogether.Login"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeLogin" >
+            android:theme="@style/AppThemeLogin"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

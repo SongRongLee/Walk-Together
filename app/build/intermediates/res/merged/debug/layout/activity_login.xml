@@ -6,27 +6,10 @@
     android:paddingBottom="25dp" tools:context=".Login"
     android:orientation="vertical"
     android:baselineAligned="false"
-    android:background="@color/colorPrimary"
-    android:weightSum="1">
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="160sp"
-        android:id="@+id/imageView"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/bamboo"
-        android:scaleType="fitXY" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Walk Together"
-        android:id="@+id/textView"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.09"
-        android:textColor="@color/abc_primary_text_material_dark"
-        android:textStyle="bold|italic" />
+    android:background="@drawable/brown"
+    android:weightSum="1"
+    android:gravity="center"
+    android:nestedScrollingEnabled="false">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -35,6 +18,13 @@
         android:layout_gravity="center_horizontal"
         android:layout_weight="0"
         android:layout_marginTop="15dp">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/account_image"
+            android:src="@drawable/account"
+            android:layout_weight="0.5" />
 
         <EditText
             android:layout_width="0dp"
@@ -47,8 +37,10 @@
             android:textSize="15sp"
             android:autoText="false"
             android:nestedScrollingEnabled="false"
-            android:textColor="@color/primary_text_default_material_dark"
-            android:textColorHint="@color/hint_foreground_material_dark" />
+            android:textColor="#747474"
+            android:textColorHint="#747474"
+            android:cursorVisible="false"
+            android:backgroundTint="@color/colorUnderLine" />
     </LinearLayout>
 
     <LinearLayout
@@ -57,6 +49,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/pass_image"
+            android:src="@drawable/password"
+            android:layout_weight="0.5" />
 
         <EditText
             android:layout_width="0dp"
@@ -67,32 +66,35 @@
             android:inputType="textPassword"
             android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:textSize="15sp"
-            android:textColorHint="@color/hint_foreground_material_dark"
-            android:textColor="@color/primary_text_default_material_dark" />
+            android:textColorHint="#747474"
+            android:textColor="#747474"
+            android:backgroundTint="@color/colorUnderLine" />
     </LinearLayout>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Log In"
+    <ImageButton
+        android:layout_width="50sp"
+        android:layout_height="50sp"
         android:id="@+id/bt_logIn"
         android:layout_marginTop="10dp"
-        android:textSize="15sp"
-        android:enabled="false"
-        android:textColor="@color/abc_primary_text_material_dark" />
+        style="?android:attr/borderlessButtonStyle"
+        android:src="@drawable/ic_launcher"
+        android:visibility="visible"
+        android:scaleType="fitCenter" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="132dp"
-        android:layout_height="37dp"
+        android:layout_width="132sp"
+        android:layout_height="37sp"
         android:text="Sign Up"
         android:id="@+id/bt_signUp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
+        android:layout_gravity="center"
         android:enabled="true"
         android:visibility="visible"
-        android:textSize="12sp"
-        android:textColor="@color/abc_primary_text_material_dark" />
+        android:textSize="15sp"
+        android:textColor="@color/CustomDarkGray"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:layout_marginTop="10sp" />
 
 </LinearLayout>
 <!-- From: file:/D:/Hubert/Android/Walk-Together/app/src/main/res/layout/activity_login.xml -->

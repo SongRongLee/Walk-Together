@@ -133,7 +133,10 @@ public class LocalStoreController extends Application {
         int amount = userLocalStore.getInt("MessageAmount", 0);
         return amount;
     }
-
+    public int getUserID(){
+        int mid = userLocalStore.getInt("mid", 0);
+        return mid;
+    }
     public int getStep() {
         int step = userLocalStore.getInt("step", 0);
         return step;
