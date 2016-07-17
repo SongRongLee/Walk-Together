@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="25dp"
     android:paddingRight="25dp"
@@ -6,29 +6,21 @@
     android:paddingBottom="25dp" tools:context=".Login"
     android:orientation="vertical"
     android:baselineAligned="false"
-    android:background="@drawable/brown"
+    android:background="@color/grayDark"
     android:weightSum="1"
     android:gravity="center"
     android:nestedScrollingEnabled="false">
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0"
-        android:layout_marginTop="15dp">
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:id="@+id/account_image"
-            android:src="@drawable/account"
-            android:layout_weight="0.5" />
+        android:layout_width="350dp"
+        android:layout_height="200dp"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:id="@+id/linearLayout">
 
         <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
             android:id="@+id/edt_account"
             android:layout_weight="3"
             android:hint="Email"
@@ -37,63 +29,55 @@
             android:textSize="15sp"
             android:autoText="false"
             android:nestedScrollingEnabled="false"
-            android:textColor="#747474"
-            android:textColorHint="#747474"
-            android:cursorVisible="false"
-            android:backgroundTint="@color/colorUnderLine" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp">
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:id="@+id/pass_image"
-            android:src="@drawable/password"
-            android:layout_weight="0.5" />
+            android:textColor="@android:color/black"
+            android:textColorHint="@color/grayHint"
+            android:background="@drawable/field_background"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:paddingStart="15dp" />
 
         <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
             android:id="@+id/edt_password"
             android:layout_weight="3"
             android:hint="Password"
             android:inputType="textPassword"
             android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:textSize="15sp"
-            android:textColorHint="#747474"
-            android:textColor="#747474"
-            android:backgroundTint="@color/colorUnderLine" />
+            android:textColorHint="@color/grayHint"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/field_background"
+            android:paddingStart="15dp" />
+
+        <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/bt_logIn"
+            android:src="@drawable/login_pressed"
+            android:visibility="visible"
+            android:scaleType="fitCenter"
+            android:layout_weight="0"
+            android:layout_centerHorizontal="true"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_gravity="center_horizontal" />
+
     </LinearLayout>
 
     <ImageButton
-        android:layout_width="50sp"
-        android:layout_height="50sp"
-        android:id="@+id/bt_logIn"
-        android:layout_marginTop="10dp"
-        style="?android:attr/borderlessButtonStyle"
-        android:src="@drawable/ic_launcher"
-        android:visibility="visible"
-        android:scaleType="fitCenter" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="132sp"
-        android:layout_height="37sp"
-        android:text="Sign Up"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:id="@+id/bt_signUp"
-        android:layout_gravity="center"
-        android:enabled="true"
-        android:visibility="visible"
-        android:textSize="15sp"
-        android:textColor="@color/CustomDarkGray"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:layout_marginTop="10sp" />
+        android:src="@drawable/new_account"
+        android:scaleType="fitCenter"
+        android:layout_weight="0"
+        android:layout_alignEnd="@+id/linearLayout"
+        android:layout_alignBottom="@+id/linearLayout"
+        style="?android:attr/borderlessButtonStyle" />
 
-</LinearLayout>
+</RelativeLayout>

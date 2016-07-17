@@ -7,5 +7,6 @@
     <string name="title_activity_others_profile">Others Page</string>
     <string name="title_activity_scan_device">ScanDevice</string>
     <string name="title_activity_sign_up">Sign Up</string>
+    <string name="comment_string"><u>comment ...</u></string>
 
 </resources>

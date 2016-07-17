@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 /**
  * Created by User on 2016/3/30.
  */
@@ -23,7 +25,7 @@ public class NotificationGenerator
     private NotificationManager mManager;
     private Notification mNotification_friend;
     private NotificationManager mManager_friend;
-    private Message[] messageList;
+    private ArrayList<Message> messageList=new ArrayList<>();
     private String[] newfnameList;
     private String[] newfidList;
     private String newfname;
@@ -136,13 +138,14 @@ public class NotificationGenerator
             @Override
             public void done(CallBackContent content) {
                 if (content != null) {
-                    messageList = new Message[content.message_list.length];
-                    messageList = content.message_list;
+                    for(int i=0;i<content.message_list.length;i++){
+                        messageList.add(content.message_list[i]);
+                    }
                     int amount = storeController.getMessageAmount();
-                    if (amount < messageList.length) {
+                    if (amount < messageList.size()) {
                         getMessageFinished();
-                        storeController.storeMessageAmount(messageList.length);
-                        showNotification(messageList.length - amount);
+                        storeController.storeMessageAmount(messageList.size());
+                        showNotification(messageList.size() - amount);
                     }
                 } else
                     Log.e("TAG", "getMessage failed" + "\n");
@@ -150,8 +153,9 @@ public class NotificationGenerator
         });
     }
     private void getMessageFinished() {
-        TabOne.listAdapter = new UserAdapter(TabOne.activity, TabOne.userImages, messageList);
+        TabOne.listAdapter = new UserAdapter(TabOne.activity, messageList);
         TabOne.listView.setAdapter(TabOne.listAdapter);
+        //((BaseAdapter)TabOne.listView.getAdapter()).notifyDataSetChanged();
         //listAdapter.notifyDataSetChanged();
     }
 

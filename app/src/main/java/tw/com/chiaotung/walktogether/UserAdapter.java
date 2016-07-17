@@ -1,7 +1,9 @@
 package tw.com.chiaotung.walktogether;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -9,7 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,28 +27,39 @@ import java.util.Locale;
  */
 public class UserAdapter extends BaseAdapter {
     Context context;
-    Message[] message;
+    ArrayList<Message> message;
     ArrayList<MessageBlock> messageBlocks;
-    int [] imageId;
+    LocalStoreController localStoreController;
+    //int [] imageId;
     private Boolean[] isLiked;
     private Boolean[] like_clicked;
     private static LayoutInflater inflater=null;
-    public UserAdapter(Activity a, int[] userImages, Message[] messageList) {
+    public UserAdapter(Activity a, ArrayList<Message> messageList) {
         // TODO Auto-generated constructor stub
         context=a;
-        imageId=userImages;
+        localStoreController=new LocalStoreController(context);
+        //imageId=userImages;
         message = messageList;
         inflater = ( LayoutInflater )context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         messageBlocks=new ArrayList<>();
         extractMessageBlock();
-        isLiked = new Boolean[message.length];
-        like_clicked = new Boolean[message.length];
+        Log.d("messageBlocksNUM", Integer.toString(messageBlocks.size()));
+        if(messageBlocks.size()==0||messageBlocks.get(0).step!=localStoreController.getStep()){
+            messageBlocks.add(0, new MessageBlock(localStoreController.getStep()));
+        }
+        isLiked = new Boolean[message.size()];
+        like_clicked = new Boolean[message.size()];
 
     }
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
+        if(messageBlocks.get(0).step!=localStoreController.getStep()){
+            if(messageBlocks.get(0).like_count!=0&&messageBlocks.get(0).messages.size()!=0){
+                return messageBlocks.size()+1;
+            }
+        }
         return messageBlocks.size();
     }
 
@@ -81,8 +97,12 @@ public class UserAdapter extends BaseAdapter {
         TextView like_amount;
         //new UI
         ImageView circle;
-        TextView steps;
+        TextView steps,user_name;
         TextView message_count;
+        RelativeLayout circle_group;
+        LinearLayout note_group;
+        TextView comment;
+        ImageButton submit;
     }
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -90,6 +110,14 @@ public class UserAdapter extends BaseAdapter {
         final Holder holder=new Holder();
         View rowView;
         rowView = inflater.inflate(R.layout.user_item, null);
+        if(position==0&&messageBlocks.get(0).step!=localStoreController.getStep()){
+            if(messageBlocks.get(0).like_count!=0||messageBlocks.get(0).messages.size()!=0){
+                messageBlocks.add(0, new MessageBlock(localStoreController.getStep()));
+            }
+            else{
+                messageBlocks.get(0).step=localStoreController.getStep();
+            }
+        }
         //holder.t_message=(TextView) rowView.findViewById(R.id.text_message);
         //holder.t_time=(TextView) rowView.findViewById(R.id.text_time);
         //holder.t_step_status=(TextView) rowView.findViewById(R.id.text_step_status);
@@ -99,7 +127,54 @@ public class UserAdapter extends BaseAdapter {
         holder.like_amount.setText(Integer.toString(messageBlocks.get(position).like_count));
         //new UI
         holder.circle=(ImageView) rowView.findViewById(R.id.image_circle);
+        holder.circle_group=(RelativeLayout)rowView.findViewById(R.id.circle_group);
+        holder.note_group=(LinearLayout)rowView.findViewById(R.id.note_group);
+        holder.user_name=(TextView) rowView.findViewById(R.id.UserName);
+        holder.user_name.setText(LocalStoreController.userLocalStore.getString("name", ""));
+        holder.submit=(ImageButton)rowView.findViewById(R.id.submit);
+        holder.submit.setEnabled(false);
+        holder.comment=(TextView)rowView.findViewById(R.id.comment);
+        holder.comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    final View note = LayoutInflater.from(context).inflate(R.layout.addnote, null);
+                    new AlertDialog.Builder(context)
+                            .setTitle("Leave Messages")
+                            .setView(note)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    EditText editText = (EditText) note.findViewById(R.id.edittext);
+                                    String message_content = editText.getText().toString();
+                                    if(!message_content.trim().isEmpty()){
+                                        int unixTime = (int) (System.currentTimeMillis() / 1000L);
 
+                                        Message message = new Message(message_content, unixTime, localStoreController.getStep());
+                                        ServerRequest request = new ServerRequest(context);
+                                        request.upSelfMessage(message, new CallBack() {
+                                            @Override
+                                            public void done(CallBackContent content) {
+                                                if (content != null) {
+                                                    Log.d("TAG", "UpSelfMessage successful" + "\n");
+                                                    int amount = localStoreController.getMessageAmount();
+                                                    localStoreController.storeMessageAmount(amount + 1);
+                                                } else
+                                                    Log.e("TAG", "UpSelfMessage failed" + "\n");
+                                            }
+                                        });
+                                        messageBlocks.get(0).messages.add(message);
+                                    }
+                                }
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .show();
+
+                }
+        });
+        if(position!=0){
+            holder.user_name.setVisibility(TextView.GONE);
+            holder.note_group.setVisibility(LinearLayout.GONE);
+        }
         holder.steps=(TextView) rowView.findViewById(R.id.steps);
         holder.steps.setText(Integer.toString(messageBlocks.get(position).step));
 
@@ -107,19 +182,24 @@ public class UserAdapter extends BaseAdapter {
         holder.message_count.setText(Integer.toString(messageBlocks.get(position).messages.size()));
 
         //resize circle
-        int scale_dp = 80+messageBlocks.get(position).like_count*3;
+        int scale_dp = 80+messageBlocks.get(position).like_count*5;
         if(scale_dp>=170)scale_dp=170;
+        if(position==0)scale_dp=170;
         int scale_px = (int)convertDpToPixel(scale_dp,context);
         int margin_px = (int)convertDpToPixel(90-scale_dp/2,context);
         RelativeLayout.LayoutParams resizeparameter = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        resizeparameter.setMargins(margin_px, 0, 0, 0);
+        //resizeparameter.setMargins(margin_px, 0, 0, 0);
         resizeparameter.width = scale_px;
         resizeparameter.height = scale_px;
         holder.circle.setLayoutParams(resizeparameter);
+        resizeparameter = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        resizeparameter.setMargins(margin_px, 0, 0, 0);
+        holder.circle_group.setLayoutParams(resizeparameter);
 
-        RelativeLayout.LayoutParams relocparameter = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        relocparameter.setMargins((int)convertDpToPixel(65,context), (int)convertDpToPixel(scale_dp/3,context), 0, 0);
-        holder.steps.setLayoutParams(relocparameter);
+        //RelativeLayout.LayoutParams relocparameter = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        //relocparameter.setMargins((int)convertDpToPixel(65,context), (int)convertDpToPixel(scale_dp/3,context), 0, 0);
+        //holder.steps.setLayoutParams(relocparameter);
+        holder.steps.setTextSize(scale_dp/4);
 
         return rowView;
     }
@@ -133,10 +213,10 @@ public class UserAdapter extends BaseAdapter {
     }
     private void extractMessageBlock()
     {
-        for(int i=0;i < message.length;i++)
+        for(int i=0;i < message.size();i++)
         {
-            String [] temp_step=message[i].message_content.split("@");
-            String [] temp_content=message[i].message_content.split(";");
+            String [] temp_step=message.get(i).message_content.split("@");
+            String [] temp_content=message.get(i).message_content.split(";");
             int step=Integer.parseInt(temp_step[1].substring(2));
             String string_content=temp_content[0];
             int messageblock_Itr=stepExist(step);
@@ -152,7 +232,7 @@ public class UserAdapter extends BaseAdapter {
                 Log.d("messageBlocks", "like count++");
             }
             else{
-                messageBlocks.get(messageblock_Itr).messages.add(message[i]);
+                messageBlocks.get(messageblock_Itr).messages.add(message.get(i));
                 Log.d("messageBlocks", "add message");
             }
         }

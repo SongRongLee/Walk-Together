@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.BaseAdapter;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -150,8 +151,9 @@ public class ScheduledService extends Service
         });
     }
     private void getMessageFinished() {
-        TabOne.listAdapter = new UserAdapter(TabOne.activity, TabOne.userImages, messageList);
-        TabOne.listView.setAdapter(TabOne.listAdapter);
+        //TabOne.listAdapter = new UserAdapter(TabOne.activity, messageList);
+        //TabOne.listView.setAdapter(TabOne.listAdapter);
+        ((BaseAdapter)TabOne.listView.getAdapter()).notifyDataSetChanged();
         //listAdapter.notifyDataSetChanged();
     }
 

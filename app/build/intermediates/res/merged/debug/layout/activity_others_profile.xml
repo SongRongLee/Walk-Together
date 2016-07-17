@@ -32,11 +32,6 @@
         android:layout_marginTop="60sp"
         />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/addFriend"
-        android:layout_below="@+id/view"
-        android:layout_alignParentEnd="true" />
+
 
 </RelativeLayout><!-- From: file:/D:/Hubert/Android/Walk-Together/app/src/main/res/layout/activity_others_profile.xml -->

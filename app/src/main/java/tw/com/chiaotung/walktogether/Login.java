@@ -8,7 +8,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -16,7 +15,7 @@ public class Login extends Activity implements View.OnClickListener,TextWatcher{
 
     EditText edtAccount,edtPassword;
     ImageButton btLogin;
-    Button btSignup;
+    ImageButton btSignup;
     LocalStoreController storeController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +27,7 @@ public class Login extends Activity implements View.OnClickListener,TextWatcher{
         edtPassword = (EditText) findViewById(R.id.edt_password);
         btLogin = (ImageButton) findViewById(R.id.bt_logIn);
         btLogin.setEnabled(false);
-        btSignup = (Button) findViewById(R.id.bt_signUp);
+        btSignup = (ImageButton) findViewById(R.id.bt_signUp);
         storeController=new LocalStoreController(this);
 
         //check account logged in

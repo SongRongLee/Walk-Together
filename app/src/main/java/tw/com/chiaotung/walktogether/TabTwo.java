@@ -37,15 +37,16 @@ public class TabTwo extends Fragment {
         activity = getActivity();
         storeController=new LocalStoreController(getActivity());
         View rootview = inflater.inflate(R.layout.fragment_tab_two, container, false);
-        String name = LocalStoreController.userLocalStore.getString("name", "");
-        username = (TextView)rootview.findViewById(R.id.text_user_name);
-        username.setText(name);
+        //String name = LocalStoreController.userLocalStore.getString("name", "");
+        /*
+        //username = (TextView)rootview.findViewById(R.id.text_user_name);
+        //username.setText(name);
 
-        userstep = (TextView)rootview.findViewById(R.id.text_user_steps);
-        String stepinfo = String.valueOf(UserStatus.getStep) + " steps";
-        userstep.setText(stepinfo);
+        //userstep = (TextView)rootview.findViewById(R.id.text_user_steps);
+        //String stepinfo = String.valueOf(UserStatus.getStep) + " steps";
+        //userstep.setText(stepinfo);
 
-/*
+        /*
         String[] temp_fid_list,temp_oid_list;
         String[] temp_fname_list,temp_oname_list;
         temp_fid_list = LocalStoreController.userLocalStore.getString("fid_list", "").split(",");
@@ -77,15 +78,17 @@ public class TabTwo extends Fragment {
         fsteps_list = new int[fid_list.length];
         fsteps_mid_list = new int[fid_list.length];
         temp_fsteps_list = new int[fid_list.length];*/
+
         //do getMid
         fname_list = new String[0];
         fsteps_list = new int[0];
         updateInfo();
-/*
+        /*
         View TextFriendView = LayoutInflater.from(getActivity()).inflate(R.layout.testing_note, null);
         text_friend = (TextView) TextFriendView.findViewById(R.id.text);
         text_friend.setText(" Others");
-*/
+        */
+
         listView = (ListView) rootview.findViewById(R.id.friend_list_view);
         listView.setDivider(null);
         //listView.addHeaderView(TextFriendView);
@@ -116,7 +119,7 @@ public class TabTwo extends Fragment {
             public void done(CallBackContent content) {
                 if (content != null) {
                     storeController.storeAllNameID(content.user);
-                    username.setText(content.user.name);
+                    //username.setText(content.user.name);
                     getEveryoneInfo();
                 }
                 else

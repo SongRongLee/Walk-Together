@@ -1,7 +1,9 @@
 package tw.com.chiaotung.walktogether;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -9,9 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,12 +32,16 @@ public class OthersUserAdapter extends BaseAdapter {
     ArrayList<MessageBlock> messageBlocks;
     int [] imageId;
     private Boolean isLiked;
-    private Boolean[] like_clicked;
+    private Boolean like_clicked;
+    private Boolean isFriend;
+    private Boolean addFriend_clicked;
     private String Name;
+    LocalStoreController localStoreController;
     private static LayoutInflater inflater=null;
     public OthersUserAdapter(Activity a, int[] userImages, Message[] messageList, String name) {
         // TODO Auto-generated constructor stub
         context=a;
+        localStoreController = new LocalStoreController(a);
         imageId=userImages;
         message = messageList;
         Name = name;
@@ -38,7 +49,10 @@ public class OthersUserAdapter extends BaseAdapter {
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         messageBlocks=new ArrayList<>();
         extractMessageBlock();
-        like_clicked = new Boolean[message.length];
+        if(messageBlocks.size()==0||messageBlocks.get(0).step!=OthersProfile.step){
+            messageBlocks.add(0, new MessageBlock(OthersProfile.step));
+        }
+        //like_clicked = new Boolean[message.length];
     }
     @Override
     public int getCount() {
@@ -76,49 +90,184 @@ public class OthersUserAdapter extends BaseAdapter {
         TextView t_time;
         TextView t_step_status;
         ImageView img;
-        ImageView like;
+        ImageButton like;
         TextView like_amount;
         //new UI
         ImageView circle;
-        TextView steps;
+        TextView steps,user_name;
         TextView message_count;
+        RelativeLayout circle_group;
+        LinearLayout note_group;
+        TextView comment;
+        ImageButton submit;
+        Button addFriend;
     }
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, final View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
         final Holder holder=new Holder();
         View rowView;
-        rowView = inflater.inflate(R.layout.user_item, null);
+        rowView = inflater.inflate(R.layout.userdata, null);
         //holder.t_message=(TextView) rowView.findViewById(R.id.text_message);
         //holder.t_time=(TextView) rowView.findViewById(R.id.text_time);
         //holder.t_step_status=(TextView) rowView.findViewById(R.id.text_step_status);
         //holder.img=(ImageView) rowView.findViewById(R.id.image_user);
-        holder.like=(ImageView) rowView.findViewById(R.id.image_like);
         holder.like_amount=(TextView) rowView.findViewById(R.id.like_count);
         holder.like_amount.setText(Integer.toString(messageBlocks.get(position).like_count));
         //new UI
-        holder.circle=(ImageView) rowView.findViewById(R.id.image_circle);
-
         holder.steps=(TextView) rowView.findViewById(R.id.steps);
         holder.steps.setText(Integer.toString(messageBlocks.get(position).step));
 
         holder.message_count=(TextView)rowView.findViewById(R.id.message_count);
         holder.message_count.setText(Integer.toString(messageBlocks.get(position).messages.size()));
+        holder.circle=(ImageView) rowView.findViewById(R.id.image_circle);
+        holder.circle_group=(RelativeLayout)rowView.findViewById(R.id.circle_group);
+        holder.note_group=(LinearLayout)rowView.findViewById(R.id.note_group);
+        holder.user_name=(TextView) rowView.findViewById(R.id.UserName);
+        holder.user_name.setText(Name);
+        holder.submit=(ImageButton)rowView.findViewById(R.id.submit);
+        holder.submit.setEnabled(false);
+        //add note
+        holder.comment=(TextView)rowView.findViewById(R.id.comment);
+        holder.comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final View note = LayoutInflater.from(context).inflate(R.layout.addnote, null);
+                new AlertDialog.Builder(context)
+                        .setTitle("Leave Messages")
+                        .setView(note)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                EditText editText = (EditText) note.findViewById(R.id.edittext);
+                                String message_content = editText.getText().toString();
+                                if(!message_content.trim().isEmpty()) {
+                                    int unixTime = (int) (System.currentTimeMillis() / 1000L);
+                                    int from = LocalStoreController.userLocalStore.getInt("mid", 1);
+                                    Message message = new Message(message_content, unixTime, OthersProfile.step, from, OthersProfile.mid);
+                                    ServerRequest request = new ServerRequest(context);
+                                    request.upOtherMessage(message, new CallBack() {
+                                        @Override
+                                        public void done(CallBackContent content) {
+                                            if (content != null) {
+                                                Log.e("TAG", "UpOtherMessage Success" + "\n");
+                                            } else
+                                                Log.e("TAG", "UpOtherMessage failed" + "\n");
+                                        }
+                                    });
+                                    messageBlocks.get(0).messages.add(message);
+                                }
+                            }
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
 
-        //resize circle
-        int scale_dp = 80+messageBlocks.get(position).like_count*3;
+            }
+        });
+        //add friend
+        holder.addFriend=(Button)rowView.findViewById(R.id.addFriend);
+        String[] fid_list = new String[0];
+        if(!LocalStoreController.userLocalStore.getString("fid_list", "").equals("null") && !LocalStoreController.userLocalStore.getString("fid_list", "").equals(""))
+            fid_list = LocalStoreController.userLocalStore.getString("fid_list", "").split(",");
+
+        isFriend = false;
+        addFriend_clicked = false;
+        for (int i = 0; i < fid_list.length; i++) {
+            if (OthersProfile.mid == Integer.valueOf(fid_list[i])) {
+                isFriend = true;
+                break;
+            }
+        }
+        if (isFriend)
+            holder.addFriend.setText("Friend");
+        else {
+            holder.addFriend.setText("Add friend");
+            holder.addFriend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!addFriend_clicked) {
+                        holder.addFriend.setText("Friend");
+                        int from = LocalStoreController.userLocalStore.getInt("mid", 1);
+                        ServerRequest request = new ServerRequest(context);
+                        request.addFriend(from, OthersProfile.mid);
+                        addFriend_clicked = true;
+                        request.getMid(new CallBack() {
+                            @Override
+                            public void done(CallBackContent content) {
+                                if (content != null) {
+                                    localStoreController.storeAllNameID(content.user);
+                                } else
+                                    Log.e("TAG", "getMid failed" + "\n");
+                            }
+                        });
+                        Toast.makeText(context, "Add friend successfully !! ", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
+        //like step
+        isLiked=false;
+        holder.like=(ImageButton) rowView.findViewById(R.id.like_bt);
+        if(!isLiked) {
+            //holder.like.setImageResource(R.drawable.ic_thumb_up_before);
+            like_clicked = false;
+            holder.like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!like_clicked) {
+                        int from = LocalStoreController.userLocalStore.getInt("mid", 1);
+                        int unixTime = (int) (System.currentTimeMillis() / 1000L);
+                        Message message = new Message();
+                        message.from = from;
+                        message.time = unixTime;
+                        message.to = OthersProfile.mid;
+                        message.step = OthersProfile.step;
+                        uploadLikeStep(message);
+                        Toast.makeText(context, "You liked the Step !! ", Toast.LENGTH_LONG).show();
+                        like_clicked = true;
+                        //holder.like.setImageResource(R.drawable.ic_thumb_up_after);
+                        String current_likelist = localStoreController.getSelfLikelist();
+                        String new_likelist = current_likelist + String.valueOf(OthersProfile.mid) + ",";
+                        localStoreController.storeSelfLikelist(new_likelist);
+
+                        messageBlocks.get(0).like_count++;
+                        holder.like_amount.setText(Integer.toString(messageBlocks.get(position).like_count));
+                    }
+                }
+            });
+        }
+        else
+        {
+            //holder.like.setImageResource(R.drawable.ic_thumb_up_after);
+            like_clicked = true;
+        }
+
+        //set first block uniqueness
+        if(position!=0){
+            holder.user_name.setVisibility(TextView.GONE);
+            holder.note_group.setVisibility(LinearLayout.GONE);
+            holder.addFriend.setVisibility(Button.GONE);
+        }
+
+        //set UI size
+        int scale_dp = 80+messageBlocks.get(position).like_count*5;
         if(scale_dp>=170)scale_dp=170;
+        if(position==0)scale_dp=170;
         int scale_px = (int)convertDpToPixel(scale_dp,context);
         int margin_px = (int)convertDpToPixel(90-scale_dp/2,context);
         RelativeLayout.LayoutParams resizeparameter = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        resizeparameter.setMargins(margin_px, 0, 0, 0);
+        //resizeparameter.setMargins(margin_px, 0, 0, 0);
         resizeparameter.width = scale_px;
         resizeparameter.height = scale_px;
         holder.circle.setLayoutParams(resizeparameter);
+        resizeparameter = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        resizeparameter.setMargins(margin_px, 0, 0, 0);
+        holder.circle_group.setLayoutParams(resizeparameter);
 
-        RelativeLayout.LayoutParams relocparameter = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        relocparameter.setMargins((int)convertDpToPixel(65,context), (int)convertDpToPixel(scale_dp/3,context), 0, 0);
-        holder.steps.setLayoutParams(relocparameter);
+        //RelativeLayout.LayoutParams relocparameter = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        //relocparameter.setMargins((int)convertDpToPixel(65,context), (int)convertDpToPixel(scale_dp/3,context), 0, 0);
+        //holder.steps.setLayoutParams(relocparameter);
+        holder.steps.setTextSize(scale_dp / 4);
         return rowView;
     }
     private int stepExist(int step){
@@ -151,6 +300,18 @@ public class OthersUserAdapter extends BaseAdapter {
                 Log.d("messageBlocks", "add message");
             }
         }
+    }
+    private void uploadLikeStep(Message message) {
+        ServerRequest request = new ServerRequest(context);
+        request.upLikeStep(message, new CallBack() {
+            @Override
+            public void done(CallBackContent content) {
+                if (content != null) {
+                    Log.d("TAG", "UpSelfMessage successful" + "\n");
+                } else
+                    Log.e("TAG", "UpSelfMessage failed" + "\n");
+            }
+        });
     }
     private String getDate(long time) {
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);

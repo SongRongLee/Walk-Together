@@ -58,23 +58,23 @@ public final class R {
 		public static final int common_signin_btn_light_text_disabled = 0x7f0c001f;
 		public static final int common_signin_btn_light_text_focused = 0x7f0c0020;
 		public static final int common_signin_btn_light_text_pressed = 0x7f0c0021;
-		public static final int common_signin_btn_text_dark = 0x7f0c006e;
-		public static final int common_signin_btn_text_light = 0x7f0c006f;
-		public static final int wallet_bright_foreground_disabled_holo_light = 0x7f0c0056;
-		public static final int wallet_bright_foreground_holo_dark = 0x7f0c0057;
-		public static final int wallet_bright_foreground_holo_light = 0x7f0c0058;
-		public static final int wallet_dim_foreground_disabled_holo_dark = 0x7f0c0059;
-		public static final int wallet_dim_foreground_holo_dark = 0x7f0c005a;
-		public static final int wallet_dim_foreground_inverse_disabled_holo_dark = 0x7f0c005b;
-		public static final int wallet_dim_foreground_inverse_holo_dark = 0x7f0c005c;
-		public static final int wallet_highlighted_text_holo_dark = 0x7f0c005d;
-		public static final int wallet_highlighted_text_holo_light = 0x7f0c005e;
-		public static final int wallet_hint_foreground_holo_dark = 0x7f0c005f;
-		public static final int wallet_hint_foreground_holo_light = 0x7f0c0060;
-		public static final int wallet_holo_blue_light = 0x7f0c0061;
-		public static final int wallet_link_text_light = 0x7f0c0062;
-		public static final int wallet_primary_text_holo_light = 0x7f0c0072;
-		public static final int wallet_secondary_text_holo_dark = 0x7f0c0073;
+		public static final int common_signin_btn_text_dark = 0x7f0c0074;
+		public static final int common_signin_btn_text_light = 0x7f0c0075;
+		public static final int wallet_bright_foreground_disabled_holo_light = 0x7f0c0059;
+		public static final int wallet_bright_foreground_holo_dark = 0x7f0c005a;
+		public static final int wallet_bright_foreground_holo_light = 0x7f0c005b;
+		public static final int wallet_dim_foreground_disabled_holo_dark = 0x7f0c005c;
+		public static final int wallet_dim_foreground_holo_dark = 0x7f0c005d;
+		public static final int wallet_dim_foreground_inverse_disabled_holo_dark = 0x7f0c005e;
+		public static final int wallet_dim_foreground_inverse_holo_dark = 0x7f0c005f;
+		public static final int wallet_highlighted_text_holo_dark = 0x7f0c0060;
+		public static final int wallet_highlighted_text_holo_light = 0x7f0c0061;
+		public static final int wallet_hint_foreground_holo_dark = 0x7f0c0062;
+		public static final int wallet_hint_foreground_holo_light = 0x7f0c0063;
+		public static final int wallet_holo_blue_light = 0x7f0c0064;
+		public static final int wallet_link_text_light = 0x7f0c0065;
+		public static final int wallet_primary_text_holo_light = 0x7f0c0078;
+		public static final int wallet_secondary_text_holo_dark = 0x7f0c0079;
 	}
 	public static final class drawable {
 		public static final int cast_ic_notification_0 = 0x7f02004e;
@@ -108,12 +108,12 @@ public final class R {
 		public static final int common_signin_btn_text_normal_light = 0x7f02006b;
 		public static final int common_signin_btn_text_pressed_dark = 0x7f02006c;
 		public static final int common_signin_btn_text_pressed_light = 0x7f02006d;
-		public static final int ic_plusone_medium_off_client = 0x7f020089;
-		public static final int ic_plusone_small_off_client = 0x7f02008a;
-		public static final int ic_plusone_standard_off_client = 0x7f02008b;
-		public static final int ic_plusone_tall_off_client = 0x7f02008c;
-		public static final int powered_by_google_dark = 0x7f0200a5;
-		public static final int powered_by_google_light = 0x7f0200a6;
+		public static final int ic_plusone_medium_off_client = 0x7f02008d;
+		public static final int ic_plusone_small_off_client = 0x7f02008e;
+		public static final int ic_plusone_standard_off_client = 0x7f02008f;
+		public static final int ic_plusone_tall_off_client = 0x7f020090;
+		public static final int powered_by_google_dark = 0x7f0200ac;
+		public static final int powered_by_google_light = 0x7f0200ad;
 	}
 	public static final class id {
 		public static final int adjust_height = 0x7f0d0035;
@@ -188,11 +188,11 @@ public final class R {
 		public static final int common_open_on_phone = 0x7f070030;
 		public static final int common_signin_button_text = 0x7f070031;
 		public static final int common_signin_button_text_long = 0x7f070032;
-		public static final int create_calendar_message = 0x7f07004b;
-		public static final int create_calendar_title = 0x7f07004c;
-		public static final int decline = 0x7f07004d;
-		public static final int store_picture_message = 0x7f07004e;
-		public static final int store_picture_title = 0x7f07004f;
+		public static final int create_calendar_message = 0x7f07004c;
+		public static final int create_calendar_title = 0x7f07004d;
+		public static final int decline = 0x7f07004e;
+		public static final int store_picture_message = 0x7f07004f;
+		public static final int store_picture_title = 0x7f070050;
 		public static final int wallet_buy_button_place_holder = 0x7f07003e;
 	}
 	public static final class style {
