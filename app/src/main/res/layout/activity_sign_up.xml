@@ -1,49 +1,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:layout_height="match_parent"
     tools:context=".SignUp"
     android:orientation="vertical"
-    android:gravity="top">
+    android:gravity="center"
+    android:background="@color/grayDark"
+    android:paddingEnd="50dp"
+    android:paddingStart="50dp"
+    android:focusableInTouchMode="true">
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="User Name : "
-            android:id="@+id/textView"
-            android:textColor="@android:color/black"
-            android:textSize="18sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="10sp">
+        android:layout_gravity="center_horizontal">
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:inputType="textCapWords|textPersonName"
             android:digits="0123456789 abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:ems="10"
             android:id="@+id/edt_name"
             android:textColor="@android:color/black"
-            android:textColorHint="@android:color/darker_gray"
-            android:hint="example:Amy" />
+            android:textColorHint="@color/grayHint"
+            android:hint="User Name"
+            android:background="@drawable/field_background"
+            android:textSize="15sp"
+            android:paddingStart="15dp" />
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
@@ -53,15 +37,6 @@
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
         android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Email : "
-            android:id="@+id/textView2"
-            android:textColor="@android:color/black"
-            android:textSize="18sp" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -85,58 +60,44 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="10sp">
+        android:layout_gravity="center_horizontal">
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:ems="10"
             android:id="@+id/edt_account"
             android:textColor="@android:color/black"
-            android:textColorHint="@android:color/darker_gray"
-            android:hint="example:Amy123@gmail.com"
+            android:textColorHint="@color/grayHint"
+            android:hint="Email"
             android:singleLine="true"
             android:inputType="textEmailAddress"
-            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@." />
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Password : "
-            android:id="@+id/textView3"
-            android:textColor="@android:color/black"
-            android:textSize="18sp" />
-
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@."
+            android:background="@drawable/field_background"
+            android:textSize="15sp"
+            android:paddingStart="15dp" />
     </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="10sp">
+        android:layout_gravity="center_horizontal">
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:ems="10"
             android:id="@+id/edt_password"
             android:textColor="@android:color/black"
-            android:textColorHint="@android:color/darker_gray"
+            android:textColorHint="@color/grayHint"
             android:singleLine="false"
             android:inputType="textPassword"
             android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            android:hint="******" />
+            android:hint="Password"
+            android:background="@drawable/field_background"
+            android:textSize="15sp"
+            android:paddingStart="15dp" />
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
@@ -146,15 +107,6 @@
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
         android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Repeat password : "
-            android:id="@+id/textView4"
-            android:textColor="@android:color/black"
-            android:textSize="18sp" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -183,15 +135,18 @@
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:ems="10"
             android:id="@+id/edt_password_rep"
             android:textColor="@android:color/black"
-            android:textColorHint="@android:color/darker_gray"
+            android:textColorHint="@color/grayHint"
             android:singleLine="false"
             android:inputType="textPassword"
             android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            android:hint="******" />
+            android:hint="Repeat Password"
+            android:background="@drawable/field_background"
+            android:textSize="15sp"
+            android:paddingStart="15dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -202,12 +157,15 @@
         android:layout_marginTop="15sp"
         android:layout_marginBottom="10sp">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <ImageButton
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:text="Confirm"
             android:id="@+id/bt_confirm"
-            android:enabled="false" />
+            android:enabled="false"
+            android:background="@android:color/transparent"
+            android:src="@drawable/new_account"
+            android:scaleType="fitCenter" />
     </LinearLayout>
 
 </LinearLayout>

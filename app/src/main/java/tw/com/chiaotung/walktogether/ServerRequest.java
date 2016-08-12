@@ -1,5 +1,6 @@
 package tw.com.chiaotung.walktogether;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
@@ -22,16 +23,16 @@ public class ServerRequest {
     static String serverURL="http://140.113.169.174/walk_together/";
     LocalStoreController storeController;
     RequestQueue requestQueue;
-    //ProgressDialog pdialog;
+    ProgressDialog pdialog;
     Context context;
 
     public ServerRequest(Context context){
         this.context=context;
         requestQueue= Volley.newRequestQueue(context);
         storeController = new LocalStoreController(context);
-        /*pdialog = new ProgressDialog(context);
+        pdialog = new ProgressDialog(context);
         pdialog.setTitle("Processing...");
-        pdialog.setTitle("Please wait...");*/
+        pdialog.setMessage("Please wait...");
     }
     public void logInCheck(final User user, final CallBack callBack)  {
         //pdialog.show();
@@ -68,7 +69,7 @@ public class ServerRequest {
         //pdialog.dismiss();
     }
     public void signUp(final User user, final CallBack callBack)  {
-        //pdialog.show();
+        pdialog.show();
         JSONObject param = new JSONObject();
         try {
             param.put("name", user.name);
@@ -93,7 +94,7 @@ public class ServerRequest {
                     }
                 });
         requestQueue.add(jsonObjectRequest);
-        //pdialog.dismiss();
+        pdialog.dismiss();
     }
     public void upRegID(final String regID)  {
         //pdialog.show();

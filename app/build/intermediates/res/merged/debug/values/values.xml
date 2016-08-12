@@ -512,7 +512,7 @@
     </style>
     <!-- From: file:/D:/Hubert/Android/Walk-Together/app/src/main/res/values/styles.xml -->
     <eat-comment/>
-    <style name="AppSignUp" parent="android:Theme.Holo.Light">
+    <style name="AppSignUp" parent="android:Theme.Holo.Light.NoActionBar">
         <item name="android:actionBarStyle">@style/ActionBar.Plum</item>
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
     </style>
