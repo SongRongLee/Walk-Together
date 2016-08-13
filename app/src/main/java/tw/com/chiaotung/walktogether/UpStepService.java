@@ -13,10 +13,11 @@ import java.util.TimerTask;
  */
 public class UpStepService extends Service
 {
-
+    static boolean service_state=false;
     private Timer timer = new Timer();
     private Handler handler = new Handler();
     private int count;
+    private ServerRequest request;
     LocalStoreController storeController;
     @Override
     public IBinder onBind(Intent intent)
@@ -30,16 +31,18 @@ public class UpStepService extends Service
         super.onCreate();
         storeController = new LocalStoreController(this);
         count = 0;
+        service_state=true;
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 count++;
                 if(count > 1) {
-                    handler.post(new Runnable() {
+                    upStep();
+                    /*handler.post(new Runnable() {
                         public void run() {
-                            upStep();
+                            //upStep();
                         }
-                    });
+                    });*/
                 }
             }
         }, 0, 1*15*1000);//15 sec
@@ -47,7 +50,7 @@ public class UpStepService extends Service
     private void upStep()
     {
         int unixTime = (int) (System.currentTimeMillis() / 1000L);
-        ServerRequest request = new ServerRequest(TabOne.activity);
+        request=new ServerRequest(TabOne.activity);
         int step = UserStatus.getStep;
         request.upStep(step,unixTime);
         Log.d("TAG", "Service UpStep : "+ step + "\n");
