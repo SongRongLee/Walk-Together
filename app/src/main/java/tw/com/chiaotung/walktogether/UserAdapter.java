@@ -141,7 +141,8 @@ public class UserAdapter extends BaseAdapter {
                     new AlertDialog.Builder(context)
                             .setTitle("Leave Messages")
                             .setView(note)
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            .setPositiveButton("OK", new DialogInterface
+                                    .OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     EditText editText = (EditText) note.findViewById(R.id.edittext);

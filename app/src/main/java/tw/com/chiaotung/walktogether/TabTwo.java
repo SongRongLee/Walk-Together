@@ -121,15 +121,14 @@ public class TabTwo extends Fragment {
                     storeController.storeAllNameID(content.user);
                     //username.setText(content.user.name);
                     getEveryoneInfo();
-                }
-                else
+                } else
                     Log.e("TAG", "getMid failed" + "\n");
             }
         });
 
     }
     public static void getEveryoneInfo() {
-        String[] temp_fid_list,temp_oid_list;
+        final String[] temp_fid_list,temp_oid_list;
         String[] temp_fname_list,temp_oname_list;
         if(!LocalStoreController.userLocalStore.getString("fid_list", "").equals("null") && !LocalStoreController.userLocalStore.getString("fname_list", "").equals("")) {
             temp_fid_list = LocalStoreController.userLocalStore.getString("fid_list", "").split(",");
@@ -194,6 +193,7 @@ public class TabTwo extends Fragment {
         fsteps_mid_list = new int[length-count];
         temp_fsteps_list = new int[length-count];
         j = 0;
+        Log.d("TAG", "length=" + Integer.toString(length));
         for(i=0; i < length;i++) {
             if (i != text_friend_pos && i != text_other_pos) {
                 int unixTime = (int) (System.currentTimeMillis() / 1000L);
@@ -203,24 +203,26 @@ public class TabTwo extends Fragment {
                     @Override
                     public void done(CallBackContent content) {
                         if (content != null) {
+                            Log.d("TAG", "J=" + Integer.toString(j));
+                            if(j>=temp_fsteps_list.length){
+                                return;
+                            }
                             temp_fsteps_list[j] = content.step;
                             fsteps_mid_list[j] = content.user.mid;
                             j++;
+                            Log.d("TAG", "length - count -1=" + Integer.toString(length - count -1));
                             if (j == length - count -1) {
 
                                 for (int x = 0; x < length; x++) {
                                     for (int y = 0; y < length - count; y++) {
 
-                                        if(x == text_friend_pos) {
+                                        if (x == text_friend_pos) {
                                             fsteps_list[x] = 0;
                                             break;
-                                        }
-                                        else if(x == text_other_pos) {
+                                        } else if (x == text_other_pos) {
                                             fsteps_list[x] = 0;
                                             break;
-                                        }
-                                        else
-                                        if (Integer.valueOf(fid_list[x]) == fsteps_mid_list[y]) {
+                                        } else if (Integer.valueOf(fid_list[x]) == fsteps_mid_list[y]) {
                                             fsteps_list[x] = temp_fsteps_list[y];
                                             break;
                                         }

@@ -101,7 +101,14 @@ public class LocalStoreController extends Application {
         userLocalEditor.clear();
         userLocalEditor.commit();
     }
-
+    public void clearFriendList(){
+        SharedPreferences.Editor userLocalEditor = userLocalStore.edit();
+        userLocalEditor.remove("fid_list");
+        userLocalEditor.remove("fname_list");
+        userLocalEditor.remove("oid_list");
+        userLocalEditor.remove("oname_list");
+        userLocalEditor.commit();
+    }
     public void clearDevice() {
         SharedPreferences.Editor userLocalEditor = userLocalStore.edit();
         userLocalEditor.remove("DeviceName");

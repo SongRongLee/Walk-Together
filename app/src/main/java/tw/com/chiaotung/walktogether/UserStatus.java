@@ -13,7 +13,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import cc.nctu1210.api.koala3x.KoalaDevice;
@@ -28,6 +27,7 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
     private final static String TAG = UserStatus.class.getSimpleName();
     public static TabLayout tabLayout;
     public static ViewPager viewPager;
+    public static int pushed;
     static SharedPreferences prefs;
     private TextView steps;
     public static int getStep;
@@ -68,8 +68,10 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
         mServiceManager.registerSensorEventListener(this, SensorEvent.TYPE_PEDOMETER);
         //Intent intent_service_start= new Intent(UserStatus.this, ScheduledService.class);
         //UserStatus.this.startService(intent_service_start);
-        Intent intent_upsStepservice_start= new Intent(UserStatus.this, UpStepService.class);
-        UserStatus.this.startService(intent_upsStepservice_start);
+        if(UpStepService.service_state==false){
+            Intent intent_upsStepservice_start= new Intent(UserStatus.this, UpStepService.class);
+            UserStatus.this.startService(intent_upsStepservice_start);
+        }
 
         setTab();
 /*
@@ -128,7 +130,7 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
                                     //update step
                                     int unixTime = (int) (System.currentTimeMillis() / 1000L);
                                     int step = UserStatus.getStep;
-                                    serverRequest.upStep(step,unixTime);
+                                    serverRequest.upStep(step, unixTime);
 
                                     Intent intent_upStepservice_stop = new Intent(UserStatus.this, UpStepService.class);
                                     stopService(intent_upStepservice_stop);
@@ -151,7 +153,11 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
                     dialog.show();
                 }
                 else{
-                    viewPager.setCurrentItem(tab.getPosition());
+                    pushed = tab.getPosition();
+                    if(pushed==0){
+                        setTab();
+                    }
+                    viewPager.setCurrentItem(pushed);
                     //if (tab.getPosition() == 1) {
                     //    String stepinfo = String.valueOf(UserStatus.getStep) + " steps";
                         //TabTwo.userstep.setText(stepinfo);
@@ -185,6 +191,7 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
         protected void onResume() {
             super.onResume();
             setTab();
+            viewPager.setCurrentItem(pushed);
             NotificationGenerator.messageNum=0;
             NotificationGenerator.messageFriendNum=0;
             NotificationGenerator.messageFriendList="";
@@ -207,6 +214,7 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
             //PollingUtils.stopPollingService(this, PollingService.class, PollingService.ACTION);
             //Intent intent_service_stop = new Intent(UserStatus.this, ScheduledService.class);
             //stopService(intent_service_stop);
+
             Intent intent_upStepservice_stop = new Intent(UserStatus.this, UpStepService.class);
             stopService(intent_upStepservice_stop);
             Intent intent_koala_stop = new Intent(UserStatus.this, KoalaService.class);
@@ -236,8 +244,13 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
             if(TabOne.connection_status != 0) {
                 getStep = (int)e.values[0];
                 showStep = String.valueOf(getStep);
+                if(storeController.getStep()==0){
+                    int unixTime = (int) (System.currentTimeMillis() / 1000L);
+                    serverRequest.upStep(getStep,unixTime);
+                }
                 storeController.storeStep(getStep);
-                ((BaseAdapter)TabOne.listView.getAdapter()).notifyDataSetChanged();
+                Log.d(TAG, "NOTI LIST" + Integer.toString(getStep));
+                TabOne.listAdapter.notifyDataSetChanged();
             }
 
         }

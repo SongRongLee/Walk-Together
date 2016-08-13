@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -46,7 +47,17 @@ public class OthersProfile extends AppCompatActivity {
         storeController=new LocalStoreController(this);
         showpage();
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                UserStatus.pushed=1;
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     public void showpage() {
         Intent intent_receive = this.getIntent();
         //get view block 1
