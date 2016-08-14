@@ -11,20 +11,16 @@ import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -32,7 +28,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import cc.nctu1210.api.koala3x.KoalaDevice;
-import cc.nctu1210.api.koala3x.KoalaServiceManager;
 import cc.nctu1210.api.koala3x.SensorEvent;
 import cc.nctu1210.api.koala3x.SensorEventListener;
 import tw.com.chiaotung.walktogether.view.CustomAdapter;
@@ -58,6 +53,7 @@ public class ScanDevice extends Activity implements AdapterView.OnItemClickListe
 
 
     private Button btn_scan;
+    private ProgressBar progressBar;
     private ListView device_list;
     private ListView used_device_list;
     private String[] list = {"Device1","Device2","Device3"};
@@ -99,6 +95,7 @@ public class ScanDevice extends Activity implements AdapterView.OnItemClickListe
         setContentView(R.layout.activity_scan_device);
         storeController=new LocalStoreController(this);
         btn_scan = (Button)findViewById(R.id.btn_scan);
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
 
         device_list = (ListView)findViewById(R.id.device_list);
         mAdapter = new CustomAdapter(this, mObjects);
@@ -158,19 +155,29 @@ public class ScanDevice extends Activity implements AdapterView.OnItemClickListe
             if (!startScan) {
                 startScan = true;
                 btn_scan.setText("Stop scan");
+                progressBar.setVisibility(View.VISIBLE);
                 mDevices.clear();
                 mFlags.clear();
                 // Start to scan the ble device
                 scanLeDevice();
 
-                try {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        setupListView();
+                        btn_scan.setText("Scan");
+                        progressBar.setVisibility(View.INVISIBLE);
+                        startScan=false;
+                    }
+                }, SCAN_PERIOD+1000);
+                /*try {
                     Thread.sleep(SCAN_PERIOD+1000);
 
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
-                }
-                setupListView();
+                }*/
             } else {
                 startScan = false;
                 UserStatus.mServiceManager.disconnect();
