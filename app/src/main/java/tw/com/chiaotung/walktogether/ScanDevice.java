@@ -186,6 +186,7 @@ public class ScanDevice extends Activity implements AdapterView.OnItemClickListe
                 mFlags.clear();
                 setupListView();
                 btn_scan.setText("Scan");
+                progressBar.setVisibility(View.INVISIBLE);
             }
         }
     };

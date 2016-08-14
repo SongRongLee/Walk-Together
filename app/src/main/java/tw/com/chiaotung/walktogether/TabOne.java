@@ -69,6 +69,7 @@ public class TabOne extends Fragment {
                         UserStatus.mServiceManager.stopReadingPDRData(used_address);
                     }
                     UserStatus.mServiceManager.disconnect();
+                    UserStatus.koalaserviceup=false;
                     connection_status = 0;
                     btn_connect.setImageResource(R.drawable.connect);
                     btn_connect.setOnClickListener(new View.OnClickListener() {

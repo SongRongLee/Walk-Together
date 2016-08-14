@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import cc.nctu1210.api.koala3x.KoalaDevice;
-import cc.nctu1210.api.koala3x.KoalaService;
 import cc.nctu1210.api.koala3x.KoalaServiceManager;
 import cc.nctu1210.api.koala3x.SensorEvent;
 import cc.nctu1210.api.koala3x.SensorEventListener;
@@ -28,6 +27,7 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
     public static TabLayout tabLayout;
     public static ViewPager viewPager;
     public static int pushed;
+    public static boolean koalaserviceup=false;
     static SharedPreferences prefs;
     private TextView steps;
     public static int getStep;
@@ -63,7 +63,10 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.more));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        mServiceManager = new KoalaServiceManager(this);
+        if(koalaserviceup==false){
+            mServiceManager = new KoalaServiceManager(this);
+            koalaserviceup=true;
+        }
         mServiceManager.registerSensorEventListener(this, SensorEvent.TYPE_ACCELEROMETER);
         mServiceManager.registerSensorEventListener(this, SensorEvent.TYPE_PEDOMETER);
         //Intent intent_service_start= new Intent(UserStatus.this, ScheduledService.class);
@@ -134,8 +137,8 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
 
                                     Intent intent_upStepservice_stop = new Intent(UserStatus.this, UpStepService.class);
                                     stopService(intent_upStepservice_stop);
-                                    Intent intent_koala_stop = new Intent(UserStatus.this, KoalaService.class);
-                                    stopService(intent_koala_stop);
+                                    /*Intent intent_koala_stop = new Intent(UserStatus.this, KoalaService.class);
+                                    stopService(intent_koala_stop);*/
 
                                     storeController.clearUserData();
 
@@ -217,8 +220,9 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
 
             Intent intent_upStepservice_stop = new Intent(UserStatus.this, UpStepService.class);
             stopService(intent_upStepservice_stop);
-            Intent intent_koala_stop = new Intent(UserStatus.this, KoalaService.class);
-            stopService(intent_koala_stop);
+            /*Intent intent_koala_stop = new Intent(UserStatus.this, KoalaService.class);
+            stopService(intent_koala_stop);*/
+            koalaserviceup=false;
             NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.cancelAll();
         }
@@ -356,8 +360,8 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
 
                         Intent intent_upStepservice_stop = new Intent(UserStatus.this, UpStepService.class);
                         stopService(intent_upStepservice_stop);
-                        Intent intent_koala_stop = new Intent(UserStatus.this, KoalaService.class);
-                        stopService(intent_koala_stop);
+                        /*Intent intent_koala_stop = new Intent(UserStatus.this, KoalaService.class);
+                        stopService(intent_koala_stop);*/
 
                         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
                         notificationManager.cancelAll();
