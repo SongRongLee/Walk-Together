@@ -148,12 +148,16 @@
         <ImageButton
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:id="@+id/submit"/>
+            android:id="@+id/submit"
+            android:src="@drawable/message"
+            android:scaleType="fitCenter" />
 
         <ImageButton
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:id="@+id/like_bt"/>
+            android:id="@+id/like_bt"
+            android:scaleType="fitCenter"
+            android:src="@drawable/yo" />
     </LinearLayout>
 
 </RelativeLayout><!-- From: file:/D:/Hubert/Android/Walk-Together/app/src/main/res/layout/userdata.xml -->

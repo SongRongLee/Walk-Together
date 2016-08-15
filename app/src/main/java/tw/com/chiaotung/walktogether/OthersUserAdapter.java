@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -225,6 +227,8 @@ public class OthersUserAdapter extends BaseAdapter {
                         uploadLikeStep(message);
                         Toast.makeText(context, "You liked the Step !! ", Toast.LENGTH_LONG).show();
                         like_clicked = true;
+                        holder.like.setEnabled(false);
+                        holder.like.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
                         //holder.like.setImageResource(R.drawable.ic_thumb_up_after);
                         String current_likelist = localStoreController.getSelfLikelist();
                         String new_likelist = current_likelist + String.valueOf(OthersProfile.mid) + ",";

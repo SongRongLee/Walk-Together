@@ -134,12 +134,16 @@
         <ImageButton
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:id="@+id/submit"/>
+            android:id="@+id/submit"
+            android:src="@drawable/message"
+            android:scaleType="fitCenter" />
 
         <ImageButton
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:id="@+id/image_like"/>
+            android:id="@+id/image_like"
+            android:scaleType="fitCenter"
+            android:src="@drawable/yo" />
 
     </LinearLayout>
 
