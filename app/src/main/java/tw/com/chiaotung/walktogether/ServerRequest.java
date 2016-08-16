@@ -451,4 +451,39 @@ public class ServerRequest {
         requestQueue.add(jsonObjectRequest);
         //pdialog.dismiss();
     }
+    public void search(String key_word, final CallBack callBack)  {
+        //pdialog.show();
+        JSONObject param = new JSONObject();
+        try {
+            param.put("keyword", key_word);
+        }catch (JSONException e){}
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,serverURL+"search.php",param,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        CallBackContent content=new CallBackContent();
+                        User returnedUser=new User();
+                        try{
+                            Log.d("TAG", response.toString());
+                            JSONArray data = response.getJSONArray("data");
+                            returnedUser.fid_list=((JSONObject)data.get(0)).getString("fid_list");
+                            returnedUser.fname_list=((JSONObject)data.get(0)).getString("fname_list");
+                            returnedUser.step_list=((JSONObject)data.get(0)).getString("step_list");
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                        content.user=returnedUser;
+                        callBack.done(content);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("TAG", error.getMessage(), error);
+                        callBack.done(null);
+                    }
+                });
+        requestQueue.add(jsonObjectRequest);
+        //pdialog.dismiss();
+    }
 }

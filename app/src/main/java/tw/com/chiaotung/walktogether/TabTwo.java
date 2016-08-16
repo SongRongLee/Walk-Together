@@ -12,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class TabTwo extends Fragment {
@@ -52,7 +51,9 @@ public class TabTwo extends Fragment {
         bt_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(activity, "search clicked!!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(activity, "search clicked!!", Toast.LENGTH_SHORT).show();
+                Intent go_search=new Intent(getActivity(),SearchOthers.class);
+                startActivity(go_search);
             }
         });
         //do getMid

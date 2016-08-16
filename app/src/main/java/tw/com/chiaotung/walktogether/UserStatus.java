@@ -217,7 +217,7 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
             //PollingUtils.stopPollingService(this, PollingService.class, PollingService.ACTION);
             //Intent intent_service_stop = new Intent(UserStatus.this, ScheduledService.class);
             //stopService(intent_service_stop);
-
+            pushed=0;
             Intent intent_upStepservice_stop = new Intent(UserStatus.this, UpStepService.class);
             stopService(intent_upStepservice_stop);
             /*Intent intent_koala_stop = new Intent(UserStatus.this, KoalaService.class);

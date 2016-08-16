@@ -116,6 +116,12 @@
                 <category android:name="tw.com.chiaotung.walktogether" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name="tw.com.chiaotung.walktogether.SearchOthers"
+            android:label="@string/title_activity_search_others"
+            android:theme="@style/AppThemeUserStatus" >
+        </activity>
         <!-- Include the AdActivity and InAppPurchaseActivity configChanges and themes. -->
         <activity
             android:name="com.google.android.gms.ads.AdActivity"

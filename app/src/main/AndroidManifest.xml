@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="tw.com.chiaotung.walktogether">
+    package="tw.com.chiaotung.walktogether" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -8,9 +8,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
-
-    <permission android:name="tw.com.chiaotung.walktogether.permission.C2D_MESSAGE"
+    <permission
+        android:name="tw.com.chiaotung.walktogether.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="tw.com.chiaotung.walktogether.permission.C2D_MESSAGE" />
 
     <!-- App receives GCM messages. -->
@@ -23,13 +24,13 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name">
+        android:label="@string/app_name" >
         <activity
             android:name=".Login"
             android:label="@string/app_name"
-            android:theme="@style/AppThemeLogin"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize">
+            android:theme="@style/AppThemeLogin"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,36 +40,39 @@
         <activity
             android:name=".UserStatus"
             android:label="@string/title_activity_user_status"
-            android:theme="@style/AppThemeUserStatus"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeUserStatus" >
         </activity>
         <activity
             android:name=".ScanDevice"
             android:label="@string/title_activity_scan_device"
-            android:theme="@style/AppThemeUserStatus"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeUserStatus" >
         </activity>
 
         <service
             android:name="cc.nctu1210.api.koala3x.KoalaService"
             android:enabled="true" />
 
-        <!-- App receives GCM messages.
+        <!--
+        App receives GCM messages.
         <service
             android:name=".ScheduledService"
             android:label="@string/app_name"
-            android:enabled="true"/>-->
+            android:enabled="true"/>
+        -->
 
         <service
             android:name=".UpStepService"
-            android:label="@string/app_name"
-            android:enabled="true"/>
+            android:enabled="true"
+            android:label="@string/app_name" />
+
         <activity
             android:name=".OthersProfile"
             android:label="@string/title_activity_others_profile"
             android:parentActivityName=".UserStatus"
-            android:theme="@style/AppThemeUserStatus"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeUserStatus" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".UserStatus" />
@@ -76,10 +80,9 @@
         <activity
             android:name=".SignUp"
             android:label="@string/title_activity_sign_up"
-            android:theme="@style/AppSignUp"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize">
-
+            android:theme="@style/AppSignUp"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
 
         <meta-data
@@ -97,6 +100,12 @@
                 <category android:name="tw.com.chiaotung.walktogether" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".SearchOthers"
+            android:label="@string/title_activity_search_others"
+            android:theme="@style/AppThemeUserStatus">
+        </activity>
     </application>
 
 </manifest>

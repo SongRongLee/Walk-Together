@@ -6,7 +6,7 @@ package tw.com.chiaotung.walktogether;
 public class User {
     int mid;
     String account,name,password;
-    String fid_list,fname_list,oid_list,oname_list;
+    String fid_list,fname_list,oid_list,oname_list,step_list;
     public User(){
     }
     public User(String account,String password){

@@ -465,6 +465,9 @@
     <string name="create_calendar_message">Allow Ad to create a calendar event?</string>
     <string name="create_calendar_title">Create calendar event</string>
     <string name="decline">Decline</string>
+    <!-- From: file:/D:/Hubert/Android/Walk-Together/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="hello_world">Hello world!</string>
     <!-- From: file:/D:/Hubert/Android/Walk-Together/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/22.0.0/res/values/values.xml -->
     <eat-comment/>
     <string name="mr_media_route_button_content_description">Cast</string>
@@ -477,6 +480,9 @@
     <string name="mr_media_route_controller_stop">Stop casting</string>
     <string name="mr_system_route_name">System</string>
     <string name="mr_user_route_category_name">Devices</string>
+    <!-- From: file:/D:/Hubert/Android/Walk-Together/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="search_hint">Please enter the user\'s name.</string>
     <!-- From: file:/D:/Hubert/Android/Walk-Together/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.0/res/values/values.xml -->
     <eat-comment/>
     <string name="status_bar_notification_info_overflow">999+</string>
@@ -486,8 +492,10 @@
     <string name="store_picture_title">Save image</string>
     <!-- From: file:/D:/Hubert/Android/Walk-Together/app/src/main/res/values/strings.xml -->
     <eat-comment/>
+    <string name="title_activity_my_searchable">mySearchable</string>
     <string name="title_activity_others_profile">Others Page</string>
     <string name="title_activity_scan_device">ScanDevice</string>
+    <string name="title_activity_search_others">SearchOthers</string>
     <string name="title_activity_sign_up">Sign Up</string>
     <string name="title_activity_user_status">UserStatus</string>
     <!-- From: file:/D:/Hubert/Android/Walk-Together/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wallet/7.5.0/res/values/wallet_strings.xml -->

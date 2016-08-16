@@ -8,5 +8,9 @@
     <string name="title_activity_scan_device">ScanDevice</string>
     <string name="title_activity_sign_up">Sign Up</string>
     <string name="comment_string"><u>comment ...</u></string>
+    <string name="title_activity_search_others">SearchOthers</string>
+    <string name="search_hint">Please enter the user\'s name.</string>
+    <string name="title_activity_my_searchable">mySearchable</string>
 
+    <string name="hello_world">Hello world!</string>
 </resources>
