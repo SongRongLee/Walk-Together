@@ -3,17 +3,33 @@ package tw.com.chiaotung.walktogether;
 
 import android.app.AlertDialog;
 import android.app.NotificationManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import cc.nctu1210.api.koala3x.KoalaDevice;
 import cc.nctu1210.api.koala3x.KoalaServiceManager;
@@ -23,6 +39,11 @@ import cc.nctu1210.api.koala3x.SensorEventListener;
 
 public class UserStatus extends AppCompatActivity implements SensorEventListener{
     LocalStoreController storeController;
+    public final static int REQUESTCODE_PICK=0;
+    public final static int REQUESTCODE_CUTTING=1;
+    public static String urlpath;
+    public String imgUrl;
+    private ProgressDialog pd;
     private final static String TAG = UserStatus.class.getSimpleName();
     public static TabLayout tabLayout;
     public static ViewPager viewPager;
@@ -40,6 +61,7 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
         setContentView(R.layout.activity_user_status);
         serverRequest=new ServerRequest(this);
         storeController=new LocalStoreController(this);
+        imgUrl="http://140.113.169.174/walk_together/up_image.php";
         getStep = storeController.getStep();
         if(getStep==0){
             int mid=storeController.getUserID();
@@ -56,7 +78,6 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
                 }
             });
         }
-
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.home));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.friends));
@@ -140,8 +161,8 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
                                     /*Intent intent_koala_stop = new Intent(UserStatus.this, KoalaService.class);
                                     stopService(intent_koala_stop);*/
 
+                                    FileUtil.deleteFile(storeController.getUserID()+".jpg");
                                     storeController.clearUserData();
-
                                     NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
                                     notificationManager.cancelAll();
 
@@ -190,42 +211,161 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
 
 
 
-        @Override
-        protected void onResume() {
-            super.onResume();
-            setTab();
-            viewPager.setCurrentItem(pushed);
-            NotificationGenerator.messageNum=0;
-            NotificationGenerator.messageFriendNum=0;
-            NotificationGenerator.messageFriendList="";
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setTab();
+        viewPager.setCurrentItem(pushed);
+        NotificationGenerator.messageNum=0;
+        NotificationGenerator.messageFriendNum=0;
+        NotificationGenerator.messageFriendList="";
 
-        }
+    }
 
-        @Override
-        protected void onStop() {
-            super.onStop();
-        }
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 
-        @Override
-        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-            super.onActivityResult(requestCode, resultCode, data);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "onActivityResult"+requestCode);
+        switch (requestCode) {
+            case REQUESTCODE_PICK:
+                Log.d(TAG, "REQUESTCODE_PICK");
+                try {
+                    startPhotoZoom(data.getData());
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case REQUESTCODE_CUTTING:
+                Log.d(TAG, "REQUESTCODE_CUTTING");
+                if (data != null) {
+                    setPicToView(data);
+                }
+                break;
         }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+    public void startPhotoZoom(Uri uri) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        // crop=true是设置在开启的Intent中设置显示的VIEW可裁剪
+        intent.putExtra("crop", "true");
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        // outputX outputY 是裁剪图片宽高
+        intent.putExtra("outputX", 300);
+        intent.putExtra("outputY", 300);
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent, REQUESTCODE_CUTTING);
+    }
+    private void setPicToView(Intent picdata) {
+        Bundle extras = picdata.getExtras();
+        if (extras != null) {
+            // 取得SDCard图片路径做显示
+            Bitmap photo = extras.getParcelable("data");
+            Drawable drawable = new BitmapDrawable(null, photo);
+            urlpath = FileUtil.saveFile(this, storeController.getUserID() + ".jpg", photo);
 
-        @Override
-        protected void onDestroy() {
-            super.onDestroy();
-            //PollingUtils.stopPollingService(this, PollingService.class, PollingService.ACTION);
-            //Intent intent_service_stop = new Intent(UserStatus.this, ScheduledService.class);
-            //stopService(intent_service_stop);
-            pushed=0;
-            Intent intent_upStepservice_stop = new Intent(UserStatus.this, UpStepService.class);
-            stopService(intent_upStepservice_stop);
-            /*Intent intent_koala_stop = new Intent(UserStatus.this, KoalaService.class);
-            stopService(intent_koala_stop);*/
-            koalaserviceup=false;
-            NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.cancelAll();
+            // 新线程后台上传服务端
+            pd = ProgressDialog.show(this, null, "uploading image...please wait...");
+            new Thread(uploadImageRunnable).start();
         }
+    }
+    Runnable uploadImageRunnable = new Runnable() {
+        @Override
+        public void run() {
+
+            Map<String, String> textParams = new HashMap<String, String>();
+            Map<String, File> fileparams = new HashMap<String, File>();
+
+            try {
+                // 创建一个URL对象
+                URL url = new URL(imgUrl);
+                textParams = new HashMap<String, String>();
+                fileparams = new HashMap<String, File>();
+                // 要上传的图片文件
+                File file = new File(urlpath);
+                fileparams.put("image", file);
+                // 利用HttpURLConnection对象从网络中获取网页数据
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                // 设置连接超时（记得设置连接超时,如果网络不好,Android系统在超过默认时间会收回资源中断操作）
+                conn.setConnectTimeout(5000);
+                // 设置允许输出（发送POST请求必须设置允许输出）
+                conn.setDoOutput(true);
+                // 设置使用POST的方式发送
+                conn.setRequestMethod("POST");
+                // 设置不使用缓存（容易出现问题）
+                conn.setUseCaches(false);
+                conn.setRequestProperty("Charset", "UTF-8");//设置编码
+                // 在开始用HttpURLConnection对象的setRequestProperty()设置,就是生成HTML文件头
+                conn.setRequestProperty("ser-Agent", "Fiddler");
+                // 设置contentType
+                conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + NetUtil.BOUNDARY);
+                OutputStream os = conn.getOutputStream();
+                DataOutputStream ds = new DataOutputStream(os);
+                NetUtil.writeStringParams(textParams, ds);
+                NetUtil.writeFileParams(fileparams, ds);
+                NetUtil.paramsEnd(ds);
+                // 对文件流操作完,要记得及时关闭
+                os.close();
+                // 服务器返回的响应吗
+                int code = conn.getResponseCode(); // 从Internet获取网页,发送请求,将网页以流的形式读回来
+                // 对响应码进行判断
+                if (code == 200) {// 返回的响应码200,是成功
+                    // 得到网络返回的输入流
+                    InputStream is = conn.getInputStream();
+                    Log.d("TAG",NetUtil.readString(is));
+                } else {
+                    Toast.makeText(UserStatus.this, "upload image fail!", Toast.LENGTH_SHORT).show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            handler.sendEmptyMessage(0);// 执行耗时的方法之后发送消给handler
+        }
+    };
+    Handler handler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case 0:
+                    pd.dismiss();
+                    ServerRequest request=new ServerRequest(UserStatus.this);
+                    request.downImage(storeController.getUserID(), new CallBack() {
+                        @Override
+                        public void done(CallBackContent content) {
+                            if (content != null) {
+                                TabTwo.image_circle.setImageBitmap(content.usr_image);
+                                TabTwo.userstep.setVisibility(View.GONE);
+                            }
+                        }
+                    });
+                    break;
+                default:
+                    break;
+            }
+            return false;
+        }
+    });
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //PollingUtils.stopPollingService(this, PollingService.class, PollingService.ACTION);
+        //Intent intent_service_stop = new Intent(UserStatus.this, ScheduledService.class);
+        //stopService(intent_service_stop);
+        pushed=0;
+        Intent intent_upStepservice_stop = new Intent(UserStatus.this, UpStepService.class);
+        stopService(intent_upStepservice_stop);
+        /*Intent intent_koala_stop = new Intent(UserStatus.this, KoalaService.class);
+        stopService(intent_koala_stop);*/
+        koalaserviceup=false;
+        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
+    }
 
     private int findKoalaDevice(String macAddr) {
         if (ScanDevice.mDevices.size() == 0)
@@ -237,53 +377,53 @@ public class UserStatus extends AppCompatActivity implements SensorEventListener
         }
         return -1;
     }
-        @Override
-        public void onSensorChange(final SensorEvent e) {
+    @Override
+    public void onSensorChange(final SensorEvent e) {
 
-            final int eventType = e.type;
-            final double values [] = new double[3];
-            final int position2 = findKoalaDevice(e.device.getAddress());
-            Log.d(TAG, "time=" + System.currentTimeMillis() + "step counts:" + e.values[0] + "\n");
+        final int eventType = e.type;
+        final double values [] = new double[3];
+        final int position2 = findKoalaDevice(e.device.getAddress());
+        Log.d(TAG, "time=" + System.currentTimeMillis() + "step counts:" + e.values[0] + "\n");
 
-            if(TabOne.connection_status != 0) {
-                getStep = (int)e.values[0];
-                showStep = String.valueOf(getStep);
-                if(storeController.getStep()==0){
-                    int unixTime = (int) (System.currentTimeMillis() / 1000L);
-                    serverRequest.upStep(getStep,unixTime);
+        if(TabOne.connection_status != 0) {
+            getStep = (int)e.values[0];
+            showStep = String.valueOf(getStep);
+            if(storeController.getStep()==0){
+                int unixTime = (int) (System.currentTimeMillis() / 1000L);
+                serverRequest.upStep(getStep,unixTime);
+            }
+            storeController.storeStep(getStep);
+            Log.d(TAG, "NOTI LIST" + Integer.toString(getStep));
+            TabOne.listAdapter.notifyDataSetChanged();
+        }
+
+    }
+
+    @Override
+    public void onConnectionStatusChange(boolean status) {
+
+        if(status == false)
+        {
+            TabOne.connection_status = 0;
+            storeController.storeStep(getStep);
+            Log.d(TAG, "Disconnected from device ." + "\n");
+            TabOne.btn_connect.setImageResource(R.drawable.connect);
+            TabOne.btn_connect.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent_scan = new Intent();
+                    intent_scan.setClass(UserStatus.this, ScanDevice.class);
+                    startActivity(intent_scan);
                 }
-                storeController.storeStep(getStep);
-                Log.d(TAG, "NOTI LIST" + Integer.toString(getStep));
-                TabOne.listAdapter.notifyDataSetChanged();
-            }
-
+            });
         }
 
-        @Override
-        public void onConnectionStatusChange(boolean status) {
+    }
 
-            if(status == false)
-            {
-                TabOne.connection_status = 0;
-                storeController.storeStep(getStep);
-                Log.d(TAG, "Disconnected from device ." + "\n");
-                TabOne.btn_connect.setImageResource(R.drawable.connect);
-                TabOne.btn_connect.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent_scan = new Intent();
-                        intent_scan.setClass(UserStatus.this, ScanDevice.class);
-                        startActivity(intent_scan);
-                    }
-                });
-            }
+    @Override
+    public void onRSSIChange(String addr, float rssi) {
 
-        }
-
-        @Override
-        public void onRSSIChange(String addr, float rssi) {
-
-        }
+    }
 
 /*
     private BroadcastReceiver mBroadcast = new BroadcastReceiver() {

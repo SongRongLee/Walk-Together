@@ -1,13 +1,19 @@
 package tw.com.chiaotung.walktogether;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Path;
+import android.graphics.Rect;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -182,7 +188,56 @@ public class ServerRequest {
         requestQueue.add(jsonObjectRequest);
         //pdialog.dismiss();
     }
+    public void downImage(final int id, final CallBack callBack)  {
+        //pdialog.show();
+        JSONObject param = new JSONObject();
+        try {
+            param.put("mid", Integer.toString(id));
+        }catch (JSONException e){}
+        ImageRequest imageRequest = new ImageRequest(serverURL+"usr_image/"+Integer.toString(id)+".jpg",
+                new Response.Listener<Bitmap>() {
+                    @Override
+                    public void onResponse(Bitmap response) {
+                        Log.d("TAG","downImage success!"+id);
+                        CallBackContent content=new CallBackContent();
+                        content.user=new User();
+                        content.usr_image=getRoundedShape(response);
+                        content.user.mid=id;
+                        callBack.done(content);
+                    }
+                },0,0,ImageView.ScaleType.CENTER,Bitmap.Config.RGB_565,
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("TAG", error.getMessage(), error);
+                        callBack.done(null);
+                    }
+                });
+        requestQueue.add(imageRequest);
+        //pdialog.dismiss();
+    }
+    public Bitmap getRoundedShape(Bitmap scaleBitmapImage) {
+        int targetWidth = 200;
+        int targetHeight = 200;
+        Bitmap targetBitmap = Bitmap.createBitmap(targetWidth,
+                targetHeight,Bitmap.Config.ARGB_8888);
 
+        Canvas canvas = new Canvas(targetBitmap);
+        Path path = new Path();
+        path.addCircle(((float) targetWidth - 1) / 2,
+                ((float) targetHeight - 1) / 2,
+                (Math.min(((float) targetWidth),
+                        ((float) targetHeight)) / 2),
+                Path.Direction.CCW);
+
+        canvas.clipPath(path);
+        Bitmap sourceBitmap = scaleBitmapImage;
+        canvas.drawBitmap(sourceBitmap,
+                new Rect(0, 0, sourceBitmap.getWidth(),
+                        sourceBitmap.getHeight()),
+                new Rect(0, 0, targetWidth, targetHeight), null);
+        return targetBitmap;
+    }
     //input message must includes message_content,time,step.
     public void upSelfMessage(Message message,final CallBack callBack)  {
         //pdialog.show();

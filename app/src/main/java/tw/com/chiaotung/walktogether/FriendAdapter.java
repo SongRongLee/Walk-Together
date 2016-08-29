@@ -2,10 +2,12 @@ package tw.com.chiaotung.walktogether;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -14,17 +16,17 @@ import android.widget.TextView;
 public class FriendAdapter extends BaseAdapter {
     String [] result;
     Context context;
-    int [] imageId;
+    Bitmap [] usr_images;
     int [] steps;
     //int text_friend_pos;
     //int text_other_pos;
     View rowView;
     private static LayoutInflater inflater=null;
-    public FriendAdapter(Activity a, String[] userNameList, int[] userImages, int[] userStepList) {
+    public FriendAdapter(Activity a, String[] userNameList, Bitmap[] userImages, int[] userStepList) {
         // TODO Auto-generated constructor stub
         result=userNameList;
         context=a;
-        imageId=userImages;
+        usr_images=userImages;
         steps = userStepList;
         //text_friend_pos = text_pos_1;
         //text_other_pos = text_pos_2;
@@ -53,17 +55,18 @@ public class FriendAdapter extends BaseAdapter {
     {
         TextView t_name;
         TextView t_steps;
-        //ImageView img;
+        ImageView img;
     }
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
+
         Holder holder=new Holder();
 
         rowView = inflater.inflate(R.layout.friend_item, null);
         holder.t_name=(TextView) rowView.findViewById(R.id.text_friend_name);
         holder.t_steps=(TextView) rowView.findViewById(R.id.text_friend_steps);
-        //holder.img=(ImageView) rowView.findViewById(R.id.image_friend);
+        holder.img=(ImageView) rowView.findViewById(R.id.image_circle);
 
         holder.t_name.setText(result[position]);
         String S = String.valueOf(steps[position]);
@@ -72,16 +75,10 @@ public class FriendAdapter extends BaseAdapter {
         }
         holder.t_steps.setText(S);
 
-        //holder.img.setImageResource(imageId[0]);
-        /*
-        rowView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Toast.makeText(context, "You Clicked "+result[position], Toast.LENGTH_LONG).show();
-            }
-        });
-        */
+        if(usr_images[position]!=null){
+            holder.img.setImageBitmap(usr_images[position]);
+            holder.t_steps.setVisibility(View.GONE);
+        }
         return rowView;
     }
 

@@ -2,7 +2,9 @@ package tw.com.chiaotung.walktogether;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,26 +12,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 
 public class TabTwo extends Fragment {
     public static LocalStoreController storeController;
-    public static int[] userImages = {R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user};
     public static String[] fid_list;
     public static String[]  fname_list;
     public static int[] fsteps_list;
+    public static Bitmap[] userImages;
+    public static Bitmap[] tmp_userImages;
     public static int[] temp_fsteps_list;
     public static int[] fsteps_mid_list;
+    public static int[] usr_image_mid_list;
     public static int i;                      //for server request
     public static int j;                      //for fsteps_list
+    public static int k;                      //for userImages
     public static ListView listView;
     public static FriendAdapter listAdapter;
     public static Activity activity;
     private TextView text_friend;
     public static TextView username;
     public static TextView userstep;
+    public static ImageView image_circle;
     public ImageButton bt_search;
     public static int text_friend_pos;
     public static int text_other_pos;
@@ -38,6 +45,7 @@ public class TabTwo extends Fragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         activity = getActivity();
         storeController=new LocalStoreController(getActivity());
+
         View rootview = inflater.inflate(R.layout.fragment_tab_two, container, false);
         //String name = LocalStoreController.userLocalStore.getString("name", "");
 
@@ -46,6 +54,16 @@ public class TabTwo extends Fragment {
 
         userstep = (TextView)rootview.findViewById(R.id.text_user_steps);
         userstep.setText(String.valueOf(UserStatus.getStep));
+
+        image_circle=(ImageView)rootview.findViewById(R.id.image_circle);
+        image_circle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent pickIntent = new Intent(Intent.ACTION_PICK, null);
+                pickIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                getActivity().startActivityForResult(pickIntent, UserStatus.REQUESTCODE_PICK);
+            }
+        });
 
         bt_search=(ImageButton)rootview.findViewById(R.id.bt_search);
         bt_search.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +115,15 @@ public class TabTwo extends Fragment {
                     Log.e("TAG", "getMid failed" + "\n");
             }
         });
-
+        request.downImage(storeController.getUserID(), new CallBack() {
+            @Override
+            public void done(CallBackContent content) {
+                if(content!=null){
+                    image_circle.setImageBitmap(content.usr_image);
+                    userstep.setVisibility(View.GONE);
+                }
+            }
+        });
     }
     public static void getEveryoneInfo() {
         int length=0;
@@ -116,14 +142,18 @@ public class TabTwo extends Fragment {
                 fname_list[i] = temp_fname_list[i];
             }
         }
+        userImages=new Bitmap[length];
         fsteps_list = new int[length];
         fsteps_mid_list = new int[length];
         temp_fsteps_list = new int[length];
+        usr_image_mid_list = new int[length];
+        tmp_userImages = new Bitmap[length];
         j = 0;
+        k=0;
         Log.d("TAG", "length=" + Integer.toString(length));
         for(i=0; i < length;i++) {
             int unixTime = (int) (System.currentTimeMillis() / 1000L);
-            int mid = Integer.valueOf(fid_list[i]);
+            final int mid = Integer.valueOf(fid_list[i]);
             ServerRequest request = new ServerRequest(activity);
             request.downStep(mid, unixTime, new CallBack() {
                 @Override
@@ -134,7 +164,7 @@ public class TabTwo extends Fragment {
                         }
                         temp_fsteps_list[j] = content.step;
                         fsteps_mid_list[j] = content.user.mid;
-                        j++;
+
                         if (j == temp_fsteps_list.length-1) {
 
                             for (int x = 0; x < temp_fsteps_list.length; x++) {
@@ -147,18 +177,43 @@ public class TabTwo extends Fragment {
                             }
                             getFriendsFinished();
                         }
-
+                        j++;
                     } else
                         Log.e("TAG", "downStep failed" + "\n");
+                }
+            });
+            request.downImage(mid, new CallBack() {
+                @Override
+                public void done(CallBackContent content) {
+                    if(k>=temp_fsteps_list.length){
+                        return;
+                    }
+                    if (content != null) {
+                        tmp_userImages[k] = content.usr_image;
+                        usr_image_mid_list[k] = content.user.mid;
+                    }
+                    else{
+                        tmp_userImages[k] = null;
+                        usr_image_mid_list[k] = mid;
+                    }
+                    if (k == temp_fsteps_list.length-1) {
+
+                        for (int x = 0; x < temp_fsteps_list.length; x++) {
+                            for (int y = 0; y < temp_fsteps_list.length; y++) {
+                                if (Integer.valueOf(fid_list[x]) == usr_image_mid_list[y]) {
+                                    userImages[x] = tmp_userImages[y];
+                                    break;
+                                }
+                            }
+                        }
+                        getFriendsFinished();
+                    }
+                    k++;
                 }
             });
         }
     }
     public static void getFriendsFinished() {
-        userImages=new int[fname_list.length];
-        for(int i=0;i<fname_list.length;i++){
-            userImages[i]=R.drawable.default_user;
-        }
         listAdapter = new FriendAdapter(activity, fname_list, userImages, fsteps_list);
         listView.setAdapter(listAdapter);
         //listAdapter.notifyDataSetChanged();
