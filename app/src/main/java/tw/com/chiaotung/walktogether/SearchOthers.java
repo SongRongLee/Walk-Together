@@ -87,6 +87,7 @@ public class SearchOthers extends Activity {
                             for(int i=0;i<length;i++){
                                 id = Integer.parseInt(fid_list[i]);
                                 final int finalLength = length;
+                                final int finalI = i;
                                 serverRequest.downImage(id, new CallBack() {
                                     @Override
                                     public void done(CallBackContent content) {
@@ -94,15 +95,17 @@ public class SearchOthers extends Activity {
                                             for(int j=0;j< finalLength;j++){
                                                 if(content.user.mid==Integer.parseInt(fid_list[j])){
                                                     userImages[j]=content.usr_image;
+                                                    break;
                                                 }
                                             }
+                                        }
+                                        if(finalI ==finalLength-1){
+                                            listAdapter=new FriendAdapter(SearchOthers.this,fname_list,userImages,step_list);
+                                            mListView.setAdapter(listAdapter);
                                         }
                                     }
                                 });
                             }
-
-                            listAdapter=new FriendAdapter(SearchOthers.this,fname_list,userImages,step_list);
-                            mListView.setAdapter(listAdapter);
                         }
                         else{
                             mListView.setAdapter(null);
