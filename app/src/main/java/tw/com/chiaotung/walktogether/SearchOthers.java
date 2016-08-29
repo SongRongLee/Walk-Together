@@ -2,6 +2,7 @@ package tw.com.chiaotung.walktogether;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,6 +17,7 @@ public class SearchOthers extends Activity {
     private int mid;
     private String [] fname_list;
     private String [] fid_list;
+    private Bitmap [] userImages;
     private LocalStoreController localStoreController;
     ServerRequest serverRequest;
     @Override
@@ -70,6 +72,7 @@ public class SearchOthers extends Activity {
                             step_list = new int[length];
                             fname_list = new String[length];
                             fid_list = new String[length];
+                            userImages = new Bitmap[length];
                             int j=0;
                             for (int i = 0; i < length; i++) {
                                 if(Integer.parseInt(temp_fid_list[i])==mid){
@@ -80,7 +83,25 @@ public class SearchOthers extends Activity {
                                 fid_list[i] = temp_fid_list[j];
                                 j++;
                             }
-                            listAdapter=new FriendAdapter(SearchOthers.this,fname_list,null,step_list);
+                            int id;
+                            for(int i=0;i<length;i++){
+                                id = Integer.parseInt(fid_list[i]);
+                                final int finalLength = length;
+                                serverRequest.downImage(id, new CallBack() {
+                                    @Override
+                                    public void done(CallBackContent content) {
+                                        if(content!=null){
+                                            for(int j=0;j< finalLength;j++){
+                                                if(content.user.mid==Integer.parseInt(fid_list[j])){
+                                                    userImages[j]=content.usr_image;
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+
+                            listAdapter=new FriendAdapter(SearchOthers.this,fname_list,userImages,step_list);
                             mListView.setAdapter(listAdapter);
                         }
                         else{
