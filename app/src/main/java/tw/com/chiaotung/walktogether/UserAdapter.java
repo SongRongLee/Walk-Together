@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -29,16 +28,17 @@ public class UserAdapter extends BaseAdapter {
     Context context;
     ArrayList<Message> message;
     ArrayList<MessageBlock> messageBlocks;
+    ArrayList<Image_ID> image_id_list;
     LocalStoreController localStoreController;
     //int [] imageId;
     private Boolean[] isLiked;
     private Boolean[] like_clicked;
     private static LayoutInflater inflater=null;
-    public UserAdapter(Activity a, ArrayList<Message> messageList) {
+    public UserAdapter(Activity a, ArrayList<Message> messageList, ArrayList<Image_ID> image_list) {
         // TODO Auto-generated constructor stub
         context=a;
         localStoreController=new LocalStoreController(context);
-        //imageId=userImages;
+        image_id_list=new ArrayList<>(image_list);
         message = messageList;
         inflater = ( LayoutInflater )context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -77,10 +77,12 @@ public class UserAdapter extends BaseAdapter {
     public class MessageBlock
     {
         ArrayList<Message> messages;
+        ArrayList<Integer> like_list;
         int like_count,step;
         public MessageBlock(){
             like_count=0;
             messages=new ArrayList<>();
+            like_list=new ArrayList<>();
         }
         public MessageBlock(int step){
             this();
@@ -102,7 +104,7 @@ public class UserAdapter extends BaseAdapter {
         RelativeLayout circle_group;
         LinearLayout note_group;
         TextView comment;
-        ImageButton submit;
+        LinearLayout show_message;
     }
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -122,7 +124,18 @@ public class UserAdapter extends BaseAdapter {
         //holder.t_time=(TextView) rowView.findViewById(R.id.text_time);
         //holder.t_step_status=(TextView) rowView.findViewById(R.id.text_step_status);
         //holder.img=(ImageView) rowView.findViewById(R.id.image_user);
-        holder.like=(ImageView) rowView.findViewById(R.id.image_like);
+        holder.show_message=(LinearLayout)rowView.findViewById(R.id.message_count_group);
+        holder.show_message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(context)
+                        .setTitle("Comments")
+                        .setAdapter(new MessageAdapter((Activity)context,messageBlocks.get(position).messages,image_id_list),null)
+                        .setNegativeButton("Back", null)
+                        .show();
+
+            }
+        });
         holder.like_amount=(TextView) rowView.findViewById(R.id.like_count);
         holder.like_amount.setText(Integer.toString(messageBlocks.get(position).like_count));
         //new UI
@@ -131,8 +144,6 @@ public class UserAdapter extends BaseAdapter {
         holder.note_group=(LinearLayout)rowView.findViewById(R.id.note_group);
         holder.user_name=(TextView) rowView.findViewById(R.id.UserName);
         holder.user_name.setText(LocalStoreController.userLocalStore.getString("name", ""));
-        holder.submit=(ImageButton)rowView.findViewById(R.id.submit);
-        holder.submit.setEnabled(false);
         holder.comment=(TextView)rowView.findViewById(R.id.comment);
         holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,7 +161,7 @@ public class UserAdapter extends BaseAdapter {
                                     if(!message_content.trim().isEmpty()){
                                         int unixTime = (int) (System.currentTimeMillis() / 1000L);
 
-                                        Message message = new Message(message_content, unixTime, localStoreController.getStep());
+                                        Message message = new Message(message_content, unixTime, localStoreController.getStep(),localStoreController.getUserID());
                                         ServerRequest request = new ServerRequest(context);
                                         request.upSelfMessage(message, new CallBack() {
                                             @Override
@@ -163,7 +174,18 @@ public class UserAdapter extends BaseAdapter {
                                                     Log.e("TAG", "UpSelfMessage failed" + "\n");
                                             }
                                         });
-                                        messageBlocks.get(0).messages.add(message);
+                                        request.downImage(localStoreController.getUserID(), new CallBack() {
+                                            @Override
+                                            public void done(CallBackContent content) {
+                                                if(content!=null){
+                                                    image_id_list.add(new Image_ID(content.usr_image, content.user.mid));
+                                                }
+                                                else{
+                                                    image_id_list.add(new Image_ID(null,localStoreController.getUserID()));
+                                                }
+                                            }
+                                        });
+                                        messageBlocks.get(0).messages.add(0,message);
                                     }
                                 }
                             })
@@ -230,6 +252,7 @@ public class UserAdapter extends BaseAdapter {
             }
             if(string_content.equals("liked step")){
                 messageBlocks.get(messageblock_Itr).like_count++;
+                messageBlocks.get(messageblock_Itr).like_list.add(message.get(i).from);
                 Log.d("messageBlocks", "like count++");
             }
             else{

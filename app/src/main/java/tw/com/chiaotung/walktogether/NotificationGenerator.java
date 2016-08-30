@@ -138,6 +138,7 @@ public class NotificationGenerator
             @Override
             public void done(CallBackContent content) {
                 if (content != null) {
+
                     for(int i=0;i<content.message_list.length;i++){
                         messageList.add(content.message_list[i]);
                     }
@@ -153,8 +154,49 @@ public class NotificationGenerator
         });
     }
     private void getMessageFinished() {
-        TabOne.listAdapter = new UserAdapter(TabOne.activity, messageList);
-        TabOne.listView.setAdapter(TabOne.listAdapter);
+        int flag=1;
+        final int[] count = {0};
+        final int tmp_length=messageList.size();
+        final ArrayList<Image_ID> image_ID_list=new ArrayList<>();
+        ServerRequest request = new ServerRequest(context);
+        for(int i=0;i<tmp_length;i++){
+            for(int j=0;j<image_ID_list.size();j++){
+                if(image_ID_list.get(j).id==messageList.get(i).from){
+                    flag=0;
+                    break;
+                }
+            }
+
+            if(flag==1){
+                final int finalI = i;
+                request.downImage(messageList.get(i).from, new CallBack() {
+                    @Override
+                    public void done(CallBackContent content) {
+                        count[0]++;
+                        if(content!=null){
+                            image_ID_list.add(new Image_ID(content.usr_image,content.user.mid));
+                        }
+                        else{
+                            image_ID_list.add(new Image_ID(null,messageList.get(finalI).from));
+                        }
+                        if(count[0] ==tmp_length){
+                            TabOne.listAdapter = new UserAdapter(TabOne.activity, messageList, image_ID_list);
+                            TabOne.listView.setAdapter(TabOne.listAdapter);
+                            messageList.clear();
+                            image_ID_list.clear();
+                        }
+                    }
+                });
+            }
+            flag=1;
+        }
+        if(tmp_length==0){
+            messageList.clear();
+            image_ID_list.clear();
+            TabOne.listAdapter = new UserAdapter(TabOne.activity, messageList, image_ID_list);
+            TabOne.listView.setAdapter(TabOne.listAdapter);
+        }
+
         //((BaseAdapter)TabOne.listView.getAdapter()).notifyDataSetChanged();
         //listAdapter.notifyDataSetChanged();
     }

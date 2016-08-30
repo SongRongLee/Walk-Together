@@ -311,7 +311,7 @@ public class ServerRequest {
         requestQueue.add(jsonObjectRequest);
         //pdialog.dismiss();
     }
-    public void downMessage(int ID,int time ,final CallBack callBack)  {
+    public void downMessage(final int ID,int time ,final CallBack callBack)  {
         //pdialog.show();
         JSONObject param = new JSONObject();
         try {
