@@ -3,7 +3,6 @@ package tw.com.chiaotung.walktogether;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import tw.com.chiaotung.walktogether.view.ModelObject;
 
@@ -146,6 +145,9 @@ public class LocalStoreController extends Application {
         return mid;
     }
     public String getUserName(int id){
+        if(id==getUserID()){
+            return userLocalStore.getString("name", "");
+        }
         String [] temp_ids=userLocalStore.getString("fid_list","").split(",");
         String [] temp_names=userLocalStore.getString("fname_list","").split(",");
         for(int i=0;i<temp_ids.length;i++){

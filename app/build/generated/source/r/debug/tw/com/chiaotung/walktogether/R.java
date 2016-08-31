@@ -2800,13 +2800,13 @@ containing a value of this type.
         public static final int action_bar_title=0x7f0e0051;
         public static final int action_context_bar=0x7f0e0072;
         public static final int action_divider=0x7f0e00d0;
-        public static final int action_logout=0x7f0e00e8;
+        public static final int action_logout=0x7f0e00e7;
         public static final int action_menu_divider=0x7f0e0002;
         public static final int action_menu_presenter=0x7f0e0003;
         public static final int action_mode_bar=0x7f0e006e;
         public static final int action_mode_bar_stub=0x7f0e006d;
         public static final int action_mode_close_button=0x7f0e0053;
-        public static final int action_settings=0x7f0e00e7;
+        public static final int action_settings=0x7f0e00e6;
         public static final int activity_chooser_view_content=0x7f0e0054;
         public static final int addFriend=0x7f0e00e3;
         public static final int adjust_height=0x7f0e0035;
@@ -2894,7 +2894,7 @@ containing a value of this type.
         public static final int inner_group=0x7f0e00d9;
         public static final int item_touch_helper_previous_elevation=0x7f0e0006;
         public static final int left=0x7f0e0024;
-        public static final int like_bt=0x7f0e00e6;
+        public static final int like_bt=0x7f0e00e5;
         public static final int like_count=0x7f0e00dc;
         public static final int like_count_group=0x7f0e00db;
         public static final int line1=0x7f0e0089;
@@ -2978,7 +2978,6 @@ containing a value of this type.
         public static final int stepshighfive=0x7f0e009a;
         public static final int stop=0x7f0e00ca;
         public static final int strict_sandbox=0x7f0e0045;
-        public static final int submit=0x7f0e00e5;
         public static final int submit_area=0x7f0e007c;
         public static final int subtitle=0x7f0e00c7;
         public static final int tabMode=0x7f0e000e;

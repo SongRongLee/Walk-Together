@@ -772,13 +772,13 @@ int id action_bar_subtitle 0x7f0e0052
 int id action_bar_title 0x7f0e0051
 int id action_context_bar 0x7f0e0072
 int id action_divider 0x7f0e00d0
-int id action_logout 0x7f0e00e8
+int id action_logout 0x7f0e00e7
 int id action_menu_divider 0x7f0e0002
 int id action_menu_presenter 0x7f0e0003
 int id action_mode_bar 0x7f0e006e
 int id action_mode_bar_stub 0x7f0e006d
 int id action_mode_close_button 0x7f0e0053
-int id action_settings 0x7f0e00e7
+int id action_settings 0x7f0e00e6
 int id activity_chooser_view_content 0x7f0e0054
 int id addFriend 0x7f0e00e3
 int id adjust_height 0x7f0e0035
@@ -866,7 +866,7 @@ int id info 0x7f0e00d6
 int id inner_group 0x7f0e00d9
 int id item_touch_helper_previous_elevation 0x7f0e0006
 int id left 0x7f0e0024
-int id like_bt 0x7f0e00e6
+int id like_bt 0x7f0e00e5
 int id like_count 0x7f0e00dc
 int id like_count_group 0x7f0e00db
 int id line1 0x7f0e0089
@@ -950,7 +950,6 @@ int id stepsdislike 0x7f0e009b
 int id stepshighfive 0x7f0e009a
 int id stop 0x7f0e00ca
 int id strict_sandbox 0x7f0e0045
-int id submit 0x7f0e00e5
 int id submit_area 0x7f0e007c
 int id subtitle 0x7f0e00c7
 int id tabMode 0x7f0e000e

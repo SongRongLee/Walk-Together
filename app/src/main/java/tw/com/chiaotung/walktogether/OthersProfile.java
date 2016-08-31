@@ -12,14 +12,16 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class OthersProfile extends AppCompatActivity {
     public static LocalStoreController storeController;
-    public static int [] userImages={R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user,R.drawable.default_user};
     public static String name;
     public static int mid;
     public static ListView listView;
     public static OthersUserAdapter listAdapter;
     public static Message [] messageList;
+    public static ArrayList<Image_ID> image_ID_list;
     public static int step;
     //   private ScrollView scrollView;
     private TextView username;
@@ -45,6 +47,7 @@ public class OthersProfile extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         storeController=new LocalStoreController(this);
+        image_ID_list=new ArrayList<>();
         showpage();
     }
     @Override
@@ -201,11 +204,6 @@ public class OthersProfile extends AppCompatActivity {
         listView.setDivider(null);
         //listView.addHeaderView(UserdataView);
         //listView.addHeaderView(ConnectionView);
-        //listView.addHeaderView(AddingnoteView);
-        listAdapter = new OthersUserAdapter(this, userImages, messageList,name);
-        listView.setAdapter(listAdapter);
-
-
     }
     public static void updateInfo() {
         ServerRequest request = new ServerRequest(activity);
@@ -247,17 +245,56 @@ public class OthersProfile extends AppCompatActivity {
                 if (content != null) {
                     messageList = new Message[content.message_list.length];
                     messageList = content.message_list;
-                    getMessageFinished();
-                } else
+                } else{
                     Log.e("TAG", "getMessage failed" + "\n");
+                }
+                getMessageFinished();
             }
         });
     }
 
     public static void getMessageFinished() {
-        listAdapter = new OthersUserAdapter(activity, userImages, messageList,name);
-        listView.setAdapter(listAdapter);
-        //listAdapter.notifyDataSetChanged();
+        int flag=1;
+        final int[] count = {0};
+        final int tmp_length=messageList.length;
+        ServerRequest request = new ServerRequest(activity);
+        for(int i=0;i<tmp_length;i++){
+            for(int j=0;j<image_ID_list.size();j++){
+                if(image_ID_list.get(j).id==messageList[i].from){
+                    flag=0;
+                    break;
+                }
+            }
+
+            if(flag==1){
+                final int finalI = i;
+                request.downImage(messageList[i].from, new CallBack() {
+                    @Override
+                    public void done(CallBackContent content) {
+                        count[0]++;
+                        if(content!=null){
+                            image_ID_list.add(new Image_ID(content.usr_image,content.user.mid));
+                        }
+                        else{
+                            image_ID_list.add(new Image_ID(null,messageList[finalI].from));
+                        }
+                        if(count[0] ==tmp_length){
+                            listAdapter = new OthersUserAdapter(activity, messageList,name,image_ID_list);
+                            messageList=null;
+                            listView.setAdapter(listAdapter);
+                            image_ID_list.clear();
+                        }
+                    }
+                });
+            }
+            flag=1;
+        }
+        if(tmp_length==0){
+            messageList=null;
+            image_ID_list.clear();
+            listAdapter = new OthersUserAdapter(activity, messageList,name,image_ID_list);
+            listView.setAdapter(listAdapter);
+        }
     }
     private void uploadLikeStep(Message message) {
         ServerRequest request = new ServerRequest(this);

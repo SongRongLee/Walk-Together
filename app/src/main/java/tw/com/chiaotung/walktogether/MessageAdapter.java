@@ -127,7 +127,12 @@ public class MessageAdapter extends BaseAdapter {
         }
         //MESSAGE CONTENT
         String [] mes=messages.get(position).message_content.split(";");
-        holder.message_content.setText(mes[0]);
+        if(mes[0].equals("liked step")){
+            holder.message_content.setText("Like your step!");
+        }
+        else{
+            holder.message_content.setText(mes[0]);
+        }
         return rowView;
     }
 

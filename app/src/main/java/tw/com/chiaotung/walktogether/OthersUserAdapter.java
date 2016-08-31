@@ -32,21 +32,24 @@ public class OthersUserAdapter extends BaseAdapter {
     Context context;
     Message[] message;
     ArrayList<MessageBlock> messageBlocks;
+    ArrayList<Image_ID> image_id_list;
     int [] imageId;
-    private Boolean isLiked;
+    private Boolean [] isLiked;
     private Boolean like_clicked;
     private Boolean isFriend;
     private Boolean addFriend_clicked;
     private String Name;
     LocalStoreController localStoreController;
     private static LayoutInflater inflater=null;
-    public OthersUserAdapter(Activity a, int[] userImages, Message[] messageList, String name) {
+    public OthersUserAdapter(Activity a, Message[] messageList, String name, ArrayList<Image_ID> image_list) {
         // TODO Auto-generated constructor stub
         context=a;
         localStoreController = new LocalStoreController(a);
-        imageId=userImages;
+        image_id_list=new ArrayList<>(image_list);
         message = messageList;
         Name = name;
+        isLiked=new Boolean[1];
+        isLiked[0]=false;
         inflater = ( LayoutInflater )context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         messageBlocks=new ArrayList<>();
@@ -76,10 +79,12 @@ public class OthersUserAdapter extends BaseAdapter {
     public class MessageBlock
     {
         ArrayList<Message> messages;
+        ArrayList<Message> like_list;
         int like_count,step;
         public MessageBlock(){
             like_count=0;
             messages=new ArrayList<>();
+            like_list=new ArrayList<>();
         }
         public MessageBlock(int step){
             this();
@@ -91,7 +96,7 @@ public class OthersUserAdapter extends BaseAdapter {
         TextView t_message;
         TextView t_time;
         TextView t_step_status;
-        ImageView img;
+        LinearLayout like_list;
         ImageButton like;
         TextView like_amount;
         //new UI
@@ -103,6 +108,7 @@ public class OthersUserAdapter extends BaseAdapter {
         TextView comment;
         ImageButton submit;
         Button addFriend;
+        LinearLayout show_message;
     }
     @Override
     public View getView(final int position, final View convertView, ViewGroup parent) {
@@ -120,6 +126,30 @@ public class OthersUserAdapter extends BaseAdapter {
         holder.steps=(TextView) rowView.findViewById(R.id.steps);
         holder.steps.setText(Integer.toString(messageBlocks.get(position).step));
 
+        holder.show_message=(LinearLayout)rowView.findViewById(R.id.message_count_group);
+        holder.show_message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(context)
+                        .setTitle("Comments")
+                        .setAdapter(new MessageAdapter((Activity) context, messageBlocks.get(position).messages, image_id_list), null)
+                        .setNegativeButton("Back", null)
+                        .show();
+
+            }
+        });
+        holder.like_list = (LinearLayout) rowView.findViewById(R.id.like_count_group);
+        holder.like_list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(context)
+                        .setTitle("Like List")
+                        .setAdapter(new MessageAdapter((Activity) context, messageBlocks.get(position).like_list, image_id_list), null)
+                        .setNegativeButton("Back", null)
+                        .show();
+            }
+        });
+
         holder.message_count=(TextView)rowView.findViewById(R.id.message_count);
         holder.message_count.setText(Integer.toString(messageBlocks.get(position).messages.size()));
         holder.circle=(ImageView) rowView.findViewById(R.id.image_circle);
@@ -127,8 +157,6 @@ public class OthersUserAdapter extends BaseAdapter {
         holder.note_group=(LinearLayout)rowView.findViewById(R.id.note_group);
         holder.user_name=(TextView) rowView.findViewById(R.id.UserName);
         holder.user_name.setText(Name);
-        holder.submit=(ImageButton)rowView.findViewById(R.id.submit);
-        holder.submit.setEnabled(false);
         //add note
         holder.comment=(TextView)rowView.findViewById(R.id.comment);
         holder.comment.setOnClickListener(new View.OnClickListener() {
@@ -152,12 +180,22 @@ public class OthersUserAdapter extends BaseAdapter {
                                         @Override
                                         public void done(CallBackContent content) {
                                             if (content != null) {
-                                                Log.e("TAG", "UpOtherMessage Success" + "\n");
+                                                Log.d("TAG", "UpOtherMessage Success" + "\n");
                                             } else
                                                 Log.e("TAG", "UpOtherMessage failed" + "\n");
                                         }
                                     });
-                                    messageBlocks.get(0).messages.add(message);
+                                    request.downImage(localStoreController.getUserID(), new CallBack() {
+                                        @Override
+                                        public void done(CallBackContent content) {
+                                            if (content != null) {
+                                                image_id_list.add(new Image_ID(content.usr_image, content.user.mid));
+                                            } else {
+                                                image_id_list.add(new Image_ID(null, localStoreController.getUserID()));
+                                            }
+                                        }
+                                    });
+                                    messageBlocks.get(0).messages.add(0,message);
                                 }
                             }
                         })
@@ -208,9 +246,8 @@ public class OthersUserAdapter extends BaseAdapter {
             });
         }
         //like step
-        isLiked=false;
         holder.like=(ImageButton) rowView.findViewById(R.id.like_bt);
-        if(!isLiked) {
+        if(!isLiked[0]) {
             //holder.like.setImageResource(R.drawable.ic_thumb_up_before);
             like_clicked = false;
             holder.like.setOnClickListener(new View.OnClickListener() {
@@ -220,6 +257,7 @@ public class OthersUserAdapter extends BaseAdapter {
                         int from = LocalStoreController.userLocalStore.getInt("mid", 1);
                         int unixTime = (int) (System.currentTimeMillis() / 1000L);
                         Message message = new Message();
+                        message.message_content="liked step";
                         message.from = from;
                         message.time = unixTime;
                         message.to = OthersProfile.mid;
@@ -227,13 +265,25 @@ public class OthersUserAdapter extends BaseAdapter {
                         uploadLikeStep(message);
                         Toast.makeText(context, "You liked the Step !! ", Toast.LENGTH_LONG).show();
                         like_clicked = true;
+                        isLiked[0]=true;
                         holder.like.setEnabled(false);
                         holder.like.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
                         //holder.like.setImageResource(R.drawable.ic_thumb_up_after);
                         String current_likelist = localStoreController.getSelfLikelist();
                         String new_likelist = current_likelist + String.valueOf(OthersProfile.mid) + ",";
                         localStoreController.storeSelfLikelist(new_likelist);
-
+                        ServerRequest request = new ServerRequest(context);
+                        request.downImage(localStoreController.getUserID(), new CallBack() {
+                            @Override
+                            public void done(CallBackContent content) {
+                                if (content != null) {
+                                    image_id_list.add(new Image_ID(content.usr_image, content.user.mid));
+                                } else {
+                                    image_id_list.add(new Image_ID(null, localStoreController.getUserID()));
+                                }
+                            }
+                        });
+                        messageBlocks.get(0).like_list.add(0, message);
                         messageBlocks.get(0).like_count++;
                         holder.like_amount.setText(Integer.toString(messageBlocks.get(position).like_count));
                     }
@@ -244,6 +294,8 @@ public class OthersUserAdapter extends BaseAdapter {
         {
             //holder.like.setImageResource(R.drawable.ic_thumb_up_after);
             like_clicked = true;
+            holder.like.setEnabled(false);
+            holder.like.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
         }
 
         //set first block uniqueness
@@ -284,24 +336,27 @@ public class OthersUserAdapter extends BaseAdapter {
     }
     private void extractMessageBlock()
     {
-        for(int i=0;i < message.length;i++) {
-            String[] temp_step = message[i].message_content.split("@");
-            String[] temp_content = message[i].message_content.split(";");
-            int step = Integer.parseInt(temp_step[1].substring(2));
-            String string_content = temp_content[0];
-            int messageblock_Itr = stepExist(step);
-            Log.d("messageBlocks", string_content);
-            if (messageblock_Itr == -1) {
-                messageBlocks.add(new MessageBlock(step));
-                Log.d("messageBlocks", "new block");
-                messageblock_Itr = messageBlocks.size() - 1;
-            }
-            if (string_content.equals("liked step")) {
-                messageBlocks.get(messageblock_Itr).like_count++;
-                Log.d("messageBlocks", "like count++");
-            } else {
-                messageBlocks.get(messageblock_Itr).messages.add(message[i]);
-                Log.d("messageBlocks", "add message");
+        if(message!=null){
+            for(int i=0;i < message.length;i++) {
+                String[] temp_step = message[i].message_content.split("@");
+                String[] temp_content = message[i].message_content.split(";");
+                int step = Integer.parseInt(temp_step[1].substring(2));
+                String string_content = temp_content[0];
+                int messageblock_Itr = stepExist(step);
+                Log.d("messageBlocks", string_content);
+                if (messageblock_Itr == -1) {
+                    messageBlocks.add(new MessageBlock(step));
+                    Log.d("messageBlocks", "new block");
+                    messageblock_Itr = messageBlocks.size() - 1;
+                }
+                if (string_content.equals("liked step")) {
+                    messageBlocks.get(messageblock_Itr).like_count++;
+                    messageBlocks.get(messageblock_Itr).like_list.add(message[i]);
+                    Log.d("messageBlocks", "like count++");
+                } else {
+                    messageBlocks.get(messageblock_Itr).messages.add(message[i]);
+                    Log.d("messageBlocks", "add message");
+                }
             }
         }
     }

@@ -77,7 +77,7 @@ public class UserAdapter extends BaseAdapter {
     public class MessageBlock
     {
         ArrayList<Message> messages;
-        ArrayList<Integer> like_list;
+        ArrayList<Message> like_list;
         int like_count,step;
         public MessageBlock(){
             like_count=0;
@@ -95,7 +95,7 @@ public class UserAdapter extends BaseAdapter {
         TextView t_time;
         TextView t_step_status;
         ImageView img;
-        ImageView like;
+        LinearLayout like_list;
         TextView like_amount;
         //new UI
         ImageView circle;
@@ -120,10 +120,6 @@ public class UserAdapter extends BaseAdapter {
                 messageBlocks.get(0).step=localStoreController.getStep();
             }
         }
-        //holder.t_message=(TextView) rowView.findViewById(R.id.text_message);
-        //holder.t_time=(TextView) rowView.findViewById(R.id.text_time);
-        //holder.t_step_status=(TextView) rowView.findViewById(R.id.text_step_status);
-        //holder.img=(ImageView) rowView.findViewById(R.id.image_user);
         holder.show_message=(LinearLayout)rowView.findViewById(R.id.message_count_group);
         holder.show_message.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,6 +130,17 @@ public class UserAdapter extends BaseAdapter {
                         .setNegativeButton("Back", null)
                         .show();
 
+            }
+        });
+        holder.like_list = (LinearLayout) rowView.findViewById(R.id.like_count_group);
+        holder.like_list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(context)
+                        .setTitle("Like List")
+                        .setAdapter(new MessageAdapter((Activity)context,messageBlocks.get(position).like_list,image_id_list),null)
+                        .setNegativeButton("Back", null)
+                        .show();
             }
         });
         holder.like_amount=(TextView) rowView.findViewById(R.id.like_count);
@@ -252,7 +259,7 @@ public class UserAdapter extends BaseAdapter {
             }
             if(string_content.equals("liked step")){
                 messageBlocks.get(messageblock_Itr).like_count++;
-                messageBlocks.get(messageblock_Itr).like_list.add(message.get(i).from);
+                messageBlocks.get(messageblock_Itr).like_list.add(message.get(i));
                 Log.d("messageBlocks", "like count++");
             }
             else{
