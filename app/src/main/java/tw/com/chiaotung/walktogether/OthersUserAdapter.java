@@ -107,8 +107,9 @@ public class OthersUserAdapter extends BaseAdapter {
         LinearLayout note_group;
         TextView comment;
         ImageButton submit;
-        Button addFriend;
+        ImageView addFriend;
         LinearLayout show_message;
+        ImageView link_bar;
     }
     @Override
     public View getView(final int position, final View convertView, ViewGroup parent) {
@@ -123,6 +124,10 @@ public class OthersUserAdapter extends BaseAdapter {
         holder.like_amount=(TextView) rowView.findViewById(R.id.like_count);
         holder.like_amount.setText(Integer.toString(messageBlocks.get(position).like_count));
         //new UI
+        holder.link_bar=(ImageView)rowView.findViewById(R.id.image_link);
+        if(position==messageBlocks.size()-1){
+            holder.link_bar.getLayoutParams().height = (int) (parent.getMeasuredHeight()-convertDpToPixel(170,context));
+        }
         holder.steps=(TextView) rowView.findViewById(R.id.steps);
         holder.steps.setText(Integer.toString(messageBlocks.get(position).step));
 
@@ -205,7 +210,7 @@ public class OthersUserAdapter extends BaseAdapter {
             }
         });
         //add friend
-        holder.addFriend=(Button)rowView.findViewById(R.id.addFriend);
+        holder.addFriend=(ImageView)rowView.findViewById(R.id.addFriend);
         String[] fid_list = new String[0];
         if(!LocalStoreController.userLocalStore.getString("fid_list", "").equals("null") && !LocalStoreController.userLocalStore.getString("fid_list", "").equals(""))
             fid_list = LocalStoreController.userLocalStore.getString("fid_list", "").split(",");
@@ -219,14 +224,14 @@ public class OthersUserAdapter extends BaseAdapter {
             }
         }
         if (isFriend)
-            holder.addFriend.setText("Friend");
+            holder.addFriend.setImageResource(R.drawable.friends);
         else {
-            holder.addFriend.setText("Add friend");
+            holder.addFriend.setImageResource(R.drawable.add_yellow);
             holder.addFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (!addFriend_clicked) {
-                        holder.addFriend.setText("Friend");
+                        holder.addFriend.setImageResource(R.drawable.friends);
                         int from = LocalStoreController.userLocalStore.getInt("mid", 1);
                         ServerRequest request = new ServerRequest(context);
                         request.addFriend(from, OthersProfile.mid);

@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OthersProfile">
+    tools:context=".OthersProfile"
+    android:background="@color/grayDark">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

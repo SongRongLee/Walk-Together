@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/grayDark">
 
-    <Button
+    <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:id="@+id/addFriend"
         android:text="ADD"
-        android:layout_toRightOf="@+id/circle_group"
-        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/UserName"
         android:singleLine="true"
-        android:layout_alignEnd="@+id/note_group" />
+        android:scaleType="fitCenter"
+        android:layout_marginTop="10dp"
+        android:background="@color/grayDark"
+        android:src="@drawable/add_yellow" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -21,9 +24,9 @@
         android:textSize="30sp"
         android:textColor="@color/yellow"
         android:paddingLeft="15dp"
-        android:layout_below="@+id/addFriend"
         android:layout_toEndOf="@+id/circle_group"
-        android:layout_toRightOf="@+id/circle_group" />
+        android:layout_toRightOf="@+id/circle_group"
+        android:layout_marginTop="10dp" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -61,12 +64,13 @@
         </RelativeLayout>
 
         <ImageView
-            android:layout_width="60dp"
+            android:layout_width="10dp"
             android:layout_height="60dp"
             android:id="@+id/image_link"
             android:src="@drawable/link"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/inner_group" />
+            android:layout_below="@+id/inner_group"
+            android:scaleType="fitXY" />
 
     </RelativeLayout>
 

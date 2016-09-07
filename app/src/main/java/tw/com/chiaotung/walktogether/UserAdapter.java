@@ -105,6 +105,7 @@ public class UserAdapter extends BaseAdapter {
         LinearLayout note_group;
         TextView comment;
         LinearLayout show_message;
+        ImageView link_bar;
     }
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -119,6 +120,10 @@ public class UserAdapter extends BaseAdapter {
             else{
                 messageBlocks.get(0).step=localStoreController.getStep();
             }
+        }
+        holder.link_bar=(ImageView)rowView.findViewById(R.id.image_link);
+        if(position==messageBlocks.size()-1){
+            holder.link_bar.getLayoutParams().height = (int) (parent.getMeasuredHeight()-convertDpToPixel(170,context));
         }
         holder.show_message=(LinearLayout)rowView.findViewById(R.id.message_count_group);
         holder.show_message.setOnClickListener(new View.OnClickListener() {
